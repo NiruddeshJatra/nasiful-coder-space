@@ -8,35 +8,50 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Terminal Dark Theme - inspired by VS Code Dark+ */
+    --background: 217 19% 7%;
+    --foreground: 213 20% 87%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 217 19% 9%;
+    --card-foreground: 213 20% 87%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 217 19% 9%;
+    --popover-foreground: 213 20% 87%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Terminal Green accent */
+    --primary: 168 76% 58%;
+    --primary-foreground: 217 19% 7%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Muted terminal gray */
+    --secondary: 217 10% 20%;
+    --secondary-foreground: 213 20% 87%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 217 10% 15%;
+    --muted-foreground: 213 10% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Code syntax colors */
+    --accent: 29 68% 66%;
+    --accent-foreground: 217 19% 7%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --terminal-cyan: 168 76% 58%;
+    --terminal-purple: 286 47% 68%;
+    --terminal-orange: 29 68% 66%;
+    --terminal-blue: 207 70% 64%;
+    --terminal-green: 95 38% 62%;
+    --terminal-yellow: 45 100% 70%;
+    
+    --destructive: 0 73% 60%;
+    --destructive-foreground: 213 20% 87%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 217 10% 20%;
+    --input: 217 10% 15%;
+    --ring: 168 76% 58%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
+    
+    /* Custom animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --cursor-blink: blink 1s step-end infinite;
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,33 +71,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 217 19% 7%;
+    --foreground: 213 20% 87%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 217 19% 9%;
+    --card-foreground: 213 20% 87%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 217 19% 9%;
+    --popover-foreground: 213 20% 87%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 168 76% 58%;
+    --primary-foreground: 217 19% 7%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 217 10% 20%;
+    --secondary-foreground: 213 20% 87%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 217 10% 15%;
+    --muted-foreground: 213 10% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 29 68% 66%;
+    --accent-foreground: 217 19% 7%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 73% 60%;
+    --destructive-foreground: 213 20% 87%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 217 10% 20%;
+    --input: 217 10% 15%;
+    --ring: 168 76% 58%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +115,53 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-mono;
+  }
+}
+
+@layer utilities {
+  .terminal-cyan {
+    color: hsl(var(--terminal-cyan));
+  }
+  
+  .terminal-purple {
+    color: hsl(var(--terminal-purple));
+  }
+  
+  .terminal-orange {
+    color: hsl(var(--terminal-orange));
+  }
+  
+  .terminal-blue {
+    color: hsl(var(--terminal-blue));
+  }
+  
+  .terminal-green {
+    color: hsl(var(--terminal-green));
+  }
+  
+  .terminal-yellow {
+    color: hsl(var(--terminal-yellow));
+  }
+  
+  .cursor-blink {
+    animation: blink 1s step-end infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  @keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  
+  .typewriter {
+    overflow: hidden;
+    border-right: 2px solid hsl(var(--terminal-cyan));
+    white-space: nowrap;
+    animation: typewriter 2s steps(40) forwards, blink 0.75s step-end infinite;
   }
 }
