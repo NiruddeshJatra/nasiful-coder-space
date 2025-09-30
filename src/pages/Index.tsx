@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Terminal from "@/components/Terminal";
 import Editor from "@/components/Editor";
-import StatusBar from "@/components/StatusBar";
+import FileExplorer from "@/components/FileExplorer";
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState("welcome");
@@ -11,21 +11,27 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden bg-[#0a0a0a]">
+      {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Terminal - Left Side */}
-        <div className="w-full md:w-96 border-r border-border">
-          <Terminal onCommand={handleCommand} currentSection={currentSection} />
+        {/* File Explorer - Left Side */}
+        <div className="w-48 hidden md:block">
+          <FileExplorer 
+            currentSection={currentSection} 
+            onSectionChange={setCurrentSection} 
+          />
         </div>
 
-        {/* Editor - Right Side */}
-        <div className="flex-1 hidden md:block">
+        {/* Editor - Center/Right */}
+        <div className="flex-1">
           <Editor currentSection={currentSection} />
         </div>
       </div>
 
-      {/* Status Bar */}
-      <StatusBar />
+      {/* Terminal - Bottom */}
+      <div className="h-64 border-t border-border">
+        <Terminal onCommand={handleCommand} currentSection={currentSection} />
+      </div>
     </div>
   );
 };

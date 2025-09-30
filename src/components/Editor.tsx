@@ -81,22 +81,27 @@ const Editor = ({ currentSection }: EditorProps) => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-background">
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-card">
+    <div className="h-full flex flex-col bg-[#0d0d0d]">
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-[#0a0a0a]">
         {getFileIcon(currentSection)}
         <span className="text-sm font-medium">{getFileName(currentSection)}</span>
+        <div className="ml-auto flex items-center gap-2 text-[10px] text-muted-foreground">
+          <span>UTF-8</span>
+          <span>•</span>
+          <span>LF</span>
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="flex">
-          <div className="w-12 bg-muted/30 text-right pr-3 py-4 text-xs text-muted-foreground select-none">
+        <div className="flex h-full">
+          <div className="w-12 bg-[#0a0a0a] text-right pr-3 py-4 text-xs text-muted-foreground/40 select-none border-r border-border/30">
             {Array.from({ length: 100 }, (_, i) => (
-              <div key={i} className="leading-6">
+              <div key={i} className="leading-6 hover:text-muted-foreground transition-colors">
                 {i + 1}
               </div>
             ))}
           </div>
-          <div className="flex-1 p-8">
+          <div className="flex-1 p-8 animate-fade-in">
             {renderContent()}
           </div>
         </div>

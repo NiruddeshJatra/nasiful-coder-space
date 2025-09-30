@@ -162,10 +162,14 @@ const Terminal = ({ onCommand, currentSection }: TerminalProps) => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-card border-r border-border">
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/50">
+    <div className="h-full flex flex-col bg-black">
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-[#0a0a0a]">
         <TerminalIcon className="w-4 h-4 terminal-cyan" />
-        <span className="text-sm font-medium">terminal</span>
+        <span className="text-xs font-semibold uppercase tracking-wide">Terminal</span>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-[10px] text-muted-foreground">bash</span>
+        </div>
       </div>
 
       <div
@@ -173,43 +177,44 @@ const Terminal = ({ onCommand, currentSection }: TerminalProps) => {
         className="flex-1 overflow-y-auto p-4 space-y-1 text-sm"
       >
         {history.map((line, index) => (
-          <div key={index} className="whitespace-pre-wrap font-mono">
+          <div key={index} className="whitespace-pre-wrap font-mono animate-fade-in">
             {line.startsWith("$") ? (
-              <span className="terminal-green">{line}</span>
+              <span className="terminal-green font-semibold">{line}</span>
             ) : line.includes("Loading") || line.includes("Opening") ? (
               <span className="terminal-cyan">{line}</span>
             ) : line.includes("not found") || line.includes("No such") ? (
               <span className="terminal-orange">{line}</span>
             ) : (
-              <span className="text-foreground">{line}</span>
+              <span className="text-gray-300">{line}</span>
             )}
           </div>
         ))}
 
         <div className="flex items-center gap-2 mt-2">
-          <ChevronRight className="w-4 h-4 terminal-green flex-shrink-0" />
+          <ChevronRight className="w-4 h-4 terminal-green flex-shrink-0 animate-pulse" />
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent border-none outline-none text-foreground font-mono"
-            placeholder="Type a command..."
+            className="flex-1 bg-transparent border-none outline-none text-gray-100 font-mono placeholder:text-gray-600"
+            placeholder="Type 'help' for commands..."
             autoFocus
           />
-          <span className="cursor-blink terminal-cyan">▋</span>
+          <span className="cursor-blink terminal-cyan font-bold">▋</span>
         </div>
 
         {suggestions.length > 0 && input && (
-          <div className="mt-2 pl-6 text-muted-foreground text-xs">
-            <span className="terminal-blue">Suggestions:</span> {suggestions.join(", ")}
+          <div className="mt-2 pl-6 text-muted-foreground text-xs animate-slide-in">
+            <span className="terminal-blue font-semibold">→</span> {suggestions.join(", ")}
           </div>
         )}
       </div>
 
-      <div className="px-4 py-2 border-t border-border bg-muted/50 text-xs text-muted-foreground">
-        <span className="terminal-purple">Tip:</span> Use Tab for autocomplete, ↑↓ for history
+      <div className="px-4 py-1.5 border-t border-border bg-[#0a0a0a] text-[10px] text-muted-foreground flex items-center gap-4">
+        <span className="terminal-purple">💡 Tip:</span>
+        <span>Tab for autocomplete • ↑↓ for history</span>
       </div>
     </div>
   );

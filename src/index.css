@@ -9,43 +9,43 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Terminal Dark Theme - inspired by VS Code Dark+ */
-    --background: 217 19% 7%;
-    --foreground: 213 20% 87%;
+    --background: 0 0% 5%;
+    --foreground: 0 0% 90%;
 
-    --card: 217 19% 9%;
-    --card-foreground: 213 20% 87%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 90%;
 
-    --popover: 217 19% 9%;
-    --popover-foreground: 213 20% 87%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 90%;
 
     /* Terminal Green accent */
-    --primary: 168 76% 58%;
-    --primary-foreground: 217 19% 7%;
+    --primary: 179 100% 47%;
+    --primary-foreground: 0 0% 5%;
 
     /* Muted terminal gray */
-    --secondary: 217 10% 20%;
-    --secondary-foreground: 213 20% 87%;
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 0 0% 5%;
 
-    --muted: 217 10% 15%;
-    --muted-foreground: 213 10% 60%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
 
     /* Code syntax colors */
-    --accent: 29 68% 66%;
-    --accent-foreground: 217 19% 7%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 90%;
 
-    --terminal-cyan: 168 76% 58%;
-    --terminal-purple: 286 47% 68%;
-    --terminal-orange: 29 68% 66%;
-    --terminal-blue: 207 70% 64%;
-    --terminal-green: 95 38% 62%;
-    --terminal-yellow: 45 100% 70%;
+    --terminal-cyan: 179 100% 47%;
+    --terminal-purple: 271 91% 65%;
+    --terminal-orange: 31 100% 71%;
+    --terminal-blue: 217 91% 60%;
+    --terminal-green: 142 76% 36%;
+    --terminal-yellow: 48 96% 53%;
     
-    --destructive: 0 73% 60%;
-    --destructive-foreground: 213 20% 87%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 90%;
 
-    --border: 217 10% 20%;
-    --input: 217 10% 15%;
-    --ring: 168 76% 58%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 179 100% 47%;
 
     --radius: 0.25rem;
     
@@ -71,33 +71,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 217 19% 7%;
-    --foreground: 213 20% 87%;
+    --background: 0 0% 5%;
+    --foreground: 0 0% 90%;
 
-    --card: 217 19% 9%;
-    --card-foreground: 213 20% 87%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 90%;
 
-    --popover: 217 19% 9%;
-    --popover-foreground: 213 20% 87%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 90%;
 
-    --primary: 168 76% 58%;
-    --primary-foreground: 217 19% 7%;
+    --primary: 179 100% 47%;
+    --primary-foreground: 0 0% 5%;
 
-    --secondary: 217 10% 20%;
-    --secondary-foreground: 213 20% 87%;
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 0 0% 5%;
 
-    --muted: 217 10% 15%;
-    --muted-foreground: 213 10% 60%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 29 68% 66%;
-    --accent-foreground: 217 19% 7%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 90%;
 
-    --destructive: 0 73% 60%;
-    --destructive-foreground: 213 20% 87%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 90%;
 
-    --border: 217 10% 20%;
-    --input: 217 10% 15%;
-    --ring: 168 76% 58%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 179 100% 47%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -152,10 +152,21 @@ All colors MUST be HSL.
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
   }
-  
+
   @keyframes typewriter {
     from { width: 0; }
     to { width: 100%; }
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
   
   .typewriter {
