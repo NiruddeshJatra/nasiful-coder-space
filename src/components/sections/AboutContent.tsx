@@ -9,33 +9,39 @@ const AboutContent = () => {
         <span className="terminal-yellow">{"{"}</span>
       </div>
       
-      <div className="pl-6 space-y-1.5">
-        <div className="flex items-center gap-4 mb-3">
-          <img src={profilePhoto} alt="Nasiful Alam" className="w-16 h-16 rounded-full border-2 border-primary" />
-          <div>
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex-1 space-y-1.5">
+          <div className="mb-3">
             <div className="terminal-cyan text-base font-semibold">Nasiful Alam</div>
             <div className="text-muted-foreground text-xs">Software Engineer</div>
           </div>
+          <div>
+            <span className="terminal-blue">name:</span>{" "}
+            <span className="terminal-orange">"Nasiful Alam"</span>,
+          </div>
+          <div>
+            <span className="terminal-blue">role:</span>{" "}
+            <span className="terminal-orange">"Startup Founder & Full-Stack Engineer"</span>,
+          </div>
+          <div>
+            <span className="terminal-blue">location:</span>{" "}
+            <span className="terminal-orange">"Chattogram, Bangladesh"</span>,
+          </div>
+          <div>
+            <span className="terminal-blue">email:</span>{" "}
+            <span className="terminal-orange">"nasifulalam1212@gmail.com"</span>,
+          </div>
+          <div>
+            <span className="terminal-blue">phone:</span>{" "}
+            <span className="terminal-orange">"+8801626-181662"</span>,
+          </div>
         </div>
-        <div>
-          <span className="terminal-blue">name:</span>{" "}
-          <span className="terminal-orange">"Nasiful Alam"</span>,
-        </div>
-        <div>
-          <span className="terminal-blue">role:</span>{" "}
-          <span className="terminal-orange">"Startup Founder & Full-Stack Engineer"</span>,
-        </div>
-        <div>
-          <span className="terminal-blue">location:</span>{" "}
-          <span className="terminal-orange">"Chattogram, Bangladesh"</span>,
-        </div>
-        <div>
-          <span className="terminal-blue">email:</span>{" "}
-          <span className="terminal-orange">"nasifulalam1212@gmail.com"</span>,
-        </div>
-        <div>
-          <span className="terminal-blue">phone:</span>{" "}
-          <span className="terminal-orange">"+8801626-181662"</span>,
+        <div className="md:w-1/4 flex justify-center md:justify-end mr-10">
+          <img 
+            src={profilePhoto} 
+            alt="Nasiful Alam" 
+            className="w-24 h-24 md:w-36 md:h-36 rounded-full border-2 border-primary object-cover" 
+          />
         </div>
       </div>
       

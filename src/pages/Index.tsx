@@ -26,10 +26,10 @@ const Index = () => {
           <a href="mailto:nasifulalam1212@gmail.com" className="hover:text-primary transition" title="Email">
             <Mail size={16} />
           </a>
-          <a href="https://github.com/nasiful" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition" title="GitHub">
+          <a href="https://github.com/niruddeshjatra" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition" title="GitHub">
             <Github size={16} />
           </a>
-          <a href="https://linkedin.com/in/nasiful" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition" title="LinkedIn">
+          <a href="https://linkedin.com/in/nasiful-alam" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition" title="LinkedIn">
             <Linkedin size={16} />
           </a>
         </div>
@@ -52,7 +52,7 @@ const Index = () => {
       </div>
 
       {/* Terminal - Bottom */}
-      <div className="h-64 border-t border-border">
+      <div className="h-56 border-t border-border">
         <Terminal onCommand={handleCommand} currentSection={currentSection} />
       </div>
     </div>

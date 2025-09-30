@@ -5,7 +5,6 @@ const experiences = [
     title: "Software Engineer",
     company: "Intellectify.io",
     period: "Aug 2025 - Present",
-    location: "Remote",
     description: "Mentorship Platform",
     achievements: [
       "Developed platform features with Node.js, React, and JavaScript",
@@ -18,7 +17,6 @@ const experiences = [
     title: "Lead Developer",
     company: "Bhara",
     period: "Jan 2025 - July 2025",
-    location: "Remote",
     description: "Rental Marketplace Platform",
     achievements: [
       "Led end-to-end MVP development in 3 months, setting product vision and technical architecture",
@@ -35,66 +33,43 @@ const experiences = [
 const ExperienceContent = () => {
   return (
     <div className="space-y-6 animate-fade-in font-mono text-sm">
-      <div className="space-y-2">
-        <span className="terminal-purple">interface</span>{" "}
-        <span className="terminal-cyan">Experience</span>{" "}
-        <span className="terminal-yellow">{"{"}</span>
-      </div>
-
-      <div className="pl-6 space-y-2 text-muted-foreground">
-        <div><span className="terminal-blue">title:</span> string;</div>
-        <div><span className="terminal-blue">company:</span> string;</div>
-        <div><span className="terminal-blue">period:</span> string;</div>
-        <div><span className="terminal-blue">achievements:</span> string[];</div>
-      </div>
-
-      <div className="space-y-2">
-        <span className="terminal-yellow">{"}"}</span>
-      </div>
-
-      <div className="mt-6 border-t border-border pt-4">
-        <div className="terminal-green mb-4 text-xs">// Professional Experience</div>
-        
-        {experiences.map((exp, index) => (
-          <div
-            key={index}
-            className="mb-6 p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors"
-          >
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-3">
-              <div className="space-y-1.5">
-                <h3 className="text-base font-semibold terminal-cyan">
-                  {exp.title}
-                </h3>
-                <div className="flex items-center gap-2 text-muted-foreground text-xs">
-                  <Building2 className="w-3 h-3" />
-                  <span className="terminal-orange">{exp.company}</span>
-                  <span className="terminal-purple">({exp.description})</span>
-                </div>
-              </div>
-              <div className="flex flex-col gap-0.5 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="w-3 h-3 terminal-blue" />
-                  <span>{exp.period}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3 h-3 terminal-green" />
-                  <span>{exp.location}</span>
-                </div>
+      <div className="terminal-green mb-4 text-xs">// Professional Experience</div>
+      
+      {experiences.map((exp, index) => (
+        <div
+          key={index}
+          className="mb-6 p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors"
+        >
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-3">
+            <div className="space-y-1.5">
+              <h3 className="text-base font-semibold terminal-cyan">
+                {exp.title}
+              </h3>
+              <div className="flex items-center gap-2 text-muted-foreground text-xs">
+                <Building2 className="w-3 h-3" />
+                <span className="terminal-orange">{exp.company}</span>
+                <span className="terminal-purple">({exp.description})</span>
               </div>
             </div>
-
-            <div className="space-y-1.5 mt-3">
-              <div className="terminal-green text-xs">// Key Achievements:</div>
-              {exp.achievements.map((achievement, idx) => (
-                <div key={idx} className="flex items-start gap-2">
-                  <span className="terminal-cyan mt-0.5 text-xs">▹</span>
-                  <p className="text-foreground text-xs leading-relaxed">{achievement}</p>
-                </div>
-              ))}
+            <div className="flex flex-col gap-0.5 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Calendar className="w-3 h-3 terminal-blue" />
+                <span>{exp.period}</span>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
+
+          <div className="space-y-1.5 mt-3">
+            <div className="terminal-green text-xs">// Key Achievements:</div>
+            {exp.achievements.map((achievement, idx) => (
+              <div key={idx} className="flex items-start gap-2">
+                <span className="terminal-cyan mt-0.5 text-xs">▹</span>
+                <p className="text-foreground text-xs leading-relaxed">{achievement}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
