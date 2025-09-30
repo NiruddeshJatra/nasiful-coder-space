@@ -15,6 +15,7 @@ const COMMANDS = [
   "cat projects.txt",
   "cat skills.json",
   "cat education.txt",
+  "cat blog.md",
   "contact",
   "clear",
   "github",
@@ -60,7 +61,7 @@ const Terminal = ({ onCommand, currentSection }: TerminalProps) => {
         "Available commands:",
         "  whoami           - Display information about me",
         "  ls               - List all sections",
-        "  cat <file>       - Display content (about.txt, experience.txt, projects.txt, skills.json, education.txt)",
+        "  cat <file>       - Display content (about.txt, experience.txt, projects.txt, skills.json, education.txt, blog.md)",
         "  contact          - Show contact information",
         "  github           - Open GitHub profile",
         "  linkedin         - Open LinkedIn profile",
@@ -82,6 +83,7 @@ const Terminal = ({ onCommand, currentSection }: TerminalProps) => {
         "projects.txt",
         "skills.json",
         "education.txt",
+        "blog.md",
         "contact.md",
         ""
       );
@@ -112,6 +114,9 @@ const Terminal = ({ onCommand, currentSection }: TerminalProps) => {
       } else if (file === "education.txt") {
         onCommand("education");
         newHistory.push("Loading education.txt...", "");
+      } else if (file === "blog.md") {
+        onCommand("blog");
+        newHistory.push("Loading blog.md...", "");
       } else {
         newHistory.push(`cat: ${file}: No such file or directory`, "");
       }

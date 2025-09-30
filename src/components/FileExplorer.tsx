@@ -11,6 +11,7 @@ const files = [
   { name: "projects.txt", section: "projects", icon: File },
   { name: "skills.json", section: "skills", icon: File },
   { name: "education.txt", section: "education", icon: File },
+  { name: "blog.md", section: "blog", icon: File },
   { name: "contact.md", section: "contact", icon: File },
 ];
 

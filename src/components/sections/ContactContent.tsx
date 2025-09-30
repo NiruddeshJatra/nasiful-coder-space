@@ -64,7 +64,7 @@ const ContactContent = () => {
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in font-mono">
+    <div className="space-y-6 animate-fade-in font-mono text-sm">
       <div className="space-y-2">
         <span className="terminal-purple">function</span>{" "}
         <span className="terminal-cyan">sendMessage</span>
@@ -87,25 +87,25 @@ const ContactContent = () => {
         <span className="terminal-yellow">)</span> {"{"}
       </div>
 
-      <div className="mt-8 border-t border-border pt-6">
-        <div className="terminal-green mb-6">// Let's Connect!</div>
+      <div className="mt-6 border-t border-border pt-4">
+        <div className="terminal-green mb-4 text-xs">// Let's Connect!</div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Contact Info */}
-          <div className="space-y-4">
-            <div className="terminal-purple mb-4">// Contact Information</div>
+          <div className="space-y-3">
+            <div className="terminal-purple mb-3 text-xs">// Contact Information</div>
             {contactInfo.map((info, index) => {
               const Icon = info.icon;
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors group"
+                  className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors group"
                 >
-                  <div className="p-2 bg-muted rounded-lg">
-                    <Icon className={`w-5 h-5 ${info.color}`} />
+                  <div className="p-1.5 bg-muted rounded-lg">
+                    <Icon className={`w-4 h-4 ${info.color}`} />
                   </div>
                   <div className="flex-1">
-                    <div className="text-xs text-muted-foreground mb-1">
+                    <div className="text-[10px] text-muted-foreground mb-0.5">
                       {info.label}
                     </div>
                     {info.link ? (
@@ -113,12 +113,12 @@ const ContactContent = () => {
                         href={info.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-foreground hover:text-primary transition-colors"
+                        className="text-foreground hover:text-primary transition-colors text-xs"
                       >
                         {info.value}
                       </a>
                     ) : (
-                      <div className="text-foreground">{info.value}</div>
+                      <div className="text-foreground text-xs">{info.value}</div>
                     )}
                   </div>
                 </div>
@@ -127,11 +127,11 @@ const ContactContent = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="space-y-4">
-            <div className="terminal-purple mb-4">// Send a Message</div>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-3">
+            <div className="terminal-purple mb-3 text-xs">// Send a Message</div>
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <label className="text-sm terminal-blue block mb-2">
+                <label className="text-xs terminal-blue block mb-1.5">
                   name:
                 </label>
                 <Input
@@ -142,12 +142,12 @@ const ContactContent = () => {
                   }
                   placeholder="Your name"
                   required
-                  className="bg-muted border-border"
+                  className="bg-muted border-border text-xs h-8"
                 />
               </div>
 
               <div>
-                <label className="text-sm terminal-blue block mb-2">
+                <label className="text-xs terminal-blue block mb-1.5">
                   email:
                 </label>
                 <Input
@@ -158,12 +158,12 @@ const ContactContent = () => {
                   }
                   placeholder="your.email@example.com"
                   required
-                  className="bg-muted border-border"
+                  className="bg-muted border-border text-xs h-8"
                 />
               </div>
 
               <div>
-                <label className="text-sm terminal-blue block mb-2">
+                <label className="text-xs terminal-blue block mb-1.5">
                   message:
                 </label>
                 <Textarea
@@ -173,16 +173,16 @@ const ContactContent = () => {
                   }
                   placeholder="Your message here..."
                   required
-                  rows={5}
-                  className="bg-muted border-border resize-none"
+                  rows={4}
+                  className="bg-muted border-border resize-none text-xs"
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full gap-2"
+                className="w-full gap-2 h-8 text-xs"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-3 h-3" />
                 Send Message
               </Button>
             </form>
@@ -194,9 +194,9 @@ const ContactContent = () => {
         <span className="terminal-yellow">{"}"}</span>
       </div>
 
-      <div className="mt-4 p-4 bg-muted/30 border border-border rounded-lg">
-        <div className="terminal-green mb-2">// Quick Response</div>
-        <p className="text-muted-foreground text-sm">
+      <div className="mt-4 p-3 bg-muted/30 border border-border rounded-lg">
+        <div className="terminal-green mb-1.5 text-xs">// Quick Response</div>
+        <p className="text-muted-foreground text-xs leading-relaxed">
           I typically respond within 24-48 hours. For urgent matters, feel free 
           to reach out directly via email or phone.
         </p>

@@ -4,6 +4,7 @@ import ExperienceContent from "./sections/ExperienceContent";
 import ProjectsContent from "./sections/ProjectsContent";
 import SkillsContent from "./sections/SkillsContent";
 import EducationContent from "./sections/EducationContent";
+import BlogContent from "./sections/BlogContent";
 import ContactContent from "./sections/ContactContent";
 
 interface EditorProps {
@@ -35,6 +36,8 @@ const getFileName = (section: string) => {
       return "skills.json";
     case "education":
       return "education.txt";
+    case "blog":
+      return "blog.md";
     case "contact":
       return "contact.md";
     default:
@@ -55,22 +58,24 @@ const Editor = ({ currentSection }: EditorProps) => {
         return <SkillsContent />;
       case "education":
         return <EducationContent />;
+      case "blog":
+        return <BlogContent />;
       case "contact":
         return <ContactContent />;
       default:
         return (
           <div className="space-y-4 animate-fade-in">
-            <div className="text-6xl font-bold terminal-cyan mb-4">
+            <div className="text-4xl font-bold terminal-cyan mb-3">
               NASIFUL ALAM
             </div>
-            <div className="text-2xl terminal-green mb-8">
+            <div className="text-lg terminal-green mb-6">
               $ <span className="typewriter inline-block">Startup Founder & Full-Stack Engineer</span>
             </div>
-            <div className="space-y-2 text-muted-foreground">
-              <p className="text-lg">Building scalable systems on AWS</p>
+            <div className="space-y-1.5 text-muted-foreground text-sm">
+              <p>Building scalable systems on AWS</p>
               <p>📍 Chattogram, Bangladesh</p>
             </div>
-            <div className="mt-12 space-y-2">
+            <div className="mt-8 space-y-1.5 text-sm">
               <p className="terminal-purple">// Start exploring:</p>
               <p className="text-muted-foreground">Type <span className="terminal-cyan">'help'</span> in the terminal to see available commands</p>
               <p className="text-muted-foreground">Or try <span className="terminal-cyan">'cat about.txt'</span> to learn more about me</p>
@@ -101,7 +106,7 @@ const Editor = ({ currentSection }: EditorProps) => {
               </div>
             ))}
           </div>
-          <div className="flex-1 p-8 animate-fade-in">
+          <div className="flex-1 p-6 animate-fade-in">
             {renderContent()}
           </div>
         </div>

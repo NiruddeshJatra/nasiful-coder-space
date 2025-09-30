@@ -2,7 +2,7 @@ import { GraduationCap, Calendar, MapPin } from "lucide-react";
 
 const EducationContent = () => {
   return (
-    <div className="space-y-8 animate-fade-in font-mono">
+    <div className="space-y-6 animate-fade-in font-mono text-sm">
       <div className="space-y-2">
         <span className="terminal-green">/**</span>
       </div>
@@ -15,56 +15,56 @@ const EducationContent = () => {
         <span className="terminal-green">*/</span>
       </div>
 
-      <div className="mt-8 border-t border-border pt-6">
-        <div className="p-6 bg-card border border-border rounded-lg hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-primary/10 rounded-lg">
-              <GraduationCap className="w-8 h-8 terminal-cyan" />
+      <div className="mt-6 border-t border-border pt-4">
+        <div className="p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10">
+          <div className="flex items-start gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <GraduationCap className="w-5 h-5 terminal-cyan" />
             </div>
             
-            <div className="flex-1 space-y-4">
+            <div className="flex-1 space-y-3">
               <div>
-                <h3 className="text-2xl font-semibold terminal-cyan mb-2">
+                <h3 className="text-base font-semibold terminal-cyan mb-1">
                   BSc in Computer Science
                 </h3>
-                <p className="terminal-purple text-lg">
+                <p className="terminal-purple text-xs">
                   Chittagong University of Engineering & Technology (CUET)
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 terminal-blue" />
+              <div className="flex flex-col sm:flex-row gap-2 text-muted-foreground text-xs">
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3 h-3 terminal-blue" />
                   <span>Feb 2017 - May 2022</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 terminal-green" />
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="w-3 h-3 terminal-green" />
                   <span>Chattogram, Bangladesh</span>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-border">
-                <div className="terminal-green text-sm mb-3">// Academic Focus:</div>
-                <div className="space-y-2">
+              <div className="pt-3 border-t border-border">
+                <div className="terminal-green text-xs mb-2">// Academic Focus:</div>
+                <div className="space-y-1.5">
                   <div className="flex items-start gap-2">
-                    <span className="terminal-cyan mt-1.5">▹</span>
-                    <p className="text-foreground">Core Computer Science fundamentals</p>
+                    <span className="terminal-cyan mt-0.5 text-xs">▹</span>
+                    <p className="text-foreground text-xs">Core Computer Science fundamentals</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="terminal-cyan mt-1.5">▹</span>
-                    <p className="text-foreground">Software Engineering principles</p>
+                    <span className="terminal-cyan mt-0.5 text-xs">▹</span>
+                    <p className="text-foreground text-xs">Software Engineering principles</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="terminal-cyan mt-1.5">▹</span>
-                    <p className="text-foreground">Data Structures & Algorithms</p>
+                    <span className="terminal-cyan mt-0.5 text-xs">▹</span>
+                    <p className="text-foreground text-xs">Data Structures & Algorithms</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="terminal-cyan mt-1.5">▹</span>
-                    <p className="text-foreground">Database Management Systems</p>
+                    <span className="terminal-cyan mt-0.5 text-xs">▹</span>
+                    <p className="text-foreground text-xs">Database Management Systems</p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="terminal-cyan mt-1.5">▹</span>
-                    <p className="text-foreground">Web Technologies & Development</p>
+                    <span className="terminal-cyan mt-0.5 text-xs">▹</span>
+                    <p className="text-foreground text-xs">Web Technologies & Development</p>
                   </div>
                 </div>
               </div>
@@ -73,9 +73,9 @@ const EducationContent = () => {
         </div>
       </div>
 
-      <div className="mt-8 p-6 bg-muted/30 border border-border rounded-lg">
-        <div className="terminal-purple mb-3">// Additional Training & Certifications</div>
-        <p className="text-muted-foreground">
+      <div className="mt-6 p-4 bg-muted/30 border border-border rounded-lg">
+        <div className="terminal-purple mb-2 text-xs">// Additional Training & Certifications</div>
+        <p className="text-muted-foreground text-xs leading-relaxed">
           Continuously learning through hands-on projects, open-source contributions, 
           and staying updated with the latest technologies in cloud computing, 
           microservices architecture, and full-stack development.

@@ -29,7 +29,7 @@ const projects = [
 
 const ProjectsContent = () => {
   return (
-    <div className="space-y-8 animate-fade-in font-mono">
+    <div className="space-y-6 animate-fade-in font-mono text-sm">
       <div className="space-y-2">
         <span className="terminal-purple">class</span>{" "}
         <span className="terminal-cyan">Project</span>{" "}
@@ -63,23 +63,23 @@ const ProjectsContent = () => {
         <span className="terminal-yellow">{"}"}</span>
       </div>
 
-      <div className="mt-8 border-t border-border pt-6">
-        <div className="terminal-green mb-6">// Featured Projects</div>
+      <div className="mt-6 border-t border-border pt-4">
+        <div className="terminal-green mb-4 text-xs">// Featured Projects</div>
 
         {projects.map((project, index) => (
           <div
             key={index}
-            className="mb-8 p-6 bg-card border border-border rounded-lg hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10"
+            className="mb-6 p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10"
           >
-            <div className="flex items-start justify-between mb-4">
-              <div className="space-y-2 flex-1">
-                <div className="flex items-center gap-3">
-                  <Code2 className="w-5 h-5 terminal-cyan" />
-                  <h3 className="text-2xl font-semibold terminal-cyan">
+            <div className="flex items-start justify-between mb-3">
+              <div className="space-y-1.5 flex-1">
+                <div className="flex items-center gap-2">
+                  <Code2 className="w-4 h-4 terminal-cyan" />
+                  <h3 className="text-base font-semibold terminal-cyan">
                     {project.title}
                   </h3>
                 </div>
-                <p className="text-muted-foreground terminal-purple">
+                <p className="text-muted-foreground terminal-purple text-xs">
                   // {project.description}
                 </p>
               </div>
@@ -88,42 +88,42 @@ const ProjectsContent = () => {
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 hover:bg-primary/10 rounded-lg transition-colors group"
+                  className="p-1.5 hover:bg-primary/10 rounded-lg transition-colors group"
                 >
-                  <ExternalLink className="w-5 h-5 terminal-blue group-hover:terminal-cyan" />
+                  <ExternalLink className="w-4 h-4 terminal-blue group-hover:terminal-cyan" />
                 </a>
                 <a
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 hover:bg-primary/10 rounded-lg transition-colors group"
+                  className="p-1.5 hover:bg-primary/10 rounded-lg transition-colors group"
                 >
-                  <Github className="w-5 h-5 terminal-blue group-hover:terminal-cyan" />
+                  <Github className="w-4 h-4 terminal-blue group-hover:terminal-cyan" />
                 </a>
               </div>
             </div>
 
-            <div className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <div className="terminal-green text-sm flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4" />
+            <div className="space-y-3 mt-3">
+              <div className="space-y-1.5">
+                <div className="terminal-green text-xs flex items-center gap-1.5">
+                  <TrendingUp className="w-3 h-3" />
                   Key Achievements:
                 </div>
                 {project.achievements.map((achievement, idx) => (
                   <div key={idx} className="flex items-start gap-2">
-                    <span className="terminal-cyan mt-1.5">▹</span>
-                    <p className="text-foreground">{achievement}</p>
+                    <span className="terminal-cyan mt-0.5 text-xs">▹</span>
+                    <p className="text-foreground text-xs leading-relaxed">{achievement}</p>
                   </div>
                 ))}
               </div>
 
-              <div className="pt-4 border-t border-border">
-                <div className="terminal-purple text-sm mb-2">// Technologies:</div>
-                <div className="flex flex-wrap gap-2">
+              <div className="pt-3 border-t border-border">
+                <div className="terminal-purple text-xs mb-2">// Technologies:</div>
+                <div className="flex flex-wrap gap-1.5">
                   {project.technologies.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm border border-primary/20"
+                      className="px-2.5 py-0.5 bg-primary/10 text-primary rounded-full text-xs border border-primary/20"
                     >
                       {tech}
                     </span>
