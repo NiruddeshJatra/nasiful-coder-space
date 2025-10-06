@@ -17,8 +17,8 @@ const files = [
 
 const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) => {
   return (
-    <div className="h-full flex flex-col bg-[#0a0a0a] border-r border-border">
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/30">
+    <div className="h-full flex flex-col bg-black/80 backdrop-blur-sm border-r border-border">
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-black/50">
         <Folder className="w-4 h-4 terminal-blue" />
         <span className="text-xs font-semibold uppercase tracking-wide">Explorer</span>
       </div>
