@@ -1,11 +1,20 @@
+import React, { useRef, useState } from "react";
 import { Folder, File, ChevronRight } from "lucide-react";
+import { useListKeyboardNavigation } from '../hooks/useKeyboardNavigation';
+import { MIN_TOUCH_TARGET_SIZE } from '../utils/accessibility';
+
+export interface FileItem {
+  name: string;
+  section: string;
+  icon: typeof File;
+}
 
 interface FileExplorerProps {
   currentSection: string;
   onSectionChange: (section: string) => void;
 }
 
-const files = [
+export const files: FileItem[] = [
   { name: "about.txt", section: "about", icon: File },
   { name: "experience.txt", section: "experience", icon: File },
   { name: "projects.txt", section: "projects", icon: File },
@@ -16,57 +25,117 @@ const files = [
 ];
 
 const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) => {
+  const explorerRef = useRef<HTMLElement>(null);
+  const [focusedItemIndex, setFocusedItemIndex] = useState(-1);
+
+  // Get file buttons for keyboard navigation
+  const getFileButtons = () => {
+    if (!explorerRef.current) return [];
+    return Array.from(
+      explorerRef.current.querySelectorAll('[data-file-button]')
+    ) as HTMLElement[];
+  };
+
+  // Keyboard navigation for file list
+  useListKeyboardNavigation(
+    getFileButtons(),
+    focusedItemIndex,
+    setFocusedItemIndex,
+    (index) => {
+      const file = files[index];
+      if (file) {
+        onSectionChange(file.section);
+      }
+    },
+    true
+  );
+
   return (
-    <div className="h-full flex flex-col bg-black/80 backdrop-blur-sm border-r border-border">
+    <nav 
+      ref={explorerRef}
+      className="h-full flex flex-col bg-black/80 backdrop-blur-sm border-r border-border"
+      aria-label="Portfolio sections"
+      role="navigation"
+    >
       <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-black/50">
-        <Folder className="w-4 h-4 terminal-blue" />
-        <span className="text-xs font-semibold uppercase tracking-wide">Explorer</span>
+        <Folder className="w-4 h-4 terminal-blue" aria-hidden="true" />
+        <h2 className="text-xs font-semibold uppercase tracking-wide">Explorer</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto p-2">
         <div className="mb-2">
-          <div className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-muted-foreground mb-1">
-            <ChevronRight className="w-3 h-3" />
-            <Folder className="w-3 h-3 terminal-blue" />
+          <div 
+            className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-muted-foreground mb-1"
+            role="presentation"
+          >
+            <ChevronRight className="w-3 h-3" aria-hidden="true" />
+            <Folder className="w-3 h-3 terminal-blue" aria-hidden="true" />
             <span>PORTFOLIO</span>
           </div>
-          
-          <div className="pl-4 space-y-0.5">
-            {files.map((file) => {
+
+          <ul className="pl-4 space-y-0.5" role="menu">
+            {files.map((file, index) => {
               const Icon = file.icon;
               const isActive = currentSection === file.section;
-              
+              const isFocused = focusedItemIndex === index;
+
               return (
-                <div
-                  key={file.section}
-                  onClick={() => onSectionChange(file.section)}
-                  className={`
-                    flex items-center gap-2 px-2 py-1 text-xs cursor-pointer rounded
-                    transition-all duration-200 group
-                    ${isActive 
-                      ? 'bg-muted text-primary font-medium' 
-                      : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
-                    }
-                  `}
-                >
-                  <Icon className={`w-3 h-3 transition-transform group-hover:scale-110 ${
-                    isActive ? 'terminal-cyan' : ''
-                  }`} />
-                  <span>{file.name}</span>
-                </div>
+                <li key={file.section} role="none">
+                  <button
+                    data-file-button
+                    onClick={() => onSectionChange(file.section)}
+                    className={`
+                      w-full flex items-center gap-2 px-2 py-2 text-xs text-left rounded
+                      transition-all duration-200 group focus-visible:focus-visible
+                      min-h-[${MIN_TOUCH_TARGET_SIZE}px]
+                      ${isActive
+                        ? 'bg-muted text-primary font-medium'
+                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      }
+                      ${isFocused ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : ''}
+                    `}
+                    aria-current={isActive ? 'page' : undefined}
+                    aria-describedby={isActive ? `current-section-${file.section}` : undefined}
+                    role="menuitem"
+                    type="button"
+                  >
+                    <Icon 
+                      className={`w-3 h-3 transition-transform group-hover:scale-110 ${
+                        isActive ? 'terminal-cyan' : ''
+                      }`} 
+                      aria-hidden="true"
+                    />
+                    <span>{file.name}</span>
+                    {isActive && (
+                      <span 
+                        id={`current-section-${file.section}`}
+                        className="sr-only"
+                      >
+                        (current section)
+                      </span>
+                    )}
+                  </button>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </div>
       </div>
 
-      <div className="px-3 py-2 border-t border-border bg-muted/20 text-[10px] text-muted-foreground">
+      <div 
+        className="px-3 py-2 border-t border-border bg-muted/20 text-[10px] text-muted-foreground"
+        role="status"
+        aria-live="polite"
+      >
         <div className="flex items-center gap-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+          <div 
+            className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" 
+            aria-hidden="true"
+          />
           <span>Ready</span>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

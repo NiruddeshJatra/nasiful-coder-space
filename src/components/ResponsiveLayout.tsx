@@ -1,0 +1,277 @@
+import React, { useState, useCallback, useEffect } from 'react';
+import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
+import { useGlobalKeyboardShortcuts } from '../hooks/useKeyboardNavigation';
+import { getLayoutClasses, Z_INDEX } from '../utils/responsive';
+import { getLayoutChangeAria, announceToScreenReader } from '../utils/accessibility';
+import FileExplorer, { files } from './FileExplorer';
+import Editor from './Editor';
+import ResponsiveHeader from './ResponsiveHeader';
+import MobileNavigation from './MobileNavigation';
+import KeyboardShortcutsHelp from './KeyboardShortcutsHelp';
+import { LazyTerminal, LazyResponsiveTerminal, ConditionalLazy } from './LazyComponents';
+import { MemoryManager } from '@/utils/memoryOptimization';
+import { LayoutMode } from '../hooks/useViewport';
+
+interface Theme {
+  name: string;
+  bg: string;
+  accent: string;
+}
+
+interface ResponsiveLayoutProps {
+  currentSection: string;
+  onSectionChange: (section: string) => void;
+  theme: Theme;
+  onThemeChange: (theme: Theme) => void;
+}
+
+const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
+  currentSection,
+  onSectionChange,
+  theme,
+  onThemeChange
+}) => {
+  const { viewport, navigationState, actions } = useResponsiveLayout();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Memory optimization - register cleanup tasks
+  useEffect(() => {
+    const cleanup = () => {
+      // Clear any component-specific state or caches
+      setIsTransitioning(false);
+    };
+
+    MemoryManager.addCleanupTask(cleanup);
+
+    return () => {
+      MemoryManager.removeCleanupTask(cleanup);
+    };
+  }, []);
+
+  // Handle section changes with smooth transitions
+  const handleSectionChange = useCallback((section: string) => {
+    setIsTransitioning(true);
+    
+    // Close mobile navigation when section changes
+    if (navigationState.isMobileMenuOpen) {
+      actions.closeMobileMenu();
+    }
+    
+    // Announce section change to screen readers
+    const fileName = files.find(f => f.section === section)?.name || section;
+    announceToScreenReader(`Loading ${fileName}`, 'polite');
+    
+    // Use optimal animation duration based on device performance
+    const duration = viewport.isMobile ? 150 : 200;
+    
+    setTimeout(() => {
+      onSectionChange(section);
+      setIsTransitioning(false);
+      announceToScreenReader(`${fileName} loaded`, 'polite');
+    }, duration);
+  }, [onSectionChange, navigationState.isMobileMenuOpen, actions, viewport.isMobile]);
+
+  // Handle terminal commands
+  const handleCommand = useCallback((command: string) => {
+    handleSectionChange(command);
+  }, [handleSectionChange]);
+
+  // Handle orientation changes and layout adaptation
+  useEffect(() => {
+    // Preserve current state during layout changes
+    const preserveState = () => {
+      // Auto-close mobile menu when switching to desktop
+      if (viewport.isDesktop && navigationState.isMobileMenuOpen) {
+        actions.closeMobileMenu();
+      }
+      
+      // Adjust terminal state based on layout mode
+      if (viewport.isMobile && navigationState.currentLayout === LayoutMode.SINGLE_PANEL) {
+        // On mobile, terminal should be collapsible
+        if (navigationState.isTerminalExpanded) {
+          // Keep terminal expanded if it was already expanded
+        }
+      }
+      
+      // Announce layout changes to screen readers
+      const layoutModeNames = {
+        [LayoutMode.SINGLE_PANEL]: 'mobile',
+        [LayoutMode.DUAL_PANEL]: 'tablet',
+        [LayoutMode.THREE_PANEL]: 'desktop'
+      };
+      
+      const layoutName = layoutModeNames[navigationState.currentLayout] || 'unknown';
+      announceToScreenReader(`Layout changed to ${layoutName} mode`, 'polite');
+    };
+
+    preserveState();
+  }, [viewport.layoutMode, viewport.isDesktop, viewport.isMobile, navigationState, actions]);
+
+  // Get layout classes based on current layout mode
+  const layoutClasses = getLayoutClasses(navigationState.currentLayout);
+
+  // Get layout mode name for accessibility
+  const layoutModeNames = {
+    [LayoutMode.SINGLE_PANEL]: 'mobile',
+    [LayoutMode.DUAL_PANEL]: 'tablet',
+    [LayoutMode.THREE_PANEL]: 'desktop'
+  };
+  
+  const currentLayoutName = layoutModeNames[navigationState.currentLayout] || 'unknown';
+  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
+
+  // Global keyboard shortcuts
+  useGlobalKeyboardShortcuts({
+    'escape': () => {
+      if (showKeyboardHelp) {
+        setShowKeyboardHelp(false);
+      } else if (navigationState.isMobileMenuOpen) {
+        actions.closeMobileMenu();
+        announceToScreenReader('Navigation menu closed', 'polite');
+      } else if (navigationState.isTerminalExpanded && viewport.isMobile) {
+        actions.setTerminalExpanded(false);
+        announceToScreenReader('Terminal collapsed', 'polite');
+      }
+    },
+    'ctrl+?': () => {
+      setShowKeyboardHelp(!showKeyboardHelp);
+      announceToScreenReader(
+        showKeyboardHelp ? 'Keyboard shortcuts help closed' : 'Keyboard shortcuts help opened',
+        'polite'
+      );
+    },
+    'ctrl+m': () => {
+      if (viewport.isMobile) {
+        actions.toggleMobileMenu();
+        const message = navigationState.isMobileMenuOpen 
+          ? 'Navigation menu closed' 
+          : 'Navigation menu opened';
+        announceToScreenReader(message, 'polite');
+      }
+    },
+    'ctrl+t': () => {
+      if (viewport.isMobile) {
+        actions.toggleTerminal();
+        const message = navigationState.isTerminalExpanded 
+          ? 'Terminal expanded' 
+          : 'Terminal collapsed';
+        announceToScreenReader(message, 'polite');
+      }
+    },
+    'ctrl+1': () => handleSectionChange('about'),
+    'ctrl+2': () => handleSectionChange('experience'),
+    'ctrl+3': () => handleSectionChange('projects'),
+    'ctrl+4': () => handleSectionChange('skills'),
+    'ctrl+5': () => handleSectionChange('education'),
+    'ctrl+6': () => handleSectionChange('blog'),
+    'ctrl+7': () => handleSectionChange('contact'),
+  });
+
+  return (
+    <div 
+      className={`${layoutClasses} overflow-hidden transition-colors duration-300`}
+      style={{ backgroundColor: theme.bg }}
+      {...getLayoutChangeAria(currentLayoutName, isTransitioning)}
+    >
+      {/* Responsive Header */}
+      <ResponsiveHeader
+        onMenuToggle={actions.toggleMobileMenu}
+        currentSection={currentSection}
+        theme={theme}
+        onThemeChange={onThemeChange}
+      />
+
+      {/* Mobile Navigation */}
+      <MobileNavigation
+        isOpen={navigationState.isMobileMenuOpen}
+        onClose={actions.closeMobileMenu}
+        currentSection={currentSection}
+        onSectionChange={handleSectionChange}
+        files={files}
+      />
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex overflow-hidden relative" style={{ zIndex: Z_INDEX.content }}>
+        {/* File Explorer - Desktop/Tablet Layout */}
+        {navigationState.currentLayout !== LayoutMode.SINGLE_PANEL && (
+          <div className="w-48 shrink-0">
+            <FileExplorer 
+              currentSection={currentSection} 
+              onSectionChange={handleSectionChange} 
+            />
+          </div>
+        )}
+
+        {/* Editor - Main Content */}
+        <main 
+          id="main-content"
+          className="flex-1 relative"
+          style={{
+            willChange: isTransitioning ? 'transform, opacity' : 'auto'
+          }}
+          role="main"
+          aria-label="Portfolio content"
+        >
+          <div
+            className={`
+              absolute inset-0 transition-all duration-200 ease-out
+              ${isTransitioning ? 'opacity-0' : 'opacity-100'}
+            `}
+            style={{
+              transform: isTransitioning 
+                ? 'translate3d(0, 8px, 0) scale(0.98)' 
+                : 'translate3d(0, 0, 0) scale(1)',
+              filter: isTransitioning ? 'blur(2px)' : 'blur(0px)'
+            }}
+            aria-busy={isTransitioning}
+            aria-live="polite"
+          >
+            <Editor currentSection={currentSection} />
+          </div>
+        </main>
+      </div>
+
+      {/* Terminal - Responsive Layout with Lazy Loading */}
+      {viewport.isMobile ? (
+        <ConditionalLazy 
+          fallback={
+            <div className="h-56 border-t border-border flex items-center justify-center">
+              <span className="text-green-400 font-mono text-sm">Loading terminal...</span>
+            </div>
+          }
+        >
+          <LazyResponsiveTerminal
+            onCommand={handleCommand}
+            currentSection={currentSection}
+            onThemeChange={onThemeChange}
+            isMobile={viewport.isMobile}
+            isTablet={viewport.isTablet}
+            isExpanded={navigationState.isTerminalExpanded}
+            onToggleExpanded={actions.toggleTerminal}
+          />
+        </ConditionalLazy>
+      ) : (
+        <div className="h-56 border-t border-border relative" style={{ zIndex: Z_INDEX.terminal }}>
+          <ConditionalLazy 
+            fallback={
+              <div className="h-full flex items-center justify-center">
+                <span className="text-green-400 font-mono">Loading terminal...</span>
+              </div>
+            }
+          >
+            <LazyTerminal 
+              onCommand={handleCommand} 
+              currentSection={currentSection}
+              onThemeChange={onThemeChange}
+            />
+          </ConditionalLazy>
+        </div>
+      )}
+
+      {/* Keyboard Shortcuts Help */}
+      <KeyboardShortcutsHelp />
+    </div>
+  );
+};
+
+export default ResponsiveLayout;
