@@ -177,8 +177,6 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
       <ResponsiveHeader
         onMenuToggle={actions.toggleMobileMenu}
         currentSection={currentSection}
-        theme={theme}
-        onThemeChange={onThemeChange}
       />
 
       {/* Mobile Navigation */}

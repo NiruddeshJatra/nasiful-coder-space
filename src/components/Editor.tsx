@@ -7,6 +7,7 @@ import SkillsContent from "./sections/SkillsContent";
 import EducationContent from "./sections/EducationContent";
 import BlogContent from "./sections/BlogContent";
 import ContactContent from "./sections/ContactContent";
+import MatrixBackground from "./MatrixBackground";
 import { useViewport } from "../hooks/useViewport";
 import { getResponsiveFontSize, getResponsivePadding } from "../utils/responsive";
 import "./Editor.css";
@@ -51,7 +52,7 @@ const ResponsiveTextContainer = ({ children, className = "" }: { children: React
   const { isMobile } = useViewport();
   
   return (
-    <div className={`${isMobile ? 'text-sm leading-relaxed' : 'text-base leading-normal'} ${className}`}>
+    <div className={`${isMobile ? 'text-xs leading-relaxed' : 'text-sm leading-normal'} ${className}`}>
       {children}
     </div>
   );
@@ -149,15 +150,15 @@ const Editor = ({ currentSection }: EditorProps) => {
     }
   };
   
-  // Responsive classes based on viewport
+  // Responsive classes based on viewport - Decreased font sizes
   const responsiveClasses = {
     fontSize: getResponsiveFontSize(isMobile, isTablet),
     padding: getResponsivePadding(isMobile),
-    textSize: isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base',
-    headingSize: isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl',
-    codeSize: isMobile ? 'text-[10px]' : 'text-xs',
+    textSize: isMobile ? 'text-[11px]' : isTablet ? 'text-xs' : 'text-sm',
+    headingSize: isMobile ? 'text-lg' : isTablet ? 'text-xl' : 'text-2xl',
+    codeSize: isMobile ? 'text-[9px]' : 'text-[10px]',
     gridCols: isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    spacing: isMobile ? 'space-y-4' : 'space-y-6'
+    spacing: isMobile ? 'space-y-3' : 'space-y-4'
   };
   const renderContent = () => {
     switch (currentSection) {
@@ -319,9 +320,9 @@ const Editor = ({ currentSection }: EditorProps) => {
   return (
     <div className="h-full flex flex-col bg-transparent">
       {/* Header - Responsive */}
-      <div className={`flex items-center gap-2 ${isMobile ? 'px-3 py-2' : 'px-4 py-2'} border-b border-border bg-black/80 backdrop-blur-sm`}>
+      <div className={`flex items-center gap-2 ${isMobile ? 'px-2 py-1.5' : 'px-3 py-1.5'} border-b border-border bg-black/80 backdrop-blur-sm`}>
         {getFileIcon(currentSection)}
-        <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium truncate flex-1`}>{getFileName(currentSection)}</span>
+        <span className={`${isMobile ? 'text-[11px]' : 'text-xs'} font-medium truncate flex-1`}>{getFileName(currentSection)}</span>
         {!isMobile && (
           <div className="ml-auto flex items-center gap-2 text-[10px] text-muted-foreground">
             <span>UTF-8</span>
@@ -332,14 +333,19 @@ const Editor = ({ currentSection }: EditorProps) => {
       </div>
 
       {/* Content Area - Responsive with Smooth Scrolling */}
-      <SmoothScrollContainer className="flex-1" ref={scrollContainerRef}>
-        <div className="flex min-h-full">
+      <SmoothScrollContainer className="flex-1 relative" ref={scrollContainerRef}>
+        {/* Matrix Background - Only in Editor */}
+        <div className="absolute inset-0 overflow-hidden">
+          <MatrixBackground />
+        </div>
+        
+        <div className="flex min-h-full relative z-10">
           {/* Line Numbers - Responsive and Dynamic */}
           {!isMobile && (
             <div className={`
               editor-line-numbers
               ${isMobile ? 'w-8' : 'w-12'} 
-              bg-[#0a0a0a] text-right 
+              bg-[#0a0a0a]/80 text-right 
               ${isMobile ? 'pr-2' : 'pr-3'} 
               py-4 
               ${isMobile ? 'text-[10px]' : 'text-xs'} 
@@ -348,6 +354,7 @@ const Editor = ({ currentSection }: EditorProps) => {
               border-r border-border/30
               sticky top-0
               transition-all duration-200
+              backdrop-blur-sm
             `}>
               {Array.from({ length: 100 }, (_, i) => (
                 <div 
@@ -373,6 +380,7 @@ const Editor = ({ currentSection }: EditorProps) => {
             animate-fade-in 
             transition-all duration-300 ease-out
             ${isMobile ? 'overflow-x-auto' : ''}
+            bg-black/10 backdrop-blur-sm
           `}>
             <div className="min-w-0 w-full">
               {renderContent()}

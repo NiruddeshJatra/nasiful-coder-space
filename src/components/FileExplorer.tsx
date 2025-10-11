@@ -51,21 +51,21 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
   );
 
   return (
-    <nav 
+    <nav
       ref={explorerRef}
-      className="h-full flex flex-col bg-black/80 backdrop-blur-sm border-r border-border"
+      className="h-full flex flex-col bg-black/90 backdrop-blur-sm border-r border-border"
       aria-label="Portfolio sections"
       role="navigation"
     >
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-black/50">
+      <div className="flex items-center gap-2 px-2 py-1.5 border-b border-border bg-black/50">
         <Folder className="w-4 h-4 terminal-blue" aria-hidden="true" />
         <h2 className="text-xs font-semibold uppercase tracking-wide">Explorer</h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-2">
+      <div className="flex-1 overflow-y-auto p-1">
         <div className="mb-2">
-          <div 
-            className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-muted-foreground mb-1"
+          <div
+            className="flex items-center gap-1 px-1.5 text-xs font-medium text-muted-foreground mb-1"
             role="presentation"
           >
             <ChevronRight className="w-3 h-3" aria-hidden="true" />
@@ -73,7 +73,7 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
             <span>PORTFOLIO</span>
           </div>
 
-          <ul className="pl-4 space-y-0.5" role="menu">
+          <ul className="pl-2" role="menu">
             {files.map((file, index) => {
               const Icon = file.icon;
               const isActive = currentSection === file.section;
@@ -85,7 +85,7 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
                     data-file-button
                     onClick={() => onSectionChange(file.section)}
                     className={`
-                      w-full flex items-center gap-2 px-2 py-2 text-xs text-left rounded
+                      w-full flex items-center gap-1.5 px-1.5 py-1 text-xs text-left rounded
                       transition-all duration-200 group focus-visible:focus-visible
                       min-h-[${MIN_TOUCH_TARGET_SIZE}px]
                       ${isActive
@@ -99,15 +99,14 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
                     role="menuitem"
                     type="button"
                   >
-                    <Icon 
-                      className={`w-3 h-3 transition-transform group-hover:scale-110 ${
-                        isActive ? 'terminal-cyan' : ''
-                      }`} 
+                    <Icon
+                      className={`w-3 h-3 transition-transform group-hover:scale-110 ${isActive ? 'terminal-cyan' : ''
+                        }`}
                       aria-hidden="true"
                     />
                     <span>{file.name}</span>
                     {isActive && (
-                      <span 
+                      <span
                         id={`current-section-${file.section}`}
                         className="sr-only"
                       >
@@ -122,14 +121,14 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
         </div>
       </div>
 
-      <div 
-        className="px-3 py-2 border-t border-border bg-muted/20 text-[10px] text-muted-foreground"
+      <div
+        className="px-2 py-1.5 border-t border-border bg-muted/20 text-[10px] text-muted-foreground"
         role="status"
         aria-live="polite"
       >
         <div className="flex items-center gap-1">
-          <div 
-            className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" 
+          <div
+            className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"
             aria-hidden="true"
           />
           <span>Ready</span>

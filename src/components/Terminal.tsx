@@ -23,9 +23,6 @@ const COMMANDS = [
   "linkedin",
   "secrets",
   "theme matrix",
-  "theme dracula",
-  "theme monokai",
-  "theme solarized",
 ];
 
 const EASTER_EGGS: { [key: string]: string[] } = {
@@ -163,7 +160,7 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
         "  contact          - Show contact information",
         "  github           - Open GitHub profile",
         "  linkedin         - Open LinkedIn profile",
-        "  theme <n>     - Change theme (matrix, dracula, monokai, solarized)",
+        "  theme matrix     - Change to matrix theme",
         "  secrets          - Show easter eggs 🥚",
         "  clear            - Clear terminal",
         ""
@@ -200,18 +197,13 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
       window.open("https://www.linkedin.com/in/nasiful-alam", "_blank");
     } else if (trimmedCmd.startsWith("theme ")) {
       const themeName = trimmedCmd.substring(6).trim();
-      const themes = {
-        matrix: { name: 'matrix', bg: '#0d0d0d', accent: '#00ff00' },
-        dracula: { name: 'dracula', bg: '#282a36', accent: '#bd93f9' },
-        monokai: { name: 'monokai', bg: '#272822', accent: '#a6e22e' },
-        solarized: { name: 'solarized', bg: '#002b36', accent: '#2aa198' },
-      };
+      const matrixTheme = { name: 'matrix', bg: '#0d0d0d', accent: '#00ff00' };
       
-      if (themes[themeName as keyof typeof themes] && onThemeChange) {
-        onThemeChange(themes[themeName as keyof typeof themes]);
+      if (themeName === 'matrix' && onThemeChange) {
+        onThemeChange(matrixTheme);
         newHistory.push(`✨ Theme changed to ${themeName}`, "");
       } else {
-        newHistory.push(`❌ Unknown theme: ${themeName}`, "Available: matrix, dracula, monokai, solarized", "");
+        newHistory.push(`❌ Unknown theme: ${themeName}`, "Available: matrix", "");
       }
     } else if (trimmedCmd.startsWith("cat ")) {
       const file = trimmedCmd.substring(4).trim();
