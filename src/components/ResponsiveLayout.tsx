@@ -8,6 +8,7 @@ import Editor from './Editor';
 import ResponsiveHeader from './ResponsiveHeader';
 import MobileNavigation from './MobileNavigation';
 import KeyboardShortcutsHelp from './KeyboardShortcutsHelp';
+import StatusBar from './StatusBar';
 import { LazyTerminal, LazyResponsiveTerminal, ConditionalLazy } from './LazyComponents';
 import { MemoryManager } from '@/utils/memoryOptimization';
 import { LayoutMode } from '../hooks/useViewport';
@@ -265,6 +266,9 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
           </ConditionalLazy>
         </div>
       )}
+
+      {/* Status Bar - Desktop/Tablet only (mobile has enough bottom UI) */}
+      {!viewport.isMobile && <StatusBar currentSection={currentSection} />}
 
       {/* Keyboard Shortcuts Help */}
       <KeyboardShortcutsHelp />

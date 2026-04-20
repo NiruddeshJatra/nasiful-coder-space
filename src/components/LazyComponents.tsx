@@ -12,12 +12,6 @@ const LoadingFallback = ({ className = '' }: { className?: string }) => (
   </div>
 );
 
-// Lazy load MatrixBackground for better initial load performance
-export const LazyMatrixBackground = createLazyComponent(
-  () => import('./MatrixBackground'),
-  () => <div className="fixed inset-0 bg-black/5 pointer-events-none z-0" />
-);
-
 // Lazy load Terminal for mobile (can be loaded when needed)
 export const LazyTerminal = createLazyComponent(
   () => import('./Terminal'),

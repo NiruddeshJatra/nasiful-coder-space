@@ -16,7 +16,14 @@ const COMMANDS = [
   "cat projects.txt",
   "cat skills.json",
   "cat education.txt",
+  "cat now.md",
   "cat blog.md",
+  "cd lab",
+  "cd notes",
+  "cd /",
+  "open about",
+  "open projects",
+  "open now",
   "contact",
   "clear",
   "github",
@@ -24,6 +31,30 @@ const COMMANDS = [
   "secrets",
   "theme matrix",
 ];
+
+const SECTION_ALIASES: { [key: string]: string } = {
+  "about.txt": "about",
+  "experience.txt": "experience",
+  "projects.txt": "projects",
+  "skills.json": "skills",
+  "education.txt": "education",
+  "blog.md": "blog",
+  "contact.md": "contact",
+  "now.md": "now",
+  about: "about",
+  experience: "experience",
+  projects: "projects",
+  skills: "skills",
+  education: "education",
+  blog: "blog",
+  contact: "contact",
+  now: "now",
+  lab: "lab",
+  notes: "notes",
+  "/": "welcome",
+  "~": "welcome",
+  home: "welcome",
+};
 
 const FORTUNES = [
   'The best code is the code you don\'t have to write.',
@@ -136,7 +167,9 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
         "Available commands:",
         "  whoami           - Display information about me",
         "  ls               - List all sections",
-        "  cat <file>       - Display content (about.txt, experience.txt, projects.txt, skills.json, education.txt, blog.md)",
+        "  cat <file>       - Display content (about.txt, experience.txt, projects.txt, skills.json, education.txt, now.md, blog.md)",
+        "  cd <section>     - Navigate (about, projects, lab, notes, now, or '/')",
+        "  open <file>      - Alias for cat/cd",
         "  contact          - Show contact information",
         "  github           - Open GitHub profile",
         "  linkedin         - Open LinkedIn profile",
@@ -161,10 +194,34 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
         "projects.txt",
         "skills.json",
         "education.txt",
+        "now.md",
+        "lab/",
+        "notes/",
         "blog.md",
         "contact.md",
         ""
       );
+    } else if (trimmedCmd.startsWith("cd ") || trimmedCmd === "cd") {
+      const target = trimmedCmd === "cd" ? "~" : trimmedCmd.substring(3).trim();
+      const section = SECTION_ALIASES[target];
+      if (section) {
+        onCommand(section);
+        newHistory.push(
+          section === "welcome" ? "📂 /" : `📂 cd /${section}`,
+          ""
+        );
+      } else {
+        newHistory.push(`❌ cd: ${target}: No such directory`, "");
+      }
+    } else if (trimmedCmd.startsWith("open ")) {
+      const target = trimmedCmd.substring(5).trim();
+      const section = SECTION_ALIASES[target];
+      if (section) {
+        onCommand(section);
+        newHistory.push(`📄 Opening ${target}...`, "");
+      } else {
+        newHistory.push(`❌ open: ${target}: No such file`, "");
+      }
     } else if (trimmedCmd === "clear") {
       setHistory([]);
       setInput("");
@@ -187,24 +244,12 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
       }
     } else if (trimmedCmd.startsWith("cat ")) {
       const file = trimmedCmd.substring(4).trim();
-      if (file === "about.txt") {
-        onCommand("about");
-        newHistory.push("📄 Loading about.txt...", "");
-      } else if (file === "experience.txt") {
-        onCommand("experience");
-        newHistory.push("📄 Loading experience.txt...", "");
-      } else if (file === "projects.txt") {
-        onCommand("projects");
-        newHistory.push("📄 Loading projects.txt...", "");
-      } else if (file === "skills.json") {
-        onCommand("skills");
-        newHistory.push("📄 Loading skills.json...", "");
-      } else if (file === "education.txt") {
-        onCommand("education");
-        newHistory.push("📄 Loading education.txt...", "");
-      } else if (file === "blog.md") {
-        onCommand("blog");
-        newHistory.push("📄 Loading blog.md...", "");
+      const section = SECTION_ALIASES[file];
+      if (section && section !== "welcome" && section !== "lab" && section !== "notes") {
+        onCommand(section);
+        newHistory.push(`📄 Loading ${file}...`, "");
+      } else if (section === "lab" || section === "notes") {
+        newHistory.push(`❌ cat: ${file}: Is a directory — try 'cd ${section}'`, "");
       } else {
         newHistory.push(`❌ cat: ${file}: No such file or directory`, "");
       }

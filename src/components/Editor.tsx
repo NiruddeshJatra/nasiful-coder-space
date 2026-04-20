@@ -1,14 +1,25 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { Suspense, lazy, useState, useEffect, useRef } from "react";
 import { FileCode, FileText, FileJson, Mail, Terminal, Zap, ChevronUp } from "lucide-react";
-import AboutContent from "./sections/AboutContent";
-import ExperienceContent from "./sections/ExperienceContent";
-import ProjectsContent from "./sections/ProjectsContent";
-import SkillsContent from "./sections/SkillsContent";
-import EducationContent from "./sections/EducationContent";
-import BlogContent from "./sections/BlogContent";
-import ContactContent from "./sections/ContactContent";
 import MatrixBackground from "./MatrixBackground";
 import { useViewport } from "../hooks/useViewport";
+
+const AboutContent = lazy(() => import("./sections/AboutContent"));
+const ExperienceContent = lazy(() => import("./sections/ExperienceContent"));
+const ProjectsContent = lazy(() => import("./sections/ProjectsContent"));
+const SkillsContent = lazy(() => import("./sections/SkillsContent"));
+const EducationContent = lazy(() => import("./sections/EducationContent"));
+const BlogContent = lazy(() => import("./sections/BlogContent"));
+const ContactContent = lazy(() => import("./sections/ContactContent"));
+const NowContent = lazy(() => import("./sections/NowContent"));
+const LabContent = lazy(() => import("./sections/LabContent"));
+const NotesContent = lazy(() => import("./sections/NotesContent"));
+
+const SectionLoading = () => (
+  <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono animate-pulse">
+    <span className="terminal-green">$</span>
+    <span>loading section...</span>
+  </div>
+);
 import { getResponsiveFontSize, getResponsivePadding } from "../utils/responsive";
 import "./Editor.css";
 
@@ -114,6 +125,12 @@ const getFileName = (section: string) => {
       return "blog.md";
     case "contact":
       return "contact.md";
+    case "now":
+      return "now.md";
+    case "lab":
+      return "lab/";
+    case "notes":
+      return "notes/";
     default:
       return "welcome.txt";
   }
@@ -160,7 +177,7 @@ const Editor = ({ currentSection }: EditorProps) => {
     gridCols: isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
     spacing: isMobile ? 'space-y-3' : 'space-y-4'
   };
-  const renderContent = () => {
+  const renderSection = () => {
     switch (currentSection) {
       case "about":
         return <AboutContent />;
@@ -176,6 +193,23 @@ const Editor = ({ currentSection }: EditorProps) => {
         return <BlogContent />;
       case "contact":
         return <ContactContent />;
+      case "now":
+        return <NowContent />;
+      case "lab":
+        return <LabContent />;
+      case "notes":
+        return <NotesContent />;
+      default:
+        return null;
+    }
+  };
+
+  const renderContent = () => {
+    const lazySection = renderSection();
+    if (lazySection) {
+      return <Suspense fallback={<SectionLoading />}>{lazySection}</Suspense>;
+    }
+    switch (currentSection) {
       default:
         return (
           <div className={`${responsiveClasses.spacing} animate-fade-in font-mono`}>

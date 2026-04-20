@@ -20,6 +20,9 @@ export const files: FileItem[] = [
   { name: "projects.txt", section: "projects", icon: File },
   { name: "skills.json", section: "skills", icon: File },
   { name: "education.txt", section: "education", icon: File },
+  { name: "now.md", section: "now", icon: File },
+  { name: "lab/", section: "lab", icon: Folder },
+  { name: "notes/", section: "notes", icon: Folder },
   { name: "blog.md", section: "blog", icon: File },
   { name: "contact.md", section: "contact", icon: File },
 ];
