@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useState, useEffect, useRef } from "react";
 import { FileCode, FileText, FileJson, Mail, Terminal, Zap, ChevronUp } from "lucide-react";
 import MatrixBackground from "./MatrixBackground";
+import Changelog from "./sections/Changelog";
 import { useViewport } from "../hooks/useViewport";
 
 const AboutContent = lazy(() => import("./sections/AboutContent"));
@@ -341,6 +342,9 @@ const Editor = ({ currentSection }: EditorProps) => {
                 <div className={`${isMobile ? 'text-xs' : 'text-xs'} text-muted-foreground`}>Bugs Fixed</div>
               </div>
             </div>
+
+            {/* Recent activity — living system */}
+            <Changelog />
 
             {/* Bottom Tip - Responsive */}
             <div className={`mt-8 ${responsiveClasses.textSize} text-muted-foreground text-center pb-4`}>

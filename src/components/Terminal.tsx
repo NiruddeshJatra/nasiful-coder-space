@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Terminal as TerminalIcon, ChevronRight, GitBranch, Activity, Coffee, Zap, Clock } from "lucide-react";
+import { emitMatrix } from "@/lib/matrixSignals";
 
 interface TerminalProps {
   onCommand: (command: string) => void;
@@ -344,8 +345,13 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
             id="terminal-input"
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              setInput(e.target.value);
+              emitMatrix("type");
+            }}
             onKeyDown={handleKeyDown}
+            onFocus={() => emitMatrix("focus-on")}
+            onBlur={() => emitMatrix("focus-off")}
             className="flex-1 bg-transparent border-none outline-none text-gray-100 font-mono placeholder:text-gray-600"
             placeholder="Type 'help' for commands..."
             autoFocus

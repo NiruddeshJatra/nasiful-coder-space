@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { onMatrix } from "@/lib/matrixSignals";
 
 interface MatrixConfig {
   fontSize: number;
@@ -81,6 +82,37 @@ const MatrixBackground = () => {
 
     const pickChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
 
+    // Reactive signals: decay values per frame
+    let typeBoost = 0;      // 0..1, spikes on each keystroke then decays
+    let focusBoost = 0;     // 0..1, eased toward 1 when terminal focused
+    let focusTarget = 0;
+    let scrollBoost = 0;    // 0..1, from scroll velocity
+    let lastScrollTop = 0;
+    let lastScrollTime = performance.now();
+
+    const unsubType = onMatrix("type", () => {
+      typeBoost = Math.min(1, typeBoost + 0.6);
+    });
+    const unsubFocusOn = onMatrix("focus-on", () => {
+      focusTarget = 1;
+    });
+    const unsubFocusOff = onMatrix("focus-off", () => {
+      focusTarget = 0;
+    });
+
+    const scrollEl = container.closest(".editor-smooth-scroll") as HTMLElement | null;
+    const onScroll = () => {
+      if (!scrollEl) return;
+      const now = performance.now();
+      const dt = Math.max(1, now - lastScrollTime);
+      const dy = Math.abs(scrollEl.scrollTop - lastScrollTop);
+      const velocity = dy / dt; // px per ms
+      scrollBoost = Math.min(1, scrollBoost + velocity * 0.04);
+      lastScrollTop = scrollEl.scrollTop;
+      lastScrollTime = now;
+    };
+    scrollEl?.addEventListener("scroll", onScroll, { passive: true });
+
     const drawMirroredGlyph = (char: string, x: number, y: number) => {
       ctx.save();
       ctx.scale(-1, 1);
@@ -97,25 +129,38 @@ const MatrixBackground = () => {
       }
       lastTime = currentTime;
 
+      // Decay reactive signals
+      typeBoost = Math.max(0, typeBoost - 0.04);
+      focusBoost += (focusTarget - focusBoost) * 0.08;
+      scrollBoost = Math.max(0, scrollBoost - 0.05);
+
       const canvasWidth = canvas.width / window.devicePixelRatio;
       const canvasHeight = canvas.height / window.devicePixelRatio;
 
-      ctx.fillStyle = TRAIL_FADE_RGBA;
+      // Typing & focus reduce fade alpha → denser trails
+      const fadeAlpha = Math.max(0.04, 0.08 - typeBoost * 0.04 - focusBoost * 0.02);
+      ctx.fillStyle = `rgba(10, 14, 10, ${fadeAlpha})`;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
       ctx.font = `${config.fontSize}px "JetBrains Mono", "Fira Code", monospace`;
       ctx.textBaseline = "top";
+
+      // Focus → slight cyan-green shift on head glyph
+      const headColor = focusBoost > 0.05
+        ? `rgb(${Math.round(207 - focusBoost * 60)}, 255, ${Math.round(207 + focusBoost * 30)})`
+        : HEAD_COLOR;
+
+      const speedMul = 1 + scrollBoost * 1.2 + typeBoost * 0.3;
+      const flickerProb = 0.985 - typeBoost * 0.04 - focusBoost * 0.01;
 
       for (let i = 0; i < drops.length; i++) {
         const drop = drops[i];
         const x = i * config.fontSize;
         const y = drop.y * config.fontSize;
 
-        // White lead character
-        ctx.fillStyle = HEAD_COLOR;
+        ctx.fillStyle = headColor;
         drawMirroredGlyph(pickChar(), x, y);
 
-        // Green trail, dimming with distance from head
         for (let j = 1; j < 10; j++) {
           const trailY = y - j * config.fontSize;
           if (trailY < 0) break;
@@ -128,14 +173,13 @@ const MatrixBackground = () => {
           drawMirroredGlyph(pickChar(), x, trailY);
         }
 
-        // Occasional mid-fall mutation flicker
-        if (Math.random() > 0.985 && y > 0 && y < canvasHeight) {
+        if (Math.random() > flickerProb && y > 0 && y < canvasHeight) {
           ctx.fillStyle = "rgba(0, 255, 102, 0.35)";
           const flickerY = y - Math.floor(Math.random() * 8) * config.fontSize;
           drawMirroredGlyph(pickChar(), x, flickerY);
         }
 
-        drop.y += drop.speed;
+        drop.y += drop.speed * speedMul;
 
         if (drop.y * config.fontSize > canvasHeight + 100) {
           drop.y = Math.random() * -20;
@@ -189,6 +233,10 @@ const MatrixBackground = () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
       resizeObserver.disconnect();
       mutationObserver.disconnect();
+      scrollEl?.removeEventListener("scroll", onScroll);
+      unsubType();
+      unsubFocusOn();
+      unsubFocusOff();
     };
   }, [config, prefersReducedMotion]);
 
