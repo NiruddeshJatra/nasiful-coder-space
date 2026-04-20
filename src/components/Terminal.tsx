@@ -25,71 +25,52 @@ const COMMANDS = [
   "theme matrix",
 ];
 
+const FORTUNES = [
+  'The best code is the code you don\'t have to write.',
+  'Ship early. Ship honestly. Iterate in public.',
+  'Matrix rain is just for-loops with vibes.',
+  'A portfolio is a conversation, not a résumé.',
+  'Legibility is a feature. Ship boring APIs.',
+  'The map is not the terminal.',
+];
+
+const GIT_LOG_TIMELINE = [
+  'commit a1b2c3d  2026-04  portfolio: matrix rain redux, terminal-first mobile',
+  'commit 9f8e7d6  2025-11  bhara: shipped v2 — 10k concurrent users on AWS',
+  'commit 7c5d3a2  2025-06  founded bhara — rent-anything marketplace, BD',
+  'commit 4e2b1a0  2024-12  graduated — CSE, Chittagong University',
+  'commit 0000000  2001-12  boot sequence initialized',
+];
+
 const EASTER_EGGS: { [key: string]: string[] } = {
-  'sudo make coffee': [
-    '☕ Brewing coffee...',
-    '▓▓▓▓▓▓▓▓▓▓ 100%',
-    '☕ Coffee ready! But I\'m a terminal, I can\'t drink it 😢',
-    ''
+  'whoami --deep': [
+    'Nasiful Alam',
+    'Founder, Bhara · Full-stack engineer · Chattogram, BD',
+    'Shipped: scalable marketplaces, serverless APIs, a portfolio shaped like a codebase.',
+    'Looking for: hard problems in distributed systems and developer tooling.',
+    '',
   ],
-  'hack nasa': [
-    '🚀 Accessing NASA mainframe...',
-    '🔒 Access denied!',
-    'Nice try though 😄',
-    ''
+  'fortune': [],
+  'git log --author=nasif': GIT_LOG_TIMELINE.concat(''),
+  'about nasif': [
+    '> cat about.txt',
+    'Full-stack engineer who treats software like writing: draft, revise, publish.',
+    'Runs on coffee, Typescript, and stubbornness.',
+    '',
   ],
-  'sl': [
-    '🚂💨💨💨 (The train is running because you typed sl instead of ls)',
-    ''
-  ],
-  'vim': [
-    'Starting Vim...',
-    'Just kidding! This isn\'t Vim. Use Ctrl+C to exit... oh wait 😅',
-    ''
-  ],
-  'rm -rf /': [
-    '😱 WHOA THERE!',
-    'That\'s not happening in my terminal!',
-    '✅ Crisis averted.',
-    ''
-  ],
-  'order pizza': [
-    '🍕 Ordering pizza...',
-    'Your pizza will arrive in 30 minutes!',
-    'Just kidding, you have to order it yourself 😋',
-    ''
-  ],
-  'matrix': [
-    'Entering the Matrix...',
-    '01001000 01100101 01101100 01101100 01101111',
-    'Welcome to the real world, Neo.',
-    ''
-  ],
-  'sudo apt-get install girlfriend': [
-    '💝 Searching repositories...',
-    'E: Package \'girlfriend\' has no installation candidate',
-    'Try: sudo apt-get install cats',
-    ''
-  ],
-  'cowsay': [
-    ' ___________________',
-    '< Moo! I\'m a cow! >',
-    ' -------------------',
-    '        \\   ^__^',
-    '         \\  (oo)\\_______',
-    '            (__)\\       )\\/\\',
-    '                ||----w |',
-    '                ||     ||',
-    ''
+  'sudo sudo': [
+    'With great privilege comes great responsibility.',
+    'Permission denied on philosophy.',
+    '',
   ],
 };
 
 const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) => {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([
-    "Welcome to Nasiful Alam's Portfolio Terminal v2.0 🚀",
-    "Type 'help' to see available commands",
-    "Try 'secrets' to discover easter eggs 🥚",
+    "$ welcome to nasif.space",
+    "$ type 'help' for commands, or click a file in the sidebar",
+    "$ tab = autocomplete · ↑/↓ = recall · 'secrets' = hidden commands",
     "",
   ]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -134,21 +115,20 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
     const trimmedCmd = cmd.trim().toLowerCase();
     const newHistory = [...history, `$ ${cmd}`];
 
-    // Check for easter eggs first
-    if (EASTER_EGGS[trimmedCmd]) {
+    // Fortune: pull a rotating quote
+    if (trimmedCmd === "fortune") {
+      const quote = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+      newHistory.push(`🔮 ${quote}`, "");
+    } else if (EASTER_EGGS[trimmedCmd]) {
       newHistory.push(...EASTER_EGGS[trimmedCmd]);
     } else if (trimmedCmd === "secrets" || trimmedCmd === "easter eggs") {
       newHistory.push(
-        "🥚 Easter Eggs Available:",
-        "  sudo make coffee           - Brew some virtual coffee",
-        "  hack nasa                  - Try to hack NASA",
-        "  sl                         - A classic Unix typo",
-        "  vim                        - Enter Vim (not really)",
-        "  rm -rf /                   - DON'T try this at home",
-        "  order pizza                - Order pizza",
-        "  matrix                     - Enter the Matrix",
-        "  sudo apt-get install girlfriend - Install girlfriend",
-        "  cowsay                     - Cow wisdom",
+        "🥚 Hidden commands:",
+        "  whoami --deep              - sharper self-description",
+        "  git log --author=nasif     - rolling micro-timeline",
+        "  fortune                    - rotating quote from notes",
+        "  about nasif                - alias for cat about.txt",
+        "  sudo sudo                  - recursion warning",
         ""
       );
     } else if (trimmedCmd === "help") {
@@ -316,6 +296,7 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
           <ChevronRight className="w-4 h-4 terminal-green flex-shrink-0 animate-pulse" />
           <input
             ref={inputRef}
+            id="terminal-input"
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}

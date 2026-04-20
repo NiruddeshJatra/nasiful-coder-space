@@ -1,4 +1,4 @@
-import { Coffee, GitBranch, Activity, Zap } from "lucide-react";
+import { Coffee, GitBranch, Activity, Zap, FileText } from "lucide-react";
 
 const StatusBar = () => {
   return (
@@ -21,8 +21,16 @@ const StatusBar = () => {
           <span>Bugs Fixed: 999</span>
         </div>
       </div>
-      <div className="text-muted-foreground">
-        UTF-8 | TypeScript | Ln 1, Col 1
+      <div className="flex items-center gap-3 text-muted-foreground">
+        <a
+          href="/resume.html"
+          className="flex items-center gap-1 hover:text-foreground transition-colors"
+          aria-label="Plain-text resume"
+        >
+          <FileText className="w-3 h-3" />
+          <span>resume</span>
+        </a>
+        <span>UTF-8 | TypeScript | Ln 1, Col 1</span>
       </div>
     </div>
   );

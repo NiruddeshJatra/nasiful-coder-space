@@ -18,12 +18,6 @@ export const LazyMatrixBackground = createLazyComponent(
   () => <div className="fixed inset-0 bg-black/5 pointer-events-none z-0" />
 );
 
-// Lazy load InteractiveCursor (not critical for mobile)
-export const LazyInteractiveCursor = createLazyComponent(
-  () => import('./InteractiveCursor'),
-  () => null
-);
-
 // Lazy load Terminal for mobile (can be loaded when needed)
 export const LazyTerminal = createLazyComponent(
   () => import('./Terminal'),

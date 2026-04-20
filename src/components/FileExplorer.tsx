@@ -57,9 +57,16 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
       aria-label="Portfolio sections"
       role="navigation"
     >
-      <div className="flex items-center gap-2 px-2 py-1.5 border-b border-border bg-black/50">
-        <Folder className="w-4 h-4 terminal-blue" aria-hidden="true" />
-        <h2 className="text-xs font-semibold uppercase tracking-wide">Explorer</h2>
+      <div className="border-b border-border bg-black/50">
+        <div className="flex items-center gap-2 px-2 py-1.5">
+          <Folder className="w-4 h-4 terminal-blue" aria-hidden="true" />
+          <h2 className="text-xs font-semibold uppercase tracking-wide">
+            Explorer — nasif/
+          </h2>
+        </div>
+        <p className="text-[10px] opacity-40 px-2 pb-2">
+          a site shaped like a codebase
+        </p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-1">

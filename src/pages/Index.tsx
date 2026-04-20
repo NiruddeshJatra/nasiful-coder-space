@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { LazyInteractiveCursor, ConditionalLazy } from "@/components/LazyComponents";
 import ResponsiveLayout from "@/components/ResponsiveLayout";
 import { MemoryManager } from "@/utils/memoryOptimization";
 import { getPerformanceMonitor } from "@/utils/performance";
@@ -42,12 +41,6 @@ const Index = () => {
 
   return (
     <div className="h-screen overflow-hidden relative">
-      {/* Interactive Cursor - Only on desktop, lazy loaded */}
-      <ConditionalLazy fallback={null}>
-        <LazyInteractiveCursor />
-      </ConditionalLazy>
-
-      {/* Responsive Layout System - Always loaded as it's critical */}
       <ResponsiveLayout
         currentSection={currentSection}
         onSectionChange={handleSectionChange}

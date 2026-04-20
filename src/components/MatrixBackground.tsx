@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getPerformanceMonitor, debounce } from "@/utils/performance";
-import { Z_INDEX } from "@/utils/responsive";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface MatrixConfig {
   fontSize: number;
@@ -9,125 +8,138 @@ interface MatrixConfig {
   opacity: number;
 }
 
+const KATAKANA = Array.from({ length: 59 }, (_, i) =>
+  String.fromCodePoint(0xff65 + i)
+);
+const DIGITS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const CHARS: string[] = [...KATAKANA, ...DIGITS];
+
+const HEAD_COLOR = "#CFFFCF";
+const TRAIL_BRIGHT = { r: 0, g: 255, b: 102 };
+const TRAIL_DIM = { r: 0, g: 51, b: 17 };
+const TRAIL_FADE_RGBA = "rgba(10, 14, 10, 0.08)";
+
+interface Drop {
+  y: number;
+  speed: number;
+}
+
 const MatrixBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number>();
-  const [config, setConfig] = useState<MatrixConfig>({
+  const { prefersReducedMotion } = useReducedMotion();
+  const [config] = useState<MatrixConfig>({
     fontSize: 14,
     animationSpeed: 33,
     particleDensity: 1,
-    opacity: 0.3
+    opacity: 0.35,
   });
   const [contentHeight, setContentHeight] = useState(0);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Function to update canvas size based on scroll container
     const updateCanvasSize = () => {
       const dpr = window.devicePixelRatio || 1;
-      
-      // Get the scroll container (editor content area)
-      const scrollContainer = container.closest('.editor-smooth-scroll');
+      const scrollContainer = container.closest(".editor-smooth-scroll");
       if (!scrollContainer) return;
-      
+
       const scrollRect = scrollContainer.getBoundingClientRect();
       const scrollHeight = scrollContainer.scrollHeight;
-      
-      // Use the full scrollable height, not just viewport height
+
       canvas.width = scrollRect.width * dpr;
       canvas.height = scrollHeight * dpr;
-
-      ctx.scale(dpr, dpr);
-      
-      // Set CSS size to match scroll container
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       canvas.style.width = `${scrollRect.width}px`;
       canvas.style.height = `${scrollHeight}px`;
-      
+
       setContentHeight(scrollHeight);
     };
 
     updateCanvasSize();
 
-    // Japanese Katakana characters + numbers for authentic Matrix look
-    const chars = 'ãƒãƒ„ã‚½ãƒœãƒ¯ã‚«ã‚­ã‚¯ã‚±ã‚³ã‚µã‚·ã‚¹ã‚»ã‚½ã‚¿ãƒã‚¿ãƒ†ãƒˆãƒŠãƒ‹ãƒŒãƒã‚¯ãƒã‚·ãƒ•ãƒ˜ãƒ›ãƒžãƒŸãƒ ãƒ¡ãƒ¢ãƒ¤ãƒ¦ãƒ¨ãƒ©ãƒªãƒ«ãƒ¬ãƒ­0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    
-    const actualColumns = Math.floor((canvas.width / window.devicePixelRatio) / config.fontSize);
+    const actualColumns = Math.floor(
+      canvas.width / window.devicePixelRatio / config.fontSize
+    );
     const maxColumns = Math.floor(actualColumns * config.particleDensity);
-    
-    // Initialize drops with random starting positions and speeds
-    const drops: { y: number; speed: number; chars: string[] }[] = [];
+
+    const drops: Drop[] = [];
     for (let i = 0; i < maxColumns; i++) {
       drops.push({
-        y: Math.random() * -100, // Start above canvas
-        speed: 0.5 + Math.random() * 1, // Varying speeds
-        chars: [] // Store previous characters for trail effect
+        y: Math.random() * -100,
+        speed: 0.5 + Math.random() * 1,
       });
     }
+
+    const pickChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
+
+    const drawMirroredGlyph = (char: string, x: number, y: number) => {
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.fillText(char, -x - config.fontSize, y);
+      ctx.restore();
+    };
 
     let lastTime = 0;
 
     const draw = (currentTime: number) => {
-      // Throttle animation based on config
       if (currentTime - lastTime < config.animationSpeed) {
         animationRef.current = requestAnimationFrame(draw);
         return;
       }
-
       lastTime = currentTime;
 
       const canvasWidth = canvas.width / window.devicePixelRatio;
       const canvasHeight = canvas.height / window.devicePixelRatio;
 
-      // Fade effect for trails (stronger fade for better text visibility)
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillStyle = TRAIL_FADE_RGBA;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-      ctx.font = `${config.fontSize}px monospace`;
+      ctx.font = `${config.fontSize}px "JetBrains Mono", "Fira Code", monospace`;
+      ctx.textBaseline = "top";
 
       for (let i = 0; i < drops.length; i++) {
         const drop = drops[i];
         const x = i * config.fontSize;
         const y = drop.y * config.fontSize;
 
-        // Draw the bright head of the trail (much more subtle)
-        const headChar = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'; // Reduced from 0.8
-        ctx.fillText(headChar, x, y);
+        // White lead character
+        ctx.fillStyle = HEAD_COLOR;
+        drawMirroredGlyph(pickChar(), x, y);
 
-        // Draw the green trail behind it (very subtle)
-        for (let j = 1; j < 8; j++) {
-          const trailY = y - (j * config.fontSize);
-          if (trailY > 0) {
-            const brightness = Math.max(0, 150 - (j * 25)); // Reduced from 200
-            const opacity = Math.max(0, 0.3 - (j * 0.05)); // Reduced from 0.6
-            ctx.fillStyle = `rgba(0, ${brightness}, 0, ${opacity})`;
-            const trailChar = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(trailChar, x, trailY);
-          }
+        // Green trail, dimming with distance from head
+        for (let j = 1; j < 10; j++) {
+          const trailY = y - j * config.fontSize;
+          if (trailY < 0) break;
+          const t = j / 10;
+          const r = Math.round(TRAIL_BRIGHT.r + (TRAIL_DIM.r - TRAIL_BRIGHT.r) * t);
+          const g = Math.round(TRAIL_BRIGHT.g + (TRAIL_DIM.g - TRAIL_BRIGHT.g) * t);
+          const b = Math.round(TRAIL_BRIGHT.b + (TRAIL_DIM.b - TRAIL_BRIGHT.b) * t);
+          const a = Math.max(0, 0.85 - j * 0.08);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+          drawMirroredGlyph(pickChar(), x, trailY);
         }
 
-        // Randomly change characters in the trail for that "glitchy" effect (very rare and subtle)
-        if (Math.random() > 0.99 && y > 0 && y < canvasHeight) {
-          ctx.fillStyle = 'rgba(0, 255, 0, 0.2)'; // Much more subtle
-          const randomChar = chars[Math.floor(Math.random() * chars.length)];
-          const randomTrailPos = y - (Math.floor(Math.random() * 8) * config.fontSize);
-          ctx.fillText(randomChar, x, randomTrailPos);
+        // Occasional mid-fall mutation flicker
+        if (Math.random() > 0.985 && y > 0 && y < canvasHeight) {
+          ctx.fillStyle = "rgba(0, 255, 102, 0.35)";
+          const flickerY = y - Math.floor(Math.random() * 8) * config.fontSize;
+          drawMirroredGlyph(pickChar(), x, flickerY);
         }
 
-        // Move drop down
         drop.y += drop.speed;
 
-        // Reset drop when it goes off screen
         if (drop.y * config.fontSize > canvasHeight + 100) {
-          drop.y = Math.random() * -20; // Random start position above canvas
-          drop.speed = 0.5 + Math.random() * 1; // Random speed
+          drop.y = Math.random() * -20;
+          drop.speed = 0.5 + Math.random() * 1;
         }
       }
 
@@ -136,21 +148,23 @@ const MatrixBackground = () => {
 
     animationRef.current = requestAnimationFrame(draw);
 
-    // Use ResizeObserver and MutationObserver to track content changes
     const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        if (entry.target === container || entry.target.closest('.editor-smooth-scroll')) {
+      for (const entry of entries) {
+        if (
+          entry.target === container ||
+          entry.target.closest(".editor-smooth-scroll")
+        ) {
           updateCanvasSize();
-          // Recalculate drops array for new canvas size
-          const newActualColumns = Math.floor((canvas.width / window.devicePixelRatio) / config.fontSize);
-          const newMaxColumns = Math.floor(newActualColumns * config.particleDensity);
-          
-          // Adjust drops array
+          const newActualColumns = Math.floor(
+            canvas.width / window.devicePixelRatio / config.fontSize
+          );
+          const newMaxColumns = Math.floor(
+            newActualColumns * config.particleDensity
+          );
           while (drops.length < newMaxColumns) {
             drops.push({
               y: Math.random() * -100,
               speed: 0.5 + Math.random() * 1,
-              chars: []
             });
           }
           drops.length = newMaxColumns;
@@ -158,49 +172,50 @@ const MatrixBackground = () => {
       }
     });
 
-    // Observe both the container and the scroll container
     resizeObserver.observe(container);
-    const scrollContainer = container.closest('.editor-smooth-scroll');
-    if (scrollContainer) {
-      resizeObserver.observe(scrollContainer);
-    }
+    const scrollContainer = container.closest(".editor-smooth-scroll");
+    if (scrollContainer) resizeObserver.observe(scrollContainer);
 
-    // Also observe content changes that might affect scroll height
-    const mutationObserver = new MutationObserver(() => {
-      updateCanvasSize();
-    });
-
+    const mutationObserver = new MutationObserver(() => updateCanvasSize());
     if (scrollContainer) {
       mutationObserver.observe(scrollContainer, {
         childList: true,
         subtree: true,
-        characterData: true
+        characterData: true,
       });
     }
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
       resizeObserver.disconnect();
       mutationObserver.disconnect();
     };
-  }, [config]);
+  }, [config, prefersReducedMotion]);
+
+  if (prefersReducedMotion) {
+    return (
+      <div
+        className="fixed inset-0 pointer-events-none bg-gradient-to-b from-green-950/30 via-black to-black"
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="fixed inset-0 pointer-events-none overflow-hidden"
-      style={{ height: contentHeight || '100vh' }}
+      style={{ height: contentHeight || "100vh" }}
+      aria-hidden="true"
     >
       <canvas
         ref={canvasRef}
         className="block"
         style={{
           opacity: Math.max(config.opacity, 0.25),
-          willChange: 'transform',
-          transform: 'translate3d(0,0,0)',
-          zIndex: 0
+          willChange: "transform",
+          transform: "translate3d(0,0,0)",
+          zIndex: 0,
         }}
       />
     </div>
