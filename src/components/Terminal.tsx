@@ -42,6 +42,7 @@ const SECTION_ALIASES: { [key: string]: string } = {
   "blog.md": "blog",
   "contact.md": "contact",
   "now.md": "now",
+  "colophon.md": "colophon",
   about: "about",
   experience: "experience",
   projects: "projects",
@@ -52,6 +53,7 @@ const SECTION_ALIASES: { [key: string]: string } = {
   now: "now",
   lab: "lab",
   notes: "notes",
+  colophon: "colophon",
   "/": "welcome",
   "~": "welcome",
   home: "welcome",
@@ -200,6 +202,7 @@ const Terminal = ({ onCommand, currentSection, onThemeChange }: TerminalProps) =
         "notes/",
         "blog.md",
         "contact.md",
+        "colophon.md",
         ""
       );
     } else if (trimmedCmd.startsWith("cd ") || trimmedCmd === "cd") {

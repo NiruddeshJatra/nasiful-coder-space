@@ -14,6 +14,7 @@ const ContactContent = lazy(() => import("./sections/ContactContent"));
 const NowContent = lazy(() => import("./sections/NowContent"));
 const LabContent = lazy(() => import("./sections/LabContent"));
 const NotesContent = lazy(() => import("./sections/NotesContent"));
+const ColophonContent = lazy(() => import("./sections/ColophonContent"));
 
 const SectionLoading = () => (
   <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono animate-pulse">
@@ -132,6 +133,8 @@ const getFileName = (section: string) => {
       return "lab/";
     case "notes":
       return "notes/";
+    case "colophon":
+      return "colophon.md";
     default:
       return "welcome.txt";
   }
@@ -200,6 +203,8 @@ const Editor = ({ currentSection }: EditorProps) => {
         return <LabContent />;
       case "notes":
         return <NotesContent />;
+      case "colophon":
+        return <ColophonContent />;
       default:
         return null;
     }

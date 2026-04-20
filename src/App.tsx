@@ -34,6 +34,7 @@ const App = () => (
           <Route path="/now" element={<Index />} />
           <Route path="/lab" element={<Index />} />
           <Route path="/notes" element={<Index />} />
+          <Route path="/colophon" element={<Index />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

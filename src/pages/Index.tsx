@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
+import { flushSync } from "react-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import ResponsiveLayout from "@/components/ResponsiveLayout";
 import { MemoryManager } from "@/utils/memoryOptimization";
 import { getPerformanceMonitor } from "@/utils/performance";
+import { startViewTransition } from "@/lib/viewTransition";
 
 interface Theme {
   name: string;
@@ -37,7 +39,11 @@ const Index = () => {
   const handleSectionChange = useCallback(
     (section: string) => {
       const target = section === "welcome" ? "/" : `/${section}`;
-      if (location.pathname !== target) navigate(target);
+      if (location.pathname !== target) {
+        startViewTransition(() => {
+          flushSync(() => navigate(target));
+        });
+      }
     },
     [navigate, location.pathname]
   );

@@ -25,6 +25,7 @@ export const files: FileItem[] = [
   { name: "notes/", section: "notes", icon: Folder },
   { name: "blog.md", section: "blog", icon: File },
   { name: "contact.md", section: "contact", icon: File },
+  { name: "colophon.md", section: "colophon", icon: File },
 ];
 
 const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) => {

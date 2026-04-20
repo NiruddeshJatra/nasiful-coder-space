@@ -12,7 +12,9 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check:bundle": "node scripts/check-bundle.mjs",
+    "build:check": "vite build && node scripts/check-bundle.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

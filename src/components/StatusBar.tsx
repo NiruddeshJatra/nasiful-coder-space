@@ -29,6 +29,8 @@ const getPath = (section: string): string => {
       return "~/nasif/blog.md";
     case "contact":
       return "~/nasif/contact.md";
+    case "colophon":
+      return "~/nasif/colophon.md";
     default:
       return `~/nasif/${section}`;
   }
@@ -44,6 +46,9 @@ const LAST_UPDATED: Record<string, string> = {
   now: "2026-04-20",
   blog: "pending",
   contact: "2026-02-10",
+  colophon: "2026-04-20",
+  lab: "2026-04-20",
+  notes: "seedling",
 };
 
 const StatusBar = ({ currentSection }: StatusBarProps) => {

@@ -307,5 +307,26 @@ All colors MUST be HSL.
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none !important;
+    }
   }
+}
+
+/* View transitions: soft cross-fade between routes (Chromium 111+) */
+@keyframes nasif-vt-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes nasif-vt-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+::view-transition-old(root) {
+  animation: nasif-vt-fade-out 160ms ease-out both;
+}
+::view-transition-new(root) {
+  animation: nasif-vt-fade-in 200ms ease-out both;
 }
