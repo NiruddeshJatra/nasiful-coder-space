@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Terminal as TerminalIcon, ChevronRight, GitBranch, Activity, Coffee, Zap, Clock } from "lucide-react";
 import { emitMatrix } from "@/lib/matrixSignals";
+import { SECTION_ALIASES } from "@/constants/sections";
 
 interface TerminalProps {
   onCommand: (command: string) => void;
@@ -33,31 +34,6 @@ const COMMANDS = [
   "theme matrix",
 ];
 
-const SECTION_ALIASES: { [key: string]: string } = {
-  "about.txt": "about",
-  "experience.txt": "experience",
-  "projects.txt": "projects",
-  "skills.json": "skills",
-  "education.txt": "education",
-  "blog.md": "blog",
-  "contact.md": "contact",
-  "now.md": "now",
-  "colophon.md": "colophon",
-  about: "about",
-  experience: "experience",
-  projects: "projects",
-  skills: "skills",
-  education: "education",
-  blog: "blog",
-  contact: "contact",
-  now: "now",
-  lab: "lab",
-  notes: "notes",
-  colophon: "colophon",
-  "/": "welcome",
-  "~": "welcome",
-  home: "welcome",
-};
 
 const FORTUNES = [
   'The best code is the code you don\'t have to write.',

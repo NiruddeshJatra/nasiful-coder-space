@@ -19,9 +19,11 @@ src/
 │   ├── sections/         # Page content sections (About, Projects, Skills, etc.)
 │   ├── ui/               # shadcn/ui primitives
 │   ├── Editor.tsx        # Main VS Code-style editor pane
-│   ├── FileExplorer.tsx  # Sidebar file tree navigation
+│   ├── FileExplorer.tsx  # Sidebar file tree + authoritative `files` array
 │   ├── Terminal.tsx      # Interactive terminal component
-│   ├── ResponsiveLayout.tsx  # Root layout, breakpoint logic
+│   ├── ResponsiveLayout.tsx  # Root layout — gates MobileShell at < 768px
+│   ├── MobileShell.tsx   # Mobile-only layout (top bar + editor + bottom nav)
+│   ├── CommandPalette.tsx    # Cmd+P / Cmd+Shift+P palette (cmdk, lazy-loaded)
 │   ├── ResponsiveHeader.tsx  # Top nav / menu bar
 │   ├── StatusBar.tsx     # Bottom VS Code status bar
 │   ├── ThemeSwitcher.tsx # Dark/light/system theme toggle
@@ -29,9 +31,13 @@ src/
 ├── pages/
 │   ├── Index.tsx         # Home page
 │   └── NotFound.tsx      # 404
-├── hooks/                # Custom React hooks
+├── hooks/
+│   ├── useCommandPalette.ts  # Palette open/mode state
+│   └── ...               # Other custom hooks
 ├── lib/                  # Shared utilities
-└── constants/            # Static data (projects, skills, etc.)
+└── constants/
+    ├── sections.ts       # SECTION_ALIASES — derived from FileExplorer.files
+    └── ...               # Other static data
 ```
 
 ## Key Conventions
@@ -41,6 +47,9 @@ src/
 - Named exports for components; default export for pages
 - No `any` types — proper TypeScript interfaces required
 - Project/skills data lives in `src/constants/` — never hardcoded in components
+- **Section aliases** live in `src/constants/sections.ts`, derived from `FileExplorer.files` — never duplicate this map in components
+- **Mobile layout**: `ResponsiveLayout` gates `<MobileShell>` when `viewport.isMobile` (< 768px) — the desktop IDE chrome must NOT render on mobile
+- **CommandPalette** is lazy-loaded; `meta+p` = files, `meta+shift+p` = commands; always guard against `HTMLInputElement` focus before opening
 - Commit format: `type(scope): description` (feat/fix/chore/refactor/docs)
 
 ## Commands
@@ -71,6 +80,7 @@ npx playwright test  # Run E2E tests
 
 ## Skills Active
 - `portfolio-review` — Audits portfolio completeness and recruiter-readiness. Trigger: "review my portfolio", "is it ready", "pre-deploy check"
+- `after-change` (global) — Update docs + CLAUDE.md, commit, push. Trigger: "after each change", "update docs and commit", "land these changes"
 
 ## gstack
 gstack installed at `~/.claude/skills/gstack`. Use `/browse` for all web browsing — never use `mcp__claude-in-chrome__*` tools.

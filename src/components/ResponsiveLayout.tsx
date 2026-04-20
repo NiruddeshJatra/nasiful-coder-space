@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { useResponsiveLayout } from '../hooks/useResponsiveLayout';
 import { useGlobalKeyboardShortcuts } from '../hooks/useKeyboardNavigation';
 import { getLayoutClasses, Z_INDEX } from '../utils/responsive';
@@ -12,6 +12,10 @@ import StatusBar from './StatusBar';
 import { LazyTerminal, LazyResponsiveTerminal, ConditionalLazy } from './LazyComponents';
 import { MemoryManager } from '@/utils/memoryOptimization';
 import { LayoutMode } from '../hooks/useViewport';
+import { useCommandPalette } from '../hooks/useCommandPalette';
+import MobileShell from './MobileShell';
+
+const LazyCommandPalette = lazy(() => import('./CommandPalette'));
 
 interface Theme {
   name: string;
@@ -120,6 +124,7 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
   
   const currentLayoutName = layoutModeNames[navigationState.currentLayout] || 'unknown';
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
+  const palette = useCommandPalette();
 
   // Global keyboard shortcuts
   useGlobalKeyboardShortcuts({
@@ -144,8 +149,8 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
     'ctrl+m': () => {
       if (viewport.isMobile) {
         actions.toggleMobileMenu();
-        const message = navigationState.isMobileMenuOpen 
-          ? 'Navigation menu closed' 
+        const message = navigationState.isMobileMenuOpen
+          ? 'Navigation menu closed'
           : 'Navigation menu opened';
         announceToScreenReader(message, 'polite');
       }
@@ -153,8 +158,8 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
     'ctrl+t': () => {
       if (viewport.isMobile) {
         actions.toggleTerminal();
-        const message = navigationState.isTerminalExpanded 
-          ? 'Terminal expanded' 
+        const message = navigationState.isTerminalExpanded
+          ? 'Terminal expanded'
           : 'Terminal collapsed';
         announceToScreenReader(message, 'polite');
       }
@@ -166,10 +171,37 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
     'ctrl+5': () => handleSectionChange('education'),
     'ctrl+6': () => handleSectionChange('blog'),
     'ctrl+7': () => handleSectionChange('contact'),
+    'meta+p': () => {
+      const active = document.activeElement;
+      if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement) return;
+      palette.open('files');
+    },
+    'meta+shift+p': () => {
+      const active = document.activeElement;
+      if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement) return;
+      palette.open('commands');
+    },
   });
 
+  // Mobile: render the dedicated MobileShell (replaces all desktop IDE chrome)
+  if (viewport.isMobile) {
+    return (
+      <>
+        <MobileShell onThemeChange={onThemeChange} />
+        <Suspense fallback={null}>
+          <LazyCommandPalette
+            isOpen={palette.isOpen}
+            mode={palette.mode}
+            onClose={palette.close}
+            onThemeChange={onThemeChange}
+          />
+        </Suspense>
+      </>
+    );
+  }
+
   return (
-    <div 
+    <div
       className={`${layoutClasses} overflow-hidden transition-colors duration-300`}
       style={{ backgroundColor: theme.bg }}
       {...getLayoutChangeAria(currentLayoutName, isTransitioning)}
@@ -272,6 +304,16 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
 
       {/* Keyboard Shortcuts Help */}
       <KeyboardShortcutsHelp />
+
+      {/* Command Palette — Cmd+P / Cmd+Shift+P */}
+      <Suspense fallback={null}>
+        <LazyCommandPalette
+          isOpen={palette.isOpen}
+          mode={palette.mode}
+          onClose={palette.close}
+          onThemeChange={onThemeChange}
+        />
+      </Suspense>
     </div>
   );
 };
