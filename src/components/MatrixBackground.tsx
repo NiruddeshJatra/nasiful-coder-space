@@ -32,9 +32,9 @@ const MatrixBackground = () => {
   const { prefersReducedMotion } = useReducedMotion();
   const [config] = useState<MatrixConfig>({
     fontSize: 14,
-    animationSpeed: 33,
-    particleDensity: 1,
-    opacity: 0.35,
+    animationSpeed: 50,
+    particleDensity: 0.6,
+    opacity: 0.25,
   });
   const [contentHeight, setContentHeight] = useState(0);
 
@@ -76,7 +76,7 @@ const MatrixBackground = () => {
     for (let i = 0; i < maxColumns; i++) {
       drops.push({
         y: Math.random() * -100,
-        speed: 0.5 + Math.random() * 1,
+        speed: 0.3 + Math.random() * 0.6,
       });
     }
 
@@ -138,7 +138,7 @@ const MatrixBackground = () => {
       const canvasHeight = canvas.height / window.devicePixelRatio;
 
       // Typing & focus reduce fade alpha → denser trails
-      const fadeAlpha = Math.max(0.04, 0.08 - typeBoost * 0.04 - focusBoost * 0.02);
+      const fadeAlpha = Math.max(0.08, 0.18 - typeBoost * 0.06 - focusBoost * 0.03);
       ctx.fillStyle = `rgba(10, 14, 10, ${fadeAlpha})`;
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
@@ -183,7 +183,7 @@ const MatrixBackground = () => {
 
         if (drop.y * config.fontSize > canvasHeight + 100) {
           drop.y = Math.random() * -20;
-          drop.speed = 0.5 + Math.random() * 1;
+          drop.speed = 0.3 + Math.random() * 0.6;
         }
       }
 
@@ -208,7 +208,7 @@ const MatrixBackground = () => {
           while (drops.length < newMaxColumns) {
             drops.push({
               y: Math.random() * -100,
-              speed: 0.5 + Math.random() * 1,
+              speed: 0.3 + Math.random() * 0.6,
             });
           }
           drops.length = newMaxColumns;

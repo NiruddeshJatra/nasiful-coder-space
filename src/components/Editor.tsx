@@ -16,12 +16,57 @@ const LabContent = lazy(() => import("./sections/LabContent"));
 const NotesContent = lazy(() => import("./sections/NotesContent"));
 const ColophonContent = lazy(() => import("./sections/ColophonContent"));
 
-const SectionLoading = () => (
-  <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono animate-pulse">
-    <span className="terminal-green">$</span>
-    <span>loading section...</span>
+const LineSkeleton = ({ rows = 4 }: { rows?: number }) => (
+  <div className="animate-pulse space-y-3 p-4">
+    <div className="h-4 bg-muted/40 rounded w-1/3 mb-5" />
+    {Array.from({ length: rows }, (_, i) => (
+      <div key={i} className={`h-3 bg-muted/30 rounded ${i === rows - 1 ? 'w-2/3' : 'w-full'}`} />
+    ))}
   </div>
 );
+
+const ProjectsSkeleton = () => (
+  <div className="animate-pulse p-4 grid grid-cols-2 gap-4">
+    {Array.from({ length: 4 }, (_, i) => (
+      <div key={i} className="bg-muted/20 rounded-lg p-4 space-y-2 border border-border/30">
+        <div className="h-3 bg-muted/40 rounded w-3/4" />
+        <div className="h-2 bg-muted/30 rounded w-full" />
+        <div className="h-2 bg-muted/30 rounded w-5/6" />
+        <div className="flex gap-1 mt-2">
+          {Array.from({ length: 3 }, (_, j) => (
+            <div key={j} className="h-4 w-12 bg-muted/40 rounded-full" />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const ListSkeleton = () => (
+  <div className="animate-pulse p-4 space-y-4">
+    <div className="h-4 bg-muted/40 rounded w-1/4 mb-5" />
+    {Array.from({ length: 4 }, (_, i) => (
+      <div key={i} className="space-y-1.5">
+        <div className="h-3 bg-muted/40 rounded w-1/2" />
+        <div className="h-2 bg-muted/30 rounded w-3/4" />
+        <div className="flex gap-1">
+          <div className="h-4 w-10 bg-muted/30 rounded-full" />
+          <div className="h-4 w-14 bg-muted/30 rounded-full" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const getSectionSkeleton = (section: string) => {
+  switch (section) {
+    case 'projects': return <ProjectsSkeleton />;
+    case 'notes':
+    case 'blog': return <ListSkeleton />;
+    case 'skills': return <LineSkeleton rows={6} />;
+    default: return <LineSkeleton />;
+  }
+};
 import { getResponsiveFontSize, getResponsivePadding } from "../utils/responsive";
 import "./Editor.css";
 
@@ -213,7 +258,7 @@ const Editor = ({ currentSection }: EditorProps) => {
   const renderContent = () => {
     const lazySection = renderSection();
     if (lazySection) {
-      return <Suspense fallback={<SectionLoading />}>{lazySection}</Suspense>;
+      return <Suspense fallback={getSectionSkeleton(currentSection)}>{lazySection}</Suspense>;
     }
     switch (currentSection) {
       default:

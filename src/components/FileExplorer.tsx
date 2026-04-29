@@ -1,12 +1,14 @@
-import React, { useRef, useState } from "react";
-import { Folder, File, ChevronRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { Folder, File, ChevronRight, ChevronLeft, ChevronDown } from "lucide-react";
 import { useListKeyboardNavigation } from '../hooks/useKeyboardNavigation';
-import { MIN_TOUCH_TARGET_SIZE } from '../utils/accessibility';
 
 export interface FileItem {
+  id?: string;
   name: string;
   section: string;
   icon: typeof File;
+  parent?: string;
+  isContainer?: boolean;
 }
 
 interface FileExplorerProps {
@@ -15,24 +17,62 @@ interface FileExplorerProps {
 }
 
 export const files: FileItem[] = [
-  { name: "about.txt", section: "about", icon: File },
-  { name: "experience.txt", section: "experience", icon: File },
-  { name: "projects.txt", section: "projects", icon: File },
-  { name: "skills.json", section: "skills", icon: File },
-  { name: "education.txt", section: "education", icon: File },
-  { name: "now.md", section: "now", icon: File },
-  { name: "lab/", section: "lab", icon: Folder },
-  { name: "notes/", section: "notes", icon: Folder },
-  { name: "blog.md", section: "blog", icon: File },
-  { name: "contact.md", section: "contact", icon: File },
-  { name: "colophon.md", section: "colophon", icon: File },
+  { id: 'me', name: 'me/', section: '', icon: Folder, isContainer: true },
+  { name: 'about.txt', section: 'about', icon: File, parent: 'me' },
+  { name: 'experience.txt', section: 'experience', icon: File, parent: 'me' },
+  { name: 'education.txt', section: 'education', icon: File, parent: 'me' },
+  { name: 'skills.json', section: 'skills', icon: File, parent: 'me' },
+  { id: 'work', name: 'work/', section: '', icon: Folder, isContainer: true },
+  { name: 'projects.txt', section: 'projects', icon: File, parent: 'work' },
+  { name: 'lab/', section: 'lab', icon: Folder, parent: 'work' },
+  { id: 'writing', name: 'writing/', section: '', icon: Folder, isContainer: true },
+  { name: 'blog.md', section: 'blog', icon: File, parent: 'writing' },
+  { name: 'notes/', section: 'notes', icon: Folder, parent: 'writing' },
+  { name: 'now.md', section: 'now', icon: File },
+  { name: 'contact.md', section: 'contact', icon: File },
+  { name: 'colophon.md', section: 'colophon', icon: File },
 ];
+
+const STORAGE_KEY_COLLAPSED = 'ncs_sidebar_collapsed';
+const STORAGE_KEY_EXPANDED = 'ncs_folders_expanded';
+
+const defaultExpanded = new Set(['me', 'work', 'writing']);
+
+const loadExpanded = (): Set<string> => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_EXPANDED);
+    if (raw) return new Set(JSON.parse(raw) as string[]);
+  } catch {}
+  return new Set(defaultExpanded);
+};
 
 const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) => {
   const explorerRef = useRef<HTMLElement>(null);
   const [focusedItemIndex, setFocusedItemIndex] = useState(-1);
+  const [collapsed, setCollapsed] = useState(
+    () => localStorage.getItem(STORAGE_KEY_COLLAPSED) === 'true'
+  );
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(loadExpanded);
 
-  // Get file buttons for keyboard navigation
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_COLLAPSED, String(collapsed));
+  }, [collapsed]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_EXPANDED, JSON.stringify([...expandedFolders]));
+  }, [expandedFolders]);
+
+  const toggleFolder = (id: string) => {
+    setExpandedFolders(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const visibleFiles = files.filter(f => !f.parent || expandedFolders.has(f.parent));
+
   const getFileButtons = () => {
     if (!explorerRef.current) return [];
     return Array.from(
@@ -40,96 +80,128 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
     ) as HTMLElement[];
   };
 
-  // Keyboard navigation for file list
   useListKeyboardNavigation(
     getFileButtons(),
     focusedItemIndex,
     setFocusedItemIndex,
     (index) => {
-      const file = files[index];
-      if (file) {
+      const file = visibleFiles[index];
+      if (!file) return;
+      if (file.isContainer && file.id) {
+        toggleFolder(file.id);
+      } else if (file.section) {
         onSectionChange(file.section);
       }
     },
     true
   );
 
+  if (collapsed) {
+    return (
+      <nav
+        ref={explorerRef}
+        className="h-full flex flex-col w-8 bg-black/90 backdrop-blur-sm border-r border-border"
+        aria-label="Portfolio sections"
+        role="navigation"
+      >
+        <button
+          onClick={() => setCollapsed(false)}
+          className="flex items-center justify-center w-full py-2 text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Expand file explorer"
+          type="button"
+        >
+          <ChevronRight className="w-3.5 h-3.5" />
+        </button>
+      </nav>
+    );
+  }
+
   return (
     <nav
       ref={explorerRef}
-      className="h-full flex flex-col bg-black/90 backdrop-blur-sm border-r border-border"
+      className="h-full flex flex-col w-48 bg-black/90 backdrop-blur-sm border-r border-border"
       aria-label="Portfolio sections"
       role="navigation"
     >
       <div className="border-b border-border bg-black/50">
         <div className="flex items-center gap-2 px-2 py-1.5">
-          <Folder className="w-4 h-4 terminal-blue" aria-hidden="true" />
-          <h2 className="text-xs font-semibold uppercase tracking-wide">
-            Explorer — nasif/
+          <Folder className="w-3.5 h-3.5 terminal-blue" aria-hidden="true" />
+          <h2 className="text-[11px] font-semibold uppercase tracking-wide flex-1 text-muted-foreground">
+            nasiful-coder-space
           </h2>
+          <button
+            onClick={() => setCollapsed(true)}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Collapse file explorer"
+            type="button"
+          >
+            <ChevronLeft className="w-3.5 h-3.5" />
+          </button>
         </div>
-        <p className="text-[10px] opacity-40 px-2 pb-2">
-          a site shaped like a codebase
-        </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-1">
-        <div className="mb-2">
-          <div
-            className="flex items-center gap-1 px-1.5 text-xs font-medium text-muted-foreground mb-1"
-            role="presentation"
-          >
-            <ChevronRight className="w-3 h-3" aria-hidden="true" />
-            <Folder className="w-3 h-3 terminal-blue" aria-hidden="true" />
-            <span>PORTFOLIO</span>
-          </div>
+      <div className="flex-1 overflow-y-auto py-1">
+        <ul role="menu">
+          {visibleFiles.map((file, index) => {
+            const isActive = currentSection === file.section && !file.isContainer;
+            const isFocused = focusedItemIndex === index;
+            const isExpanded = file.isContainer && file.id ? expandedFolders.has(file.id) : false;
+            const indent = file.parent ? 'pl-4' : 'pl-1';
+            const Chevron = isExpanded ? ChevronDown : ChevronRight;
 
-          <ul className="pl-2" role="menu">
-            {files.map((file, index) => {
-              const Icon = file.icon;
-              const isActive = currentSection === file.section;
-              const isFocused = focusedItemIndex === index;
-
+            if (file.isContainer) {
               return (
-                <li key={file.section} role="none">
+                <li key={file.id} role="none">
                   <button
                     data-file-button
-                    onClick={() => onSectionChange(file.section)}
+                    onClick={() => file.id && toggleFolder(file.id)}
                     className={`
-                      w-full flex items-center gap-1.5 px-1.5 py-1 text-xs text-left rounded
-                      transition-all duration-200 group focus-visible:focus-visible
-                      min-h-[${MIN_TOUCH_TARGET_SIZE}px]
-                      ${isActive
-                        ? 'bg-muted text-primary font-medium'
-                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
-                      }
-                      ${isFocused ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : ''}
+                      w-full flex items-center gap-1 pl-1 pr-2 py-0.5 text-xs text-left
+                      transition-colors duration-150 text-muted-foreground hover:text-foreground
+                      ${isFocused ? 'ring-1 ring-primary ring-inset' : ''}
                     `}
-                    aria-current={isActive ? 'page' : undefined}
-                    aria-describedby={isActive ? `current-section-${file.section}` : undefined}
-                    role="menuitem"
+                    aria-expanded={isExpanded}
                     type="button"
                   >
-                    <Icon
-                      className={`w-3 h-3 transition-transform group-hover:scale-110 ${isActive ? 'terminal-cyan' : ''
-                        }`}
-                      aria-hidden="true"
-                    />
-                    <span>{file.name}</span>
-                    {isActive && (
-                      <span
-                        id={`current-section-${file.section}`}
-                        className="sr-only"
-                      >
-                        (current section)
-                      </span>
-                    )}
+                    <Chevron className="w-3 h-3 shrink-0" aria-hidden="true" />
+                    <Folder className="w-3 h-3 shrink-0 terminal-blue" aria-hidden="true" />
+                    <span className="truncate font-medium">{file.name}</span>
                   </button>
                 </li>
               );
-            })}
-          </ul>
-        </div>
+            }
+
+            return (
+              <li key={file.section || file.name} role="none">
+                <button
+                  data-file-button
+                  onClick={() => file.section && onSectionChange(file.section)}
+                  className={`
+                    w-full flex items-center gap-1.5 ${indent} pr-2 py-0.5 text-xs text-left
+                    transition-colors duration-150 focus-visible:focus-visible
+                    ${isActive
+                      ? 'bg-muted text-primary font-medium'
+                      : 'text-muted-foreground hover:bg-muted/40 hover:text-foreground'
+                    }
+                    ${isFocused ? 'ring-1 ring-primary ring-inset' : ''}
+                  `}
+                  aria-current={isActive ? 'page' : undefined}
+                  role="menuitem"
+                  type="button"
+                >
+                  <file.icon
+                    className={`w-3 h-3 shrink-0 ${isActive ? 'terminal-cyan' : ''}`}
+                    aria-hidden="true"
+                  />
+                  <span className="truncate">{file.name}</span>
+                  {isActive && (
+                    <span className="sr-only">(current section)</span>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
 
       <div
@@ -138,10 +210,7 @@ const FileExplorer = ({ currentSection, onSectionChange }: FileExplorerProps) =>
         aria-live="polite"
       >
         <div className="flex items-center gap-1">
-          <div
-            className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"
-            aria-hidden="true"
-          />
+          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" aria-hidden="true" />
           <span>Ready</span>
         </div>
       </div>

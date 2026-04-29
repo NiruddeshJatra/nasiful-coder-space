@@ -225,8 +225,8 @@ const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({
       <div className="flex-1 flex overflow-hidden relative" style={{ zIndex: Z_INDEX.content }}>
         {/* File Explorer - Desktop/Tablet Layout */}
         {navigationState.currentLayout !== LayoutMode.SINGLE_PANEL && (
-          <div className="w-48 shrink-0">
-            <FileExplorer 
+          <div className="shrink-0">
+            <FileExplorer
               currentSection={currentSection} 
               onSectionChange={handleSectionChange} 
             />

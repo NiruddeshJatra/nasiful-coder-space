@@ -1,98 +1,94 @@
-import profilePhoto from "@/assets/profile.jpg";
-
 const AboutContent = () => {
   return (
-    <div className="space-y-4 animate-fade-in font-mono text-sm">
-      <div className="space-y-2">
-        <span className="terminal-purple">const</span>{" "}
-        <span className="terminal-cyan">developer</span> ={" "}
+    <div className="animate-fade-in font-mono text-sm leading-relaxed max-w-2xl mx-auto px-4 py-6">
+
+      <div className="text-muted-foreground space-y-0.5 mb-6 text-xs">
+        <div><span className="terminal-green">/**</span></div>
+        <div className="pl-3"><span className="terminal-green"> * about.md — nasiful alam</span></div>
+        <div className="pl-3"><span className="terminal-green"> * builds systems. writes. makes 2d games.</span></div>
+        <div className="pl-3"><span className="terminal-green"> * Chattogram, Bangladesh</span></div>
+        <div><span className="terminal-green"> */</span></div>
+      </div>
+
+      <div className="mb-1">
+        <span className="terminal-purple">const </span>
+        <span className="terminal-cyan">me</span>
+        <span className="text-foreground"> = </span>
         <span className="terminal-yellow">{"{"}</span>
       </div>
-      
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="flex-1 space-y-1.5">
-          <div className="mb-3">
-            <div className="terminal-cyan text-base font-semibold">Nasiful Alam</div>
-            <div className="text-muted-foreground text-xs">Software Engineer</div>
+
+      <div className="pl-6 space-y-5">
+
+        <div className="space-y-1">
+          <div className="terminal-green text-xs">// who</div>
+          <div>
+            <span className="terminal-blue">name</span>
+            <span className="text-muted-foreground">: </span>
+            <span className="terminal-orange">"Nasiful Alam"</span>
+            <span className="text-muted-foreground">,</span>
           </div>
           <div>
-            <span className="terminal-blue">name:</span>{" "}
-            <span className="terminal-orange">"Nasiful Alam"</span>,
-          </div>
-          <div>
-            <span className="terminal-blue">role:</span>{" "}
-            <span className="terminal-orange">"Startup Founder & Full-Stack Engineer"</span>,
-          </div>
-          <div>
-            <span className="terminal-blue">location:</span>{" "}
-            <span className="terminal-orange">"Chattogram, Bangladesh"</span>,
-          </div>
-          <div>
-            <span className="terminal-blue">email:</span>{" "}
-            <span className="terminal-orange">"nasifulalam1212@gmail.com"</span>,
-          </div>
-          <div>
-            <span className="terminal-blue">phone:</span>{" "}
-            <span className="terminal-orange">"+8801626-181662"</span>,
+            <span className="terminal-blue">based_in</span>
+            <span className="text-muted-foreground">: </span>
+            <span className="terminal-orange">"Chattogram, Bangladesh"</span>
+            <span className="text-muted-foreground">,</span>
           </div>
         </div>
-        <div className="md:w-1/4 flex justify-center md:justify-end mr-10">
-          <img 
-            src={profilePhoto} 
-            alt="Nasiful Alam" 
-            className="w-24 h-24 md:w-36 md:h-36 rounded-full border-2 border-primary object-cover" 
-          />
-        </div>
-      </div>
-      
-      <div className="space-y-2">
-        <span className="terminal-yellow">{"}"}</span>;
-      </div>
 
-      <div className="mt-6 space-y-3 border-t border-border pt-4">
-        <div className="terminal-green text-xs">// Summary</div>
-        <p className="text-foreground leading-relaxed text-xs">
-          Startup founder and full-stack engineer with deep experience building 
-          production-grade web platforms on AWS. Proven track record in delivering 
-          scalable MVPs, implementing cloud infrastructure, optimizing performance, 
-          and leading product vision.
-        </p>
-      </div>
-
-      <div className="mt-6 space-y-3 border-t border-border pt-4">
-        <div className="terminal-green text-xs">// What I'm Looking For</div>
-        <p className="text-foreground leading-relaxed text-xs">
-          Seeking software engineer roles focused on:
-        </p>
-        <ul className="list-disc list-inside space-y-0.5 text-muted-foreground ml-4 text-xs">
-          <li>Scalable systems architecture</li>
-          <li>Clean code and best practices</li>
-          <li>Developer experience optimization</li>
-          <li>High-impact product development</li>
-        </ul>
-      </div>
-
-      <div className="mt-6 space-y-3 border-t border-border pt-4">
-        <div className="terminal-green text-xs">// Current Focus</div>
-        <div className="space-y-1.5">
-          <div className="flex items-start gap-2">
-            <span className="terminal-cyan">▹</span>
-            <p className="text-foreground text-xs">Building mentorship platforms at Intellectify.io</p>
+        <div className="space-y-1">
+          <div className="terminal-green text-xs">// what I do</div>
+          <div>
+            <span className="terminal-blue">engineer</span>
+            <span className="text-muted-foreground">: </span>
+            <span className="terminal-orange">"full-stack — Django, MERN, AWS"</span>
+            <span className="text-muted-foreground">,</span>
           </div>
-          <div className="flex items-start gap-2">
-            <span className="terminal-cyan">▹</span>
-            <p className="text-foreground text-xs">Developing scalable cloud infrastructure on AWS</p>
-          </div>
-          <div className="flex items-start gap-2">
-            <span className="terminal-cyan">▹</span>
-            <p className="text-foreground text-xs">Implementing microservices architecture</p>
-          </div>
-          <div className="flex items-start gap-2">
-            <span className="terminal-cyan">▹</span>
-            <p className="text-foreground text-xs">Optimizing full-stack application performance</p>
+          <div>
+            <span className="terminal-blue">also</span>
+            <span className="text-muted-foreground">: [</span>
+            <span className="terminal-orange">"write"</span>
+            <span className="text-muted-foreground">, </span>
+            <span className="terminal-orange">"make 2d arcade games"</span>
+            <span className="text-muted-foreground">],</span>
           </div>
         </div>
+
+        <div className="space-y-1">
+          <div className="terminal-green text-xs">// now</div>
+          <div>
+            <span className="terminal-blue">building</span>
+            <span className="text-muted-foreground">: </span>
+            <span className="terminal-orange">"Intellectify.io"</span>
+            <span className="text-muted-foreground">, </span>
+            <span className="terminal-green text-xs">// mentorship platform</span>
+          </div>
+          <div>
+            <span className="terminal-blue">deep_in</span>
+            <span className="text-muted-foreground">: </span>
+            <span className="terminal-orange">"AWS infrastructure, microservices"</span>
+            <span className="text-muted-foreground">,</span>
+          </div>
+        </div>
+
       </div>
+
+      <div className="mt-1">
+        <span className="terminal-yellow">{"}"}</span>
+        <span className="text-muted-foreground">;</span>
+      </div>
+
+      <div className="mt-6 text-xs">
+        <span className="terminal-purple">export default </span>
+        <span className="terminal-cyan">me</span>
+        <span className="text-muted-foreground">;</span>
+      </div>
+
+      <div className="mt-8 pt-4 border-t border-border text-xs text-muted-foreground">
+        <span className="terminal-green">// </span>
+        email and contact info →{" "}
+        <span className="terminal-cyan">contact.md</span>
+      </div>
+
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { files } from '../components/FileExplorer';
 export const SECTION_ALIASES: Record<string, string> = (() => {
   const map: Record<string, string> = {};
   for (const f of files) {
+    if (!f.section) continue;
     // "about.txt" → "about", "lab/" → "lab"
     map[f.name] = f.section;
     // bare name → section

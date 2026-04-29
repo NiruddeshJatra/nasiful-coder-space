@@ -18,8 +18,8 @@ src/
 ├── components/
 │   ├── sections/         # Page content sections (About, Projects, Skills, etc.)
 │   ├── ui/               # shadcn/ui primitives
-│   ├── Editor.tsx        # Main VS Code-style editor pane
-│   ├── FileExplorer.tsx  # Sidebar file tree + authoritative `files` array
+│   ├── Editor.tsx        # Main VS Code-style editor pane; per-section skeleton fallbacks
+│   ├── FileExplorer.tsx  # Sidebar file tree — authoritative `files` array + hierarchy
 │   ├── Terminal.tsx      # Interactive terminal component
 │   ├── ResponsiveLayout.tsx  # Root layout — gates MobileShell at < 768px
 │   ├── MobileShell.tsx   # Mobile-only layout (top bar + editor + bottom nav)
@@ -27,7 +27,7 @@ src/
 │   ├── ResponsiveHeader.tsx  # Top nav / menu bar
 │   ├── StatusBar.tsx     # Bottom VS Code status bar
 │   ├── ThemeSwitcher.tsx # Dark/light/system theme toggle
-│   └── MatrixBackground.tsx  # Animated background effect
+│   └── MatrixBackground.tsx  # Animated matrix background (density 0.6, 50ms frame)
 ├── pages/
 │   ├── Index.tsx         # Home page
 │   └── NotFound.tsx      # 404
@@ -36,9 +36,45 @@ src/
 │   └── ...               # Other custom hooks
 ├── lib/                  # Shared utilities
 └── constants/
-    ├── sections.ts       # SECTION_ALIASES — derived from FileExplorer.files
+    ├── sections.ts       # SECTION_ALIASES — derived from FileExplorer.files (skips containers)
     └── ...               # Other static data
 ```
+
+## Sidebar File Tree
+
+Canonical folder structure in `FileExplorer.files`:
+```
+me/           → container (expand/collapse, no section)
+  about.txt   → about
+  experience.txt → experience
+  education.txt  → education
+  skills.json    → skills
+work/         → container
+  projects.txt   → projects
+  lab/           → lab
+writing/      → container
+  blog.md        → blog
+  notes/         → notes
+now.md        → now
+contact.md    → contact
+colophon.md   → colophon
+```
+
+`FileItem` interface (in `FileExplorer.tsx`):
+```typescript
+interface FileItem {
+  id?: string;         // set on container folders (me, work, writing)
+  name: string;
+  section: string;     // empty string for containers — skipped in SECTION_ALIASES
+  icon: typeof File;
+  parent?: string;     // matches parent container's id
+  isContainer?: boolean;
+}
+```
+
+Adding a new navigable section: add a `FileItem` with `section` set, `parent` pointing to the appropriate container id. `sections.ts` picks it up automatically.
+
+Adding a new container folder: add a `FileItem` with `isContainer: true`, `id` set, `section: ''`. Add children with `parent` matching that id.
 
 ## Key Conventions
 - Functional components + hooks only — no class components
@@ -47,10 +83,20 @@ src/
 - Named exports for components; default export for pages
 - No `any` types — proper TypeScript interfaces required
 - Project/skills data lives in `src/constants/` — never hardcoded in components
-- **Section aliases** live in `src/constants/sections.ts`, derived from `FileExplorer.files` — never duplicate this map in components
+- **Section aliases** live in `src/constants/sections.ts`, derived from `FileExplorer.files` — never duplicate this map in components. Skips items where `section === ''` (container folders).
 - **Mobile layout**: `ResponsiveLayout` gates `<MobileShell>` when `viewport.isMobile` (< 768px) — the desktop IDE chrome must NOT render on mobile
 - **CommandPalette** is lazy-loaded; `meta+p` = files, `meta+shift+p` = commands; always guard against `HTMLInputElement` focus before opening
+- **FileExplorer owns its width** — do NOT set `w-*` on the wrapper div in `ResponsiveLayout`. Collapsed = `w-8`, expanded = `w-48`, managed internally.
+- **Lazy section loading** — all sections in `Editor.tsx` are `React.lazy`. Each has a dedicated skeleton fallback (see `getSectionSkeleton`). Do not use generic "loading..." text.
+- **Section page design**: code-as-self style — monospace, comment blocks, `const` objects. No generic resume bullet points. `max-w-2xl mx-auto` for center focus.
 - Commit format: `type(scope): description` (feat/fix/chore/refactor/docs)
+
+## localStorage Keys
+All keys namespaced `ncs_*` to avoid collisions:
+| Key | Type | Purpose |
+|-----|------|---------|
+| `ncs_sidebar_collapsed` | `"true" \| "false"` | FileExplorer collapsed state |
+| `ncs_folders_expanded` | `JSON string[]` | Set of expanded container folder ids |
 
 ## Commands
 ```bash
