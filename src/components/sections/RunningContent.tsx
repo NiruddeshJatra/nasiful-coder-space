@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "../SEO";
+import { races, racesAfterGap, skipped, cal, type RaceEntry, type CalEntry } from "@/constants/races";
 
 const SectionHeader = ({ label }: { label: string }) => (
   <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// {label}</div>
@@ -15,108 +16,6 @@ const HScrollTable = ({ children, className = "my-6" }: { children: React.ReactN
     </div>
   </>
 );
-
-type RaceEntry = {
-  date: string;
-  dist: string;
-  event: string;
-  time: string;
-  note?: string;
-  flag?: boolean;
-  skip?: boolean;
-};
-
-const races: RaceEntry[] = [
-  {
-    date: "2023-01-20", dist: "21.1K", event: "Bangabandhu International Marathon", time: "2h 07m",
-    note: "got to the race point 5 minutes late, still managed\na better-than-expected time. nobody knew i was running.",
-  },
-  {
-    date: "2023-02-23", dist: "25K", event: "Run Bangladesh CU", time: "2h 53m",
-    note: "misty winter morning. ran the first 30 minutes chatting\nwith a foreign participant. cramped a few times.\nmy father came to watch.",
-  },
-  {
-    date: "2023-03-17", dist: "21.1K", event: "Rajshahi Half Marathon", time: "2h 04m",
-    note: "first time in rajshahi. saw the padma. my father ran\na 3K event with me — first time we raced together.",
-  },
-  {
-    date: "2023-09-29", dist: "10K", event: "Mirpur 10K", time: "1h 02m",
-    flag: true,
-    note: "restart event after a gap. walked dhaka for 4 hours\nafterwards — left foot started hurting.\nbecame an injury later.",
-  },
-  {
-    date: "2023-10-04", dist: "21.1K", event: "UCR Half Marathon", time: "2h 45m",
-    flag: true,
-    note: "ran injured. pain hit at 7K. finished anyway.",
-  },
-  {
-    date: "2023-10-20", dist: "21.1K", event: "Sunamganj Half Marathon", time: "2h 20m",
-    note: "first time in sunamganj. stayed two days. tanguar haor,\nniladri lake. wanted a better timing, didn't get it.",
-  },
-  {
-    date: "2023-11-02", dist: "25K", event: "Run Bangladesh Sylhet", time: "3h 10m",
-    note: "family trip to sylhet. cramped hard near the end.",
-  },
-  {
-    date: "2023-11-17", dist: "10K", event: "CR 10K", time: "57m",
-    note: "hometown race in chattogram. finished strong.\nmy friend also participated for the first time.",
-  },
-  {
-    date: "2024-01-10", dist: "42.2K", event: "Bangabandhu International Marathon", time: "5h 30m",
-    note: "first full marathon. cramps everywhere.\nwent to dhaka with the friend who ran 21.1K in that event.",
-  },
-  {
-    date: "2024-02-24", dist: "52K", event: "Vertical Dreamers Ultra (bandarban)", time: "8h 20m",
-    flag: true,
-    note: "first hill ultra. ~1000m elevation gain.\nat the end i wished i'd stopped. didn't.",
-  },
-  {
-    date: "2024-03-07", dist: "25K", event: "Run Bangladesh Dhaka", time: "2h 36m",
-    note: "reached late, missed the baggage drop, ran the first\n5K carrying my bag. still my strongest, fastest finish.",
-  },
-];
-
-const racesAfterGap: RaceEntry[] = [
-  {
-    date: "2025-10-18", dist: "21.1K", event: "Bandarban Hill Half Marathon", time: "2h 30m",
-    note: "back on track. tough. no injury.",
-  },
-  {
-    date: "2025-11-01", dist: "42.2K", event: "Cox's Bazar Full Marathon", time: "5h 30m",
-    note: "family came on the trip. roamed the seabeach.\nran sick, finished strong. foot injury appeared after.",
-  },
-  {
-    date: "2025-11-08", dist: "42.2K", event: "Comilla Full Marathon", time: "6h 20m",
-    flag: true,
-    note: "back-to-back full a week later. shouldn't have run.\nwent anyway. first time in comilla. finished slow.\ninjury kept worsening.",
-  },
-  {
-    date: "2025-12-05", dist: "52K", event: "Vertical Dreamers Ultra (bandarban)", time: "~9h 00m",
-    flag: true,
-    note: "the toughest event i've run. side tendons blew at\n26K. walked the rest with a stick. 6h for the last 26K.\nfinished.",
-  },
-  {
-    date: "2026-01-03", dist: "21.1K", event: "Bhatiyari Half Marathon", time: "3h 05m",
-    flag: true,
-    note: "walked most of it. running triggered the injury.",
-  },
-  {
-    date: "2026-06-19", dist: "25K", event: "Dhaka Run 25K", time: "2h 32m",
-    flag: true,
-    note: "first race back after the injury months. even splits —\nsecond half matched the first. right glute gave out at km 18.\n68th of 942. strongest comeback i could've asked for.",
-  },
-];
-
-const skipped: RaceEntry[] = [
-  {
-    date: "2025-12-25", dist: "6h", event: "Stadium Run", time: "did not run",
-    note: "knee hadn't recovered. consulted a doctor. wasn't\ngoing to make 6 hours. one of my dream events.",
-  },
-  {
-    date: "2026-02-05", dist: "50K", event: "Bhawal Ultra Marathon", time: "did not run",
-    note: "registered months ahead. by the date, i knew the leg\nwouldn't finish. didn't go.",
-  },
-];
 
 const RaceRow = ({ entry }: { entry: RaceEntry }) => (
   <div className="mb-3">
@@ -134,17 +33,6 @@ const RaceRow = ({ entry }: { entry: RaceEntry }) => (
     )}
   </div>
 );
-
-type CalEntry = { date: string; dist: string; event: string; weight: "phosphor" | "body" | "dim" };
-
-const cal: CalEntry[] = [
-  { date: "2026-07-10",  dist: "21.1K",             event: "Chatto Metro Half Marathon 2026",     weight: "phosphor" },
-  { date: "2026-08-08",  dist: "42.2K",             event: "Sylhet International Marathon 2026",   weight: "phosphor" },
-  { date: "2026-10-16",  dist: "42.2K / 21.1K",     event: "Active Pulse Chattogram Marathon",    weight: "body" },
-  { date: "2026-10-30",  dist: "100K / 50K / 33K",  event: "Albatross Ultrail 2026",              weight: "phosphor" },
-  { date: "2026-11-14",  dist: "42.2K",             event: "Cox's Bazar International Marathon",   weight: "body" },
-  { date: "2026-12-17",  dist: "161K / 100K / 50K", event: "Costral Ultra 2026",                  weight: "dim"  },
-];
 
 const weightClass: Record<CalEntry["weight"], string> = {
   phosphor: "text-phosphor",
