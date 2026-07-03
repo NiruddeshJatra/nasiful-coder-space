@@ -100,6 +100,11 @@ const racesAfterGap: RaceEntry[] = [
     flag: true,
     note: "walked most of it. running triggered the injury.",
   },
+  {
+    date: "2026-06-19", dist: "25K", event: "Dhaka Run 25K", time: "2h 32m",
+    flag: true,
+    note: "first race back after the injury months. even splits —\nsecond half matched the first. right glute gave out at km 18.\n68th of 942. strongest comeback i could've asked for.",
+  },
 ];
 
 const skipped: RaceEntry[] = [
@@ -133,22 +138,12 @@ const RaceRow = ({ entry }: { entry: RaceEntry }) => (
 type CalEntry = { date: string; dist: string; event: string; weight: "phosphor" | "body" | "dim" };
 
 const cal: CalEntry[] = [
-  { date: "2026-06-19",  dist: "25K",                event: "Dhaka Run 25K",                       weight: "phosphor" },
-  { date: "2026-07-03",  dist: "50K",               event: "Fuel Xtream Ultra 2026 Edition 2",    weight: "body" },
-  { date: "2026-07-10",  dist: "21.1K",              event: "Chatto Metro Half Marathon 2026",     weight: "body" },
-  { date: "2026-08-08",  dist: "42.2K",                event: "Sylhet International Marathon 2026", weight: "phosphor" },
-  { date: "2026-08-21",  dist: "30K",                event: "Sylhet Summer 30K Challenge 2026",    weight: "body" },
-  { date: "2026-09-04",  dist: "50K",                event: "Hatirjheel Ultra 2026",               weight: "body" },
-  { date: "2026-10-09",  dist: "42.2K",              event: "Raipura Marathon 2026",               weight: "dim"  },
-  { date: "2026-10-16",  dist: "42.2K / 21.1K",      event: "Active Pulse Chattogram Marathon",    weight: "body" },
-  { date: "2026-10-30",  dist: "100K / 50K / 33K",   event: "Albatross Ultrail 2026",              weight: "phosphor" },
-  { date: "2026-11-13",  dist: "100K / 50K / 30K",   event: "The Athlete X Ultra 2026",            weight: "phosphor" },
-  { date: "2026-11-27",  dist: "42.2K / 21.1K",      event: "Jolshiri Runbangla Marathon",         weight: "dim"  },
-  { date: "2026-12-11",  dist: "161K / 100K / 50K",  event: "Costral Ultra 2026",                  weight: "phosphor" },
-  { date: "2026-12-11",  dist: "21.1K",              event: "MSDO Satkania Half Marathon 2026",    weight: "dim"  },
-  { date: "2026-12-17",  dist: "42.2K / 21.1K",      event: "Northern Marathon",                   weight: "body" },
-  { date: "2027-01-08",  dist: "21.1K",              event: "Moheshkhali Island Half Marathon",    weight: "dim"  },
-  { date: "2027-01-22",  dist: "50K",                event: "Bhawal Ultra Marathon 2027",          weight: "body" },
+  { date: "2026-07-10",  dist: "21.1K",             event: "Chatto Metro Half Marathon 2026",     weight: "phosphor" },
+  { date: "2026-08-08",  dist: "42.2K",             event: "Sylhet International Marathon 2026",   weight: "phosphor" },
+  { date: "2026-10-16",  dist: "42.2K / 21.1K",     event: "Active Pulse Chattogram Marathon",    weight: "body" },
+  { date: "2026-10-30",  dist: "100K / 50K / 33K",  event: "Albatross Ultrail 2026",              weight: "phosphor" },
+  { date: "2026-11-14",  dist: "42.2K",             event: "Cox's Bazar International Marathon",   weight: "body" },
+  { date: "2026-12-17",  dist: "161K / 100K / 50K", event: "Costral Ultra 2026",                  weight: "dim"  },
 ];
 
 const weightClass: Record<CalEntry["weight"], string> = {
@@ -278,7 +273,7 @@ const RunningContent = () => (
     </HScrollTable>
 
     <div className="mt-12 pt-3 border-t border-border/40 text-[10px] text-phosphor-dim font-mono">
-      — nj · last updated 2026-05 · still going
+      — nj · last updated 2026-07 · still going
     </div>
   </div>
   </>

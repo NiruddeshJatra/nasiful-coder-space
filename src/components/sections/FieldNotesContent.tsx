@@ -17,6 +17,103 @@ const FieldNotesContent = () => (
 
       <article className="mb-12">
         <div className="flex items-baseline gap-3 mb-3 text-xs">
+          <span className="text-phosphor-dim font-mono">2026-07-03</span>
+          <span className="text-phosphor-dim">·</span>
+          <h3 className="text-foreground/85 font-mono uppercase tracking-[0.15em]">catching fajr, missing it</h3>
+        </div>
+
+        <div className="pl-0 text-[15px] leading-[1.7]">
+          <p className="mb-3">
+            the tuitions moved to 7am this month. which means waking at 4:30,
+            4:45. which means fajr is no longer a prayer i choose to get up for
+            — it's just there, at the edge of waking, unavoidable now.
+          </p>
+          <p className="mb-3">
+            i thought this would fix my namaj problem. for months my record was
+            bad, more missed than kept. now i catch fajr almost every day. the
+            getting-up is solved.
+          </p>
+          <p className="mb-3">
+            but i stand in it half-asleep, reciting on autopilot, my mind already
+            on the 7am student. i catch the prayer and miss the prayer at the same
+            time. presence turns out to be a separate problem from attendance. i
+            solved the easy one and called it the hard one.
+          </p>
+          <p className="mb-3">
+            no clean lesson here. just noticing that showing up and being there
+            are not the same thing, and i only fixed the first.
+          </p>
+        </div>
+
+        <div className="mt-8 border-b border-border/30" />
+      </article>
+
+      <article className="mb-12">
+        <div className="flex items-baseline gap-3 mb-3 text-xs">
+          <span className="text-phosphor-dim font-mono">2026-06-25</span>
+          <span className="text-phosphor-dim">·</span>
+          <h3 className="text-foreground/85 font-mono uppercase tracking-[0.15em]">the correction list</h3>
+        </div>
+
+        <div className="pl-0 text-[15px] leading-[1.7]">
+          <p className="mb-3">
+            finished my first paid website this month. a real client, a real
+            event. i poured more into it than the fee justified — made it as
+            premium as i could, because i couldn't help it.
+          </p>
+          <p className="mb-3">
+            someone outside the project saw it and called it premium, amazing.
+            an hour later the client sent a list of corrections. no thank-you
+            first, just the list. it landed like a verdict on the whole thing.
+          </p>
+          <p className="mb-3">
+            it wasn't. the list was four small items, most of them fair. but for
+            an hour i couldn't tell the difference between "here are some changes"
+            and "you failed." that gap — between what the work is and what one
+            blunt message makes it feel like — is the actual job. not the code.
+          </p>
+          <p className="mb-3">
+            the work was good and the work needed changes. both true at once.
+            learning to hold both without the second erasing the first is the
+            thing i'm actually practicing now.
+          </p>
+        </div>
+
+        <div className="mt-8 border-b border-border/30" />
+      </article>
+
+      <article className="mb-12">
+        <div className="flex items-baseline gap-3 mb-3 text-xs">
+          <span className="text-phosphor-dim font-mono">2026-06-19</span>
+          <span className="text-phosphor-dim">·</span>
+          <h3 className="text-foreground/85 font-mono uppercase tracking-[0.15em]">dhaka 25k, even splits</h3>
+        </div>
+
+        <div className="pl-0 text-[15px] leading-[1.7]">
+          <p className="mb-3">
+            2:32:40. six-oh-seven per kilometer. 68th overall out of 942. my
+            first 25k back after the injury months, and somehow my most even
+            race — the second half almost exactly the first.
+          </p>
+          <p className="mb-3">
+            it fell apart in one specific place. right glute gave out around
+            km 18 to 20, and everything downstream started compensating. i
+            finished on borrowed mechanics. the time held; the body filed a
+            complaint.
+          </p>
+          <p className="mb-3">
+            the even splits felt like discipline while i ran them and like luck
+            when i looked back. maybe they're the same thing at this distance —
+            holding a pace you're not sure you can hold, and being wrong about
+            the doubt.
+          </p>
+        </div>
+
+        <div className="mt-8 border-b border-border/30" />
+      </article>
+
+      <article className="mb-12">
+        <div className="flex items-baseline gap-3 mb-3 text-xs">
           <span className="text-phosphor-dim font-mono">2026-05-08</span>
           <span className="text-phosphor-dim">·</span>
           <h3 className="text-foreground/85 font-mono uppercase tracking-[0.15em]">heat sickness, then a run</h3>
@@ -111,7 +208,7 @@ const FieldNotesContent = () => (
     </div>
 
     <div className="mt-12 pt-3 border-t border-border/40 text-[10px] text-phosphor-dim font-mono">
-      — nj · 3 notes · 2026-05 · more as they come
+      — nj · 6 notes · 2026-07 · more as they come
     </div>
   </div>
   </>

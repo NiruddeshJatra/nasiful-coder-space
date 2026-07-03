@@ -365,3 +365,13 @@ Refined several UI details based on review:
 - **vercel.json**: added `redirects` array with host-conditional 301: any request to `www.niruddeshjatra.space` 301-redirects to `https://niruddeshjatra.space/$1`. Previously www returned 200 with its own content — crawlers (Facebook, Google) could fetch a different URL than canonical. ArcZero rewrites preserved exactly.
 - **Diagnostic confirmed**: local `dist/` is fully correct — `dist/index.html` has all og:title, og:description, og:image, twitter:*, WebSite JSON-LD; `dist/writing/essays/on-staying-small/index.html` has essay-specific og:title, og:description, Article JSON-LD with `datePublished: 2026-05-10`.
 - **google8eaf4159b05eea80.html**: Google Search Console ownership verification file added to project root (served as static asset).
+
+---
+
+## Phase R — Content Refresh: Field Notes, Running Log, Now Page (Pre-Announce)
+**2026-07-03 — Bring personal content current ahead of public site announcement**
+
+- **FieldNotesContent.tsx**: added 3 new dated entries at top (newest-first) — `2026-07-03` (fajr schedule shift, presence vs. attendance), `2026-06-25` (first paid client site, handling a correction list), `2026-06-19` (Dhaka 25K race recap — 2:32:40, even splits, glute issue at km 18). Footer count bumped to 6 notes, stamp to 2026-07.
+- **RunningContent.tsx**: Dhaka Run 25K moved from the `cal[]` watchlist into `racesAfterGap[]` as a completed, flagged result (2h 32m, note on even splits/comeback). `cal[]` replaced wholesale with 6 confirmed 2026 races (Chatto Metro Half, Sylhet Int'l Marathon, Active Pulse Chattogram, Albatross Ultrail, Cox's Bazar Int'l Marathon, Costral Ultra) — dropped several stale/unconfirmed entries (Fuel Xtream, Sylhet Summer 30K, Hatirjheel Ultra, Raipura, Athlete X, Jolshiri, MSDO Satkania, Northern, Moheshkhali, Bhawal 2027). Footer stamp to 2026-07.
+- **NowContent.tsx**: rewrote all four sections (tutoring, training, races, building) to reflect current state — taper week ahead of Chatto Metro Half, post-Fajr training window (5:15–6:45am), Dhaka 25K result, autumn race calendar, site announcement, ArcZero leaderboard, rental-marketplace rebuild. SEO description and footer stamp updated to 2026-07.
+- Content-only pass — no routing, component structure, or architecture changes. Voice rules preserved (lowercase in field notes/running, sentence-case allowed in now.md).
