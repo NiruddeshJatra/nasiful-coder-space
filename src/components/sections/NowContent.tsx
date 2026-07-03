@@ -1,6 +1,9 @@
 import SEO from "../SEO";
+import { lastRace, nextRace, upcomingRaces, formatRaceDate, formatRaceMonth, displayName } from "@/constants/races";
 
 const NowContent = () => {
+  const [sylhet, chattogram, albatross, coxsBazar] = upcomingRaces;
+
   return (
     <>
       <SEO
@@ -22,14 +25,14 @@ const NowContent = () => {
         <div>
           <div className="text-phosphor-dim text-sm mt-8 mb-2 font-mono">// training</div>
           <p>
-            Seven days out from the Chatto Metro Half Marathon, so this is taper week — less volume, more rest, trying not to invent new work to fill the space. The base is real now: I ran Dhaka 25K in 2:32 in June, even splits, first race back after a long injury stretch. The schedule shifted this month — tuitions moved to 7am, so training is a post-Fajr window now, roughly 5:15 to 6:45. Full calendar's on the running page.
+            Seven days out from the {displayName(nextRace)}, so this is taper week — less volume, more rest, trying not to invent new work to fill the space. The base is real now: I ran {lastRace.event} in {lastRace.time} in {formatRaceMonth(lastRace.date)}, even splits, first race back after a long injury stretch. The schedule shifted this month — tuitions moved to 7am, so training is a post-Fajr window now, roughly 5:15 to 6:45. Full calendar's on the running page.
           </p>
         </div>
 
         <div>
           <div className="text-phosphor-dim text-sm mt-8 mb-2 font-mono">// races</div>
           <p>
-            Chatto Metro Half Marathon on July 10 is next — targeting 2:05 to 2:10. After that, Sylhet International Marathon in August, then a heavier autumn: Chattogram in October, the Albatross Ultrail, Cox's Bazar in November. The 100K is still the line I'm walking toward, not across, yet.
+            {displayName(nextRace)} on {formatRaceDate(nextRace.date)} is next — targeting 2:05 to 2:10. After that, {displayName(sylhet)} in {formatRaceMonth(sylhet.date)}, then a heavier autumn: {displayName(chattogram)} in {formatRaceMonth(chattogram.date)}, the {displayName(albatross)}, {displayName(coxsBazar)} in {formatRaceMonth(coxsBazar.date)}. The 100K is still the line I'm walking toward, not across, yet.
           </p>
         </div>
 
