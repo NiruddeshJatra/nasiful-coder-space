@@ -375,3 +375,8 @@ Refined several UI details based on review:
 - **RunningContent.tsx**: Dhaka Run 25K moved from the `cal[]` watchlist into `racesAfterGap[]` as a completed, flagged result (2h 32m, note on even splits/comeback). `cal[]` replaced wholesale with 6 confirmed 2026 races (Chatto Metro Half, Sylhet Int'l Marathon, Active Pulse Chattogram, Albatross Ultrail, Cox's Bazar Int'l Marathon, Costral Ultra) — dropped several stale/unconfirmed entries (Fuel Xtream, Sylhet Summer 30K, Hatirjheel Ultra, Raipura, Athlete X, Jolshiri, MSDO Satkania, Northern, Moheshkhali, Bhawal 2027). Footer stamp to 2026-07.
 - **NowContent.tsx**: rewrote all four sections (tutoring, training, races, building) to reflect current state — taper week ahead of Chatto Metro Half, post-Fajr training window (5:15–6:45am), Dhaka 25K result, autumn race calendar, site announcement, ArcZero leaderboard, rental-marketplace rebuild. SEO description and footer stamp updated to 2026-07.
 - Content-only pass — no routing, component structure, or architecture changes. Voice rules preserved (lowercase in field notes/running, sentence-case allowed in now.md).
+
+## Google Analytics Integration
+**2026-07-10 — Added Google Analytics (GA4) tracking tag to index.html**
+
+Added Google tag (`G-2CWN5RMGK4`) immediately after `<head>` in `index.html`. Single placement covers all routes since the site is a SPA. No architectural changes — config-only addition.
