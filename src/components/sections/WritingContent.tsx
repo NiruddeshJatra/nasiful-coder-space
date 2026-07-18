@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { firePortal } from "@/hooks/useLoader";
 import IndexRow from "./IndexRow";
 import SEO from "../SEO";
 
@@ -23,46 +24,93 @@ const essays = [
   },
 ];
 
-const WritingContent = () => (
-  <>
-    <SEO
-      title="writing — niruddeshjatra"
-      description="essays and tech articles by nj. mostly about running, teaching, and how i think."
-      path="/writing"
-    />
-  <div className="animate-fade-in font-mono max-w-xl mx-auto px-4 py-6 text-foreground/85">
-    <div className="pl-2 mb-6">
-      <p className="mb-1"><span className="text-phosphor">&gt; </span>a place for things i write down.</p>
-      <p className="mb-1"><span className="text-phosphor">&gt; </span>essays and tech articles, mostly.</p>
-      <p className="mb-1"><span className="text-phosphor">&gt; </span>more coming.</p>
-    </div>
+const techArticles = [
+  {
+    title: "the machine beneath your code",
+    path: "/writing/the-machine-beneath-your-code",
+    description: "intro · hardware & OS from ground up",
+  },
+  {
+    title: "what's inside a bit?",
+    path: "/writing/whats-inside-a-bit",
+    description: "part 01 · transistors, voltage, memory",
+  },
+];
 
-    <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// essays</div>
+const WritingContent = () => {
+  const navigate = useNavigate();
 
-    <div className="pl-2 space-y-4 sm:space-y-1">
-      {essays.map((essay) => (
-        <IndexRow
-          key={essay.path}
-          name={<Link to={essay.path} className="text-phosphor hover:underline">{essay.title}</Link>}
-          description={<>
-            {essay.description} · <span className="text-phosphor-dim">[en]</span>{" "}
-            <Link to={essay.bnPath} className="text-phosphor-dim hover:text-phosphor">[bn]</Link>
-          </>}
-        />
-      ))}
-    </div>
+  const goArticle = (path: string) => {
+    firePortal({ destination: '> tech-articles', onComplete: () => navigate(path) });
+  };
 
-    <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// tech articles</div>
+  return (
+    <>
+      <SEO
+        title="writing — niruddeshjatra"
+        description="essays and tech articles by nj. mostly about running, teaching, and how i think."
+        path="/writing"
+      />
+      <div className="animate-fade-in font-mono max-w-xl mx-auto px-4 py-6 text-foreground/85">
+        <div className="pl-2 mb-6">
+          <p className="mb-1"><span className="text-phosphor">&gt; </span>a place for things i write down.</p>
+          <p className="mb-1"><span className="text-phosphor">&gt; </span>essays and tech articles, mostly.</p>
+          <p className="mb-1"><span className="text-phosphor">&gt; </span>more coming.</p>
+        </div>
 
-    <div className="pl-2">
-      <p className="text-phosphor-dim italic">[ no tech articles yet — one in progress ]</p>
-    </div>
+        <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// essays</div>
 
-    <div className="mt-12 pt-3 border-t border-border/40 text-[10px] text-phosphor-dim font-mono">
-      — nj · 2026-05 · this index will grow
-    </div>
-  </div>
-  </>
-);
+        <div className="pl-2 space-y-4 sm:space-y-1">
+          {essays.map((essay) => (
+            <IndexRow
+              key={essay.path}
+              name={<a href={essay.path} className="text-phosphor hover:underline cursor-pointer">{essay.title}</a>}
+              description={<>
+                {essay.description} · <span className="text-phosphor-dim">[en]</span>{" "}
+                <a href={essay.bnPath} className="text-phosphor-dim hover:text-phosphor">[bn]</a>
+              </>}
+            />
+          ))}
+        </div>
+
+        <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// tech articles</div>
+
+        <div className="pl-2 space-y-4 sm:space-y-1">
+          <IndexRow
+            name={
+              <button
+                onClick={() => goArticle('/writing/tech-articles')}
+                className="text-phosphor hover:underline cursor-pointer bg-transparent border-none p-0 font-mono text-left"
+              >
+                the paper oscilloscope
+              </button>
+            }
+            description={<>a series on how computers actually work, from bits to OS</>}
+          />
+          <div className="pl-4 space-y-2 sm:space-y-1">
+            {techArticles.map((a) => (
+              <IndexRow
+                key={a.path}
+                name={
+                  <button
+                    onClick={() => goArticle(a.path)}
+                    className="text-phosphor-soft hover:underline cursor-pointer bg-transparent border-none p-0 font-mono text-sm text-left"
+                  >
+                    {a.title}
+                  </button>
+                }
+                description={<span className="text-xs">{a.description}</span>}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-12 pt-3 border-t border-border/40 text-[10px] text-phosphor-dim font-mono">
+          — nj · 2026-05 · this index will grow
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default WritingContent;
