@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
+import ArticleHub from "./pages/ArticleHub";
+import ArticlePage from "./pages/ArticlePage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,9 @@ const App = () => (
           <Route path="/writing/essays/on-staying-small-bn" element={<Index forceSection="writing-essays-on-staying-small-bn" />} />
           <Route path="/writing/essays/on-forgetting" element={<Index forceSection="writing-essays-on-forgetting" />} />
           <Route path="/writing/essays/on-forgetting-bn" element={<Index forceSection="writing-essays-on-forgetting-bn" />} />
+          <Route path="/writing/tech-articles" element={<ArticleHub />} />
+          <Route path="/writing/the-machine-beneath-your-code" element={<ArticlePage article="the-machine-beneath-your-code" />} />
+          <Route path="/writing/whats-inside-a-bit" element={<ArticlePage article="whats-inside-a-bit" />} />
           <Route path="*" element={<Index forceSection="404" />} />
         </Routes>
       </BrowserRouter>

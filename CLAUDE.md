@@ -36,8 +36,18 @@ src/
 │   ├── MatrixBackground.tsx  # Animated matrix background (density 0.6, 50ms frame)
 │   ├── IntroLoader.tsx   # First-visit terminal typing intro (sessionStorage-gated, lazy-loaded)
 │   └── PortalLoader.tsx  # Sub-world transition scramble + cloud-dissolve (sessionStorage-gated, lazy-loaded)
+├── articles/
+│   ├── article.css       # Paper-oscilloscope design system: aged-paper bg, fonts, scanlines, animations
+│   ├── context/          # LanguageContext (BN/EN toggle) + TermContext (hover-definition popup state)
+│   ├── primitives/       # Shared article blocks: PromptBar, Kicker, Section, Instrument, Term, Recap, etc.
+│   ├── widgets/          # Interactive instruments: NoiseVsBands, TransistorSwitch, GatePlayground, FeedbackLatch, ThreeBits, AbstractionStack, ProtagonistDisguises
+│   ├── content/          # Article content modules: SeriesHub, MachineBeneathYourCode, WhatsInsideABit
+│   ├── glossary.ts       # Bilingual term definitions keyed by id — single source of truth for Term hover cards
+│   └── manifest.ts       # Article metadata: slugs, titles, kicker cells, Content component refs
 ├── pages/
 │   ├── Index.tsx         # Home page; accepts optional `forceSection` prop to override URL-derived section
+│   ├── ArticlePage.tsx   # Standalone wrapper for individual articles; provides LanguageProvider + TermProvider
+│   ├── ArticleHub.tsx    # Standalone series hub page (writing/tech-articles)
 │   └── NotFound.tsx      # Legacy stub — no longer used; catch-all routes now use Index forceSection="404"
 ├── hooks/
 │   ├── useCommandPalette.ts  # Palette open/mode state
@@ -65,7 +75,9 @@ writing/             → writing (container, also navigable)
     on-forgetting.md          → writing-essays-on-forgetting (newest first)
     on-staying-small.md       → writing-essays-on-staying-small
     on-running-for-nothing.md → writing-essays-on-running-for-nothing
-  tech-articles/     → container (id: writing-tech-articles, no section)
+  tech-articles/     → writing/tech-articles (container AND navigable; id: writing-tech-articles)
+    the-machine-beneath-your-code.md → writing/the-machine-beneath-your-code
+    whats-inside-a-bit.md            → writing/whats-inside-a-bit
 journey/             → container (id: journey)
   running.md         → journey-running
   hiking.md          → journey-hiking
@@ -134,6 +146,10 @@ Adding a new container folder: add a `FileItem` with `isContainer: true`, `id` s
 - **404 sentinel**: unmatched React Router routes render `<Index forceSection="404" />`. `Editor.tsx` maps `"404"` → `<NotFoundContent />` and uses `useLocation()` to display `location.pathname + ".404"` in the file header. Do NOT use the legacy `NotFound.tsx` page for new 404 handling.
 - **vercel.json rewrite order**: ArcZero proxy rewrites must come BEFORE the SPA fallback `/(.*) → /index.html`. First match wins. Never move the SPA fallback above the game rewrites.
 - **vercel.json www redirect**: `redirects` array contains a host-conditional 301 redirect: `www.niruddeshjatra.space/(.*)` → `https://niruddeshjatra.space/$1`. Redirects run before rewrites in Vercel. The redirect must stay in `redirects`, not `rewrites`. Canonical is always the apex domain (no www).
+- **Article system** (`src/articles/`): "The Paper Oscilloscope" — warm aged-paper design, outside `ResponsiveLayout`. Pages (`ArticlePage.tsx`, `ArticleHub.tsx`) are standalone with own `LanguageProvider` + `TermProvider`. Never import dc-runtime, DCLogic, sc-if/sc-for, {{holes}}, or support.js — all widgets are plain React.
+- **`firePortal()` singleton** — module-level function in `useLoader.ts`. Call from any component (including article pages) to imperatively trigger the portal animation before navigation. `ARTICLE_SECTIONS` set in `Index.tsx` routes sidebar clicks for `writing/tech-articles`, `writing/the-machine-beneath-your-code`, `writing/whats-inside-a-bit` through `firePortal` instead of `startViewTransition`.
+- **Article design tokens**: paper bg `#e8dfc9`; ink `#26241C`; ink-green `#00753F` (on paper only); phosphor `#00d26a` (inside dark scope wells only — never on paper). Tokens in `tailwind.config.ts` under `paper`, `ink`, `rule`, `machine`, `well`.
+- **Bilingual articles**: BN default; JS toggle (no URL change). BN numerals via `bd()` helper in BN mode. `lang="bn"` on BN blocks. Definitions follow the toggle. SEO uses `<Helmet>` inside `ArticleBody` (which has `useLang()` context) so title/description/`<html lang>` update dynamically.
 - Commit format: `type(scope): description` (feat/fix/chore/refactor/docs)
 
 ## Storage Keys

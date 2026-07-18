@@ -5,7 +5,7 @@ import ResponsiveLayout from "@/components/ResponsiveLayout";
 import { MemoryManager } from "@/utils/memoryOptimization";
 import { getPerformanceMonitor } from "@/utils/performance";
 import { startViewTransition } from "@/lib/viewTransition";
-import { useIntroLoader, usePortalLoader } from "@/hooks/useLoader";
+import { useIntroLoader, usePortalLoader, firePortal } from "@/hooks/useLoader";
 
 const IntroLoader = lazy(() => import("@/components/IntroLoader"));
 const PortalLoader = lazy(() => import("@/components/PortalLoader"));
@@ -24,6 +24,12 @@ const pathToSection = (pathname: string): string => {
 interface IndexProps {
   forceSection?: string;
 }
+
+const ARTICLE_SECTIONS = new Set([
+  'writing/tech-articles',
+  'writing/the-machine-beneath-your-code',
+  'writing/whats-inside-a-bit',
+]);
 
 const Index = ({ forceSection }: IndexProps = {}) => {
   const location = useLocation();
@@ -51,7 +57,10 @@ const Index = ({ forceSection }: IndexProps = {}) => {
   const handleSectionChange = useCallback(
     (section: string) => {
       const target = section === "welcome" ? "/" : `/${section}`;
-      if (location.pathname !== target) {
+      if (location.pathname === target) return;
+      if (ARTICLE_SECTIONS.has(section)) {
+        firePortal({ destination: '> tech-articles', onComplete: () => navigate(target) });
+      } else {
         startViewTransition(() => {
           flushSync(() => navigate(target));
         });

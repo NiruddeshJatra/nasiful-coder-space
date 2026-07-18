@@ -18,4 +18,7 @@ export const ROUTES = [
   '/field-notes',
   '/now',
   '/contact',
+  '/writing/tech-articles',
+  '/writing/the-machine-beneath-your-code',
+  '/writing/whats-inside-a-bit',
 ];

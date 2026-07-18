@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Anek+Latin:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700&display=swap');
+
+.article-root {
+  background-color: #e8dfc9;
+  background-image: linear-gradient(90deg, #d3c6a6 0%, #e5dcc4 14%, #f2ebda 50%, #e5dcc4 86%, #d3c6a6 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #26241C;
+  font-family: 'Anek Bangla', 'Anek Latin', sans-serif;
+}
+
+.article-root a {
+  color: #00753F;
+}
+.article-root a:hover {
+  color: #00975a;
+}
+
+/* Override index.css [lang="bn"] rules inside articles */
+.article-root [lang="bn"] {
+  font-family: 'Anek Bangla', 'Anek Latin', sans-serif;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.9;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.article-root [lang="bn"] h1,
+.article-root [lang="bn"] h2,
+.article-root [lang="bn"] h3 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Scanline overlay applied to scope wells */
+.scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.10) 0 1px,
+    transparent 1px 3px
+  );
+  pointer-events: none;
+}
+
+/* Focus rings — paper context */
+.article-root :focus-visible {
+  outline: 2px solid #00753F;
+  outline-offset: 2px;
+}
+
+/* Focus rings inside scope wells */
+.well-focus:focus-visible {
+  outline: 2px solid #00d26a !important;
+  outline-offset: 2px;
+}
+
+/* SVG wire-flow animation */
+@keyframes flow {
+  to { stroke-dashoffset: -24; }
+}
+
+/* Longer flow for signal maps */
+@keyframes flowh {
+  to { stroke-dashoffset: -24; }
+}
+
+/* Descending dot in abstraction stack */
+@keyframes descend {
+  0% { transform: translateY(0); opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { transform: translateY(252px); opacity: 0; }
+}
+
+/* Baton hover slide */
+@keyframes baton-in {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Reduced motion: kill all animations inside articles */
+@media (prefers-reduced-motion: reduce) {
+  .article-root *,
+  .article-root *::before,
+  .article-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Segmented control shared styles */
+.seg-btn {
+  border: none;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: 'Departure Mono', monospace;
+  font-size: 12px;
+}
+
+.seg-btn-paper-active {
+  background: #26241C;
+  color: #00d26a;
+}
+
+.seg-btn-paper-inactive {
+  background: none;
+  color: #26241C;
+}
+
+.seg-btn-well-active {
+  background: #16402a;
+  color: #00d26a;
+}
+
+.seg-btn-well-inactive {
+  background: none;
+  color: #6c8873;
+}
+
+/* Restore list bullets removed by Tailwind Preflight */
+.article-root article ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+}
+.article-root article ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+}
+
+/* Mini code blocks inside prose */
+.article-root pre {
+  font-family: 'Departure Mono', monospace;
+  font-size: 14.5px;
+  background: #232b23;
+  color: #00d26a;
+  padding: 15px 20px;
+  margin: 0 0 20px;
+  overflow-x: auto;
+  border: 1px solid #4a493a;
+}

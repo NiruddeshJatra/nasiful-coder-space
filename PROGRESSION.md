@@ -380,3 +380,16 @@ Refined several UI details based on review:
 **2026-07-10 — Added Google Analytics (GA4) tracking tag to index.html**
 
 Added Google tag (`G-2CWN5RMGK4`) immediately after `<head>` in `index.html`. Single placement covers all routes since the site is a SPA. No architectural changes — config-only addition.
+
+## Phase S — "The Paper Oscilloscope": Bilingual Article System
+**2026-07-18 — Full bilingual tech-article system with interactive instruments, portal navigation, SEO**
+
+- **`src/articles/`**: new sub-world outside `ResponsiveLayout`. Aged-paper design system (`article.css`): paper bg `#e8dfc9`, ink `#26241C`, ink-green `#00753F` on paper, phosphor `#00d26a` only inside dark scope wells. Tailwind tokens added under `paper`, `ink`, `rule`, `machine`, `well`.
+- **11 primitives** (`PromptBar`, `Kicker`, `Section`, `Instrument`, `Caption`, `Term`, `Deeper`, `Recap`, `RelayNav`, `Colophon`, `TraceRail`) — typed TSX, no dc-runtime/{{holes}}/support.js.
+- **7 widgets** — `NoiseVsBands` (canvas signal + noise slider), `TransistorSwitch` (water-tap analogy + n-channel MOSFET schematic), `GatePlayground` (AND/OR/NOT with truth table), `FeedbackLatch` (cross-coupled NOT gates, Q/Q̄ state, random power-on), `ThreeBits` (binary toggle cells), `AbstractionStack` (7-layer SVG), `ProtagonistDisguises` (5-station SVG track + cards).
+- **2 articles** — `MachineBeneathYourCode` (SPINE intro, 8 min) and `WhatsInsideABit` (DEEP-DIVE, 12 min). Both fully bilingual BN/EN; BN default, JS toggle, no URL change.
+- **Portal navigation** — `firePortal()` singleton (from `useLoader.ts`) fires the PortalLoader transition before navigating to any `writing/tech-articles/*` route. Works from sidebar (`handleSectionChange` in `Index.tsx`), WritingContent buttons, and Terminal commands.
+- **Routing** — `ArticlePage.tsx` + `ArticleHub.tsx` added; `App.tsx` wired with routes `/writing/tech-articles`, `/writing/the-machine-beneath-your-code`, `/writing/whats-inside-a-bit`. FileExplorer entries and `sections.ts` aliases added.
+- **SEO** — `<Helmet>` inside `ArticleBody` (has `useLang()` context) so title, description, `<html lang>` update on BN/EN toggle. `scripts/routes.mjs` and `public/sitemap.xml` updated with all three article routes.
+- **Linter clean** — fixed `no-unused-expressions` in `NoiseVsBands.tsx`, moved `ARTICLE_SECTIONS` constant outside component in `Index.tsx`, added `eslint-disable` comments on non-component exports in context files.
+- **Reference files removed** — `Article - *.dc.html`, `Series Hub.dc.html`, `CLAUDE-design.md`, `DESIGN-SPEC.md`, `support.js` deleted after implementation complete.
