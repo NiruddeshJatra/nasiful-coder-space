@@ -59,7 +59,7 @@ const Index = ({ forceSection }: IndexProps = {}) => {
       const target = section === "welcome" ? "/" : `/${section}`;
       if (location.pathname === target) return;
       if (ARTICLE_SECTIONS.has(section)) {
-        firePortal({ destination: '> tech-articles', onComplete: () => navigate(target) });
+        firePortal({ destination: '> Entering the tech world', onComplete: () => navigate(target) });
       } else {
         startViewTransition(() => {
           flushSync(() => navigate(target));

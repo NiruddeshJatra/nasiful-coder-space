@@ -41,7 +41,7 @@ const WritingContent = () => {
   const navigate = useNavigate();
 
   const goArticle = (path: string) => {
-    firePortal({ destination: '> tech-articles', onComplete: () => navigate(path) });
+    firePortal({ destination: '> Entering the tech world', onComplete: () => navigate(path) });
   };
 
   return (
