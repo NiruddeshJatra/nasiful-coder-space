@@ -9,6 +9,35 @@ type FieldNote = {
 // newest-first
 const notes: FieldNote[] = [
   {
+    date: "2026-07-23",
+    title: "the paper oscilloscope, half-published",
+    body: (
+      <>
+        <p className="mb-3">
+          the series is done on paper. all eight articles written, most of
+          them sitting in the code quietly — not linked anywhere, not visible
+          to anyone.
+        </p>
+        <p className="mb-3">
+          only the intro and article 1 are live. the rest exist but i'm not
+          sure they're ready. or i'm not ready. or i don't want to release
+          something and then have to live with it being wrong in public.
+        </p>
+        <p className="mb-3">
+          i don't know if staggered publishing is discipline or cowardice.
+          maybe both. maybe the distinction doesn't matter if the articles
+          actually get better while i wait.
+        </p>
+        <p className="mb-3">
+          the paper oscilloscope is what i'm calling it — warm aged-paper
+          aesthetic, bangla-first. the first honest thing i've written about
+          what computer science actually is, from someone still inside the
+          confusion of learning it.
+        </p>
+      </>
+    ),
+  },
+  {
     date: "2026-07-03",
     title: "catching fajr, missing it",
     body: (

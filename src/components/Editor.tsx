@@ -238,6 +238,7 @@ const Editor = ({ currentSection }: EditorProps) => {
               <p><span className="text-phosphor">&gt; </span>{todaysLine}</p>
               <p><span className="text-phosphor">&gt; </span>games i'm building, things i'm writing, trips i'm taking.</p>
               <p><span className="text-phosphor">&gt; </span>nothing is finished. that's fine.</p>
+              <p className="mt-2"><span className="text-phosphor-dim">// </span><span className="text-foreground/70">publishing now: "the machine beneath your code" — a series on how computers actually work.</span></p>
             </div>
 
             <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// where to go</div>

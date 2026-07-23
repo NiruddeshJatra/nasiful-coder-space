@@ -35,7 +35,8 @@ export function Section({ num, bnH2, enH2, children }: SectionProps) {
       {bn ? (
         <h2
           lang="bn"
-          className="font-body font-bold text-[28px] leading-[1.35] mb-4 mt-0"
+          className="font-body text-[28px] leading-[1.35] mb-4 mt-0"
+          style={{ fontWeight: 900 }}
         >
           {bnH2}
         </h2>
