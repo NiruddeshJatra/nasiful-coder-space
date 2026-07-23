@@ -15,10 +15,10 @@ A developer portfolio site built with React 19 + TypeScript + Vite + Tailwind. F
 ## File Structure
 ```
 scripts/
-├── routes.mjs            # SINGLE SOURCE OF TRUTH for all prerenderable routes — import here, not in prerender.mjs
-├── prerender.mjs         # Post-build SSG: serves dist, crawls ROUTES via puppeteer-core (local Chrome, else @sparticuz/chromium), writes index.html per route; hard-fails in CI if no browser resolves
-├── generate-og.mjs       # Generates public/og-image.png (site) + public/og/<slug>.png per published article/hub via sharp — reads src/articles/manifest.ts, run via tsx (runs before vite build)
-├── generate-sitemap.mjs  # Generates public/sitemap.xml + public/robots.txt from ROUTES — do not hand-edit either file (runs before vite build)
+├── routes.mjs            # SINGLE SOURCE OF TRUTH for all prerenderable routes. Exports ROUTES (objects: path/priority/changefreq/alternate) and ROUTE_PATHS (flat path list). Import here, not in prerender.mjs
+├── prerender.mjs         # Post-build SSG: serves dist, crawls ROUTE_PATHS via puppeteer-core (local Chrome, else @sparticuz/chromium), writes index.html per route; hard-fails in CI if no browser resolves
+├── generate-og.mjs       # Generates public/og-image.png (site) + public/og/<slug>.png per published article/hub via sharp — reads src/articles/manifest.ts + src/lib/site.ts, run via tsx (runs before vite build)
+├── generate-sitemap.mjs  # Generates public/sitemap.xml + public/robots.txt from ROUTES — do not hand-edit either file. Reads src/lib/site.ts, run via tsx (runs before vite build)
 ├── generate-favicons.mjs # Generates all favicon variants in public/ via sharp (runs before vite build)
 src/
 ├── components/
@@ -55,6 +55,7 @@ src/
 │   ├── useLoader.ts      # IntroLoader + PortalLoader state; sessionStorage gating per area
 │   └── ...               # Other custom hooks
 ├── lib/
+│   ├── site.ts            # SITE_URL/SITE_NAME/SITE_AUTHOR — single source, import here instead of re-declaring
 │   ├── matrixChars.ts    # Shared katakana/digit char arrays — source of truth for MatrixBackground
 │   ├── quotes.ts         # QUOTES array (30 entries) + getTodaysQuote() — day-stable rotating quote
 │   ├── structuredData.ts # JSON-LD structured data helpers (WebSite, Person, Article schemas)
@@ -174,6 +175,7 @@ All keys namespaced `ncs_*` to avoid collisions.
 ## SEO
 Crawlers (Facebook/LinkedIn/WhatsApp/Twitter scrapers) do not execute JS — every route's meta must be present in the **static HTML served for that route**, not injected client-side only. This is achieved by prerendering (below); `<SEO>` is still required because it's what the prerender crawl captures.
 
+- **Site identity constants**: `src/lib/site.ts` exports `SITE_URL`/`SITE_NAME`/`SITE_AUTHOR` — the single source for the domain. Import this instead of re-declaring a local `const SITE_URL = '...'`; `SEO.tsx`, `structuredData.ts`, `ArticlePage.tsx`, `ArticleHub.tsx`, and the `generate-og`/`generate-sitemap` build scripts all import from it.
 - **SEO component**: `src/components/SEO.tsx` — wraps `react-helmet-async`. Every routed page must render one `<SEO>` with `title`, `description`, `path`, `lang`, `ogType`, and (for articles) `structuredData`. Emits title, meta description, canonical, hreflang alternates, full OG set (including `og:locale`/`og:locale:alternate`), Twitter card, and optional per-page `image` override.
 - **Structured data**: `src/lib/structuredData.ts` exports `websiteSchema()`, `personSchema()`, `articleSchema({ title, description, path, datePublished, dateModified?, lang, image?, isPartOf? })`. Pass the result as `<SEO structuredData={...}>`.
 - **Adding a new article REQUIRES, in `src/articles/manifest.ts`** (single source of truth — never hardcode a second title/description copy in the page component):
@@ -181,11 +183,11 @@ Crawlers (Facebook/LinkedIn/WhatsApp/Twitter scrapers) do not execute JS — eve
   2. `enDescription`/`bnDescription` — meta description, both languages
   3. `datePublished` (`YYYY-MM-DD`)
   4. Add the route to `scripts/routes.mjs` (`ROUTES` array) — this is what gets prerendered *and* what feeds `sitemap.xml`/hreflang generation. Missing this = the article silently has no crawler-visible meta and isn't in the sitemap.
-  `ArticlePage.tsx`/`ArticleHub.tsx` read these fields via `getArticleMeta()` / `ARTICLES` and throw at render if a published (`state: 'read'`) article is missing any of them — a fast local failure instead of a silent SEO gap.
+  `ArticleEntry` in `manifest.ts` is a discriminated union on `state`: any entry with `state: 'read'` (`PublishedArticleEntry`) requires `enDescription`/`bnDescription`/`datePublished` at **compile time** — `tsc` fails the build if you mark an article `'read'` without them, not just at render. `ArticlePage.tsx`'s `getArticleMeta()` still has a runtime check for the string-keyed manifest lookup (TS can't narrow that statically), as a fallback.
 - **New page/section (non-article) REQUIRES**: an `<SEO>` block in the section component (see `WritingContent.tsx` for the pattern) and an entry in `scripts/routes.mjs`.
-- **OG images are build-generated — no manual step**: `scripts/generate-og.mjs` (run via `npm run generate-og`, part of `npm run build`) renders `public/og-image.png` (site-wide) plus one 1200×630 `public/og/<slug>.png` per published article + the hub (`public/og/tech-articles.png`), using the Paper Oscilloscope palette and titles pulled from `manifest.ts`. A new published article picks up an image automatically — nothing to generate by hand. The script imports `manifest.ts` (a `.ts` file) so it runs via `tsx`, not plain `node`.
-- **Sitemap/robots are build-generated — no manual step**: `scripts/generate-sitemap.mjs` (`npm run generate-sitemap`, part of `npm run build`) writes `public/sitemap.xml` and `public/robots.txt` from `scripts/routes.mjs`. BN/EN hreflang pairs for essays are derived automatically from the `-bn` suffix convention in `ROUTES` — do not hand-edit `sitemap.xml`/`robots.txt`, edits get overwritten on next build.
-- **Prerender**: runs as `postbuild` via `scripts/prerender.mjs`, crawling every route in `scripts/routes.mjs` with headless Chrome and writing the post-Helmet HTML to `dist/<route>/index.html`. Browser resolution order: `CHROME_PATH` env var → local desktop Chrome (dev) → `@sparticuz/chromium` (bundled serverless-compatible binary, used on Vercel's build). If no browser resolves: **fails the build** when `CI`/`VERCEL` env vars are set (prevents silently shipping meta-less HTML again — this was the original bug), otherwise warns and skips (local dev convenience).
+- **OG images are build-generated — no manual step**: `scripts/generate-og.mjs` (run via `npm run generate-og`, part of `npm run build`) renders `public/og-image.png` (site-wide) plus one 1200×630 `public/og/<slug>.png` per published article + the hub (`public/og/tech-articles.png`), using the Paper Oscilloscope palette and titles pulled from `manifest.ts`. A new published article picks up an image automatically — nothing to generate by hand. The script imports `.ts` modules (`manifest.ts`, `site.ts`) so it runs via `tsx`, not plain `node`.
+- **Sitemap/robots are build-generated — no manual step**: `scripts/generate-sitemap.mjs` (`npm run generate-sitemap`, part of `npm run build`, runs via `tsx`) writes `public/sitemap.xml` and `public/robots.txt` from `scripts/routes.mjs`. Each `ROUTES` entry explicitly carries its own `priority`/`changefreq`, and bilingual pages carry an explicit `alternate: { lang, path }` pointer to their sibling-language route — hreflang pairing is config, not inferred from a `-bn` suffix. A new bilingual essay must set `alternate` on both of its `ROUTES` entries. Do not hand-edit `sitemap.xml`/`robots.txt`, edits get overwritten on next build.
+- **Prerender**: runs as `postbuild` via `scripts/prerender.mjs`, crawling every path in `ROUTE_PATHS` (from `scripts/routes.mjs`) with headless Chrome and writing the post-Helmet HTML to `dist/<route>/index.html`. Browser resolution order: `CHROME_PATH` env var → local desktop Chrome (dev) → `@sparticuz/chromium` (bundled serverless-compatible binary, used on Vercel's build). If no browser resolves: **fails the build** when `CI`/`VERCEL` env vars are set (prevents silently shipping meta-less HTML again — this was the original bug), otherwise warns and skips (local dev convenience).
 - **`@vitejs/plugin-legacy` spread**: `vite.config.ts` uses `...legacy({})` (spread). This is intentional — the plugin returns `Plugin[]`, so spread is required. Do not remove the spread.
 - **Verify after any SEO-relevant change**: `npm run build`, then for each changed route: `grep -o '<meta property="og:[^>]*>' dist/<route>/index.html` — confirm unique `og:title`/`og:description`/`og:image` per route, none falling back to the generic site-wide title.
 

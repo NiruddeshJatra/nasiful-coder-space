@@ -10,26 +10,21 @@ import { TraceRail } from '../articles/primitives/TraceRail';
 import { MachineBeneathYourCode } from '../articles/content/MachineBeneathYourCode';
 import { WhatsInsideABit } from '../articles/content/WhatsInsideABit';
 import { useLang } from '../articles/context/LanguageContext';
-import { INTRO_ARTICLE, getArticle, SERIES_TITLE } from '../articles/manifest';
+import { INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
+import { SITE_URL } from '../lib/site';
 
 type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit';
 
-const SITE_URL = 'https://niruddeshjatra.space';
-
-interface PublishedArticleMeta {
-  bnTitle: string;
-  enTitle: string;
-  bnDescription: string;
-  enDescription: string;
-  datePublished: string;
-}
-
-function getArticleMeta(slug: ArticleSlug): PublishedArticleMeta {
+// manifest.ts enforces enDescription/bnDescription/datePublished at compile time
+// for any ARTICLES entry with state: 'read' (see PublishedArticleEntry). This
+// runtime check only covers the string-keyed lookup below, which TS can't
+// narrow statically — it's a defense-in-depth fallback, not the primary guard.
+function getArticleMeta(slug: ArticleSlug): PublishedArticleEntry | IntroArticleEntry {
   const entry = slug === INTRO_ARTICLE.slug ? INTRO_ARTICLE : getArticle(slug);
-  if (!entry || !entry.bnDescription || !entry.enDescription || !entry.datePublished) {
-    throw new Error(`Article "${slug}" is missing SEO fields (title/description/datePublished) in manifest.ts`);
+  if (!entry || !('datePublished' in entry)) {
+    throw new Error(`Article "${slug}" is not a published (state: 'read') entry in manifest.ts`);
   }
-  return entry as PublishedArticleMeta;
+  return entry;
 }
 
 interface Config {

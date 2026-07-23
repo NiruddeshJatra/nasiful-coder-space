@@ -1,4 +1,4 @@
-const SITE_URL = 'https://niruddeshjatra.space';
+import { SITE_URL } from './site';
 
 export const personSchema = () => ({
   '@context': 'https://schema.org',

@@ -4,7 +4,7 @@ import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import handler from 'serve-handler';
-import { ROUTES } from './routes.mjs';
+import { ROUTE_PATHS } from './routes.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, '..', 'dist');
@@ -87,7 +87,7 @@ const browser = await puppeteer.launch({
   headless: true,
 });
 
-for (const route of ROUTES) {
+for (const route of ROUTE_PATHS) {
   const page = await browser.newPage();
   await page.goto(`http://localhost:${PORT}${route}`, {
     waitUntil: 'networkidle0',

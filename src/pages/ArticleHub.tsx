@@ -6,8 +6,8 @@ import { TermPopup } from '../articles/primitives/Term';
 import { PromptBar } from '../articles/primitives/PromptBar';
 import { SeriesHub } from '../articles/content/SeriesHub';
 import { ARTICLES, INTRO_ARTICLE, SERIES_TITLE, SERIES_DESCRIPTION_EN, SERIES_DESCRIPTION_BN } from '../articles/manifest';
+import { SITE_URL } from '../lib/site';
 
-const SITE_URL = 'https://niruddeshjatra.space';
 const HUB_PATH = '/writing/tech-articles';
 
 function hubItemListSchema() {

@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { toISOWithTimezone } from '../lib/structuredData';
+import { SITE_URL, SITE_NAME, SITE_AUTHOR } from '../lib/site';
 
 interface SEOProps {
   title: string;
@@ -18,9 +19,6 @@ interface SEOProps {
   image?: string;
 }
 
-const SITE_URL = 'https://niruddeshjatra.space';
-const SITE_NAME = 'niruddeshjatra';
-const SITE_AUTHOR = 'Nasiful Alam';
 const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;
 
 const SEO: React.FC<SEOProps> = ({
