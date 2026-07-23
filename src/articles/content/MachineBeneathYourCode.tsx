@@ -220,6 +220,26 @@ export function MachineBeneathYourCode() {
         )}
       </Section>
 
+      <Section num="06" bnH2="একটা সৎ স্বীকারোক্তি" enH2="An honest disclaimer">
+        {bn ? (
+          <div lang="bn" style={bodyStyle}>
+            {p('এই সিরিজে অনেক কিছু ইচ্ছাকৃতভাবে সহজ করে উপস্থাপন করা হয়েছে।')}
+            {p('Computer Architecture, Operating System, Compiler—এর প্রতিটিই এক একটি বিশাল ও স্বাধীন বিষয়। এগুলো নিয়ে বিশ্ববিদ্যালয়ে একাধিক সেমিস্টার ধরে পড়ানো হয়, হাজার পাতার মোটা মোটা বই লেখা হয়, আর প্রতিনিয়ত নতুন গবেষণা চলছে। কয়েকটি আর্টিকেলে সেই পুরো মহাসমুদ্র তুলে আনা সম্ভব নয়, আর সেই চেষ্টাও করা হয়নি।')}
+            {p('আমার মূল উদ্দেশ্য হলো—কম্পিউটিংয়ের প্রতিটা স্তরের (Layer) মূল আইডিয়া বা মেকানিক্সটা যেন একজন পাঠক খুব সহজে একটা স্পষ্ট Mental Model হিসেবে দাঁড় করাতে পারেন। আর সেই স্পষ্টতা ও সহজবোধ্যতার খাতিরে অনেক জায়গায় জটিল বিষয়গুলোকে কিছুটা সরলীকরণ করতে হয়েছে। যেখানে মনে হয়েছে অতিরিক্ত জটিলতা মূল গল্প পড়ার অভিজ্ঞতাকে ব্যাহত করবে, সেখানে সূক্ষ্ম অনেক ডিটেইলস এড়িয়ে যাওয়া হয়েছে।')}
+            {p('এর মানে এই নয় যে আপনাকে বিভ্রান্ত করার চেষ্টা করা হয়েছে। বিষয়গুলোকে এমনভাবে সাজানো হয়েছে যেন বেসিক ধারণাটা একদম সঠিক থাকে, কিন্তু পড়তে সহজ হয়। তবুও, সরলীকরণ করতে গিয়ে কোথাও কোনো টেকনিক্যাল ভুল থেকে গেলে বা আপনার চোখে পড়লে অবশ্যই জানাবেন—সংশোধন করে নেওয়া হবে।')}
+            {p('যদি কোনো নির্দিষ্ট স্তর বা বিষয় আপনার মধ্যে বাড়তি আগ্রহ তৈরি করে, তবে সিরিজের শেষে দারুণ কিছু বই ও রিসোর্সের তালিকা দেওয়া থাকবে—যা আপনাকে এই বিষয়ের গভীরে নিয়ে যেতে সাহায্য করবে।')}
+          </div>
+        ) : (
+          <div style={bodyStyle}>
+            {p('A lot in this series is deliberately simplified.')}
+            {p('Computer architecture, operating systems, compilers—each is a massive, independent field with multi-semester university courses, thousands of pages of textbooks, and ongoing research. A few articles cannot possibly capture all of that, nor do they try to.')}
+            {p('The primary goal here is clarity: to help you build a solid, intuitive mental model of how each layer of computing works. To achieve that clarity, complex technical details have sometimes been abstracted away. Where full precision would have added overwhelming noise, the mechanics were intentionally streamlined to keep the core narrative accessible.')}
+            {p("This approach aims to ensure that while the big picture remains accurate and conceptually sound, you aren't bogged down by edge cases or hardware-specific nuances. That said, if you spot an actual error or an oversimplification that crosses into inaccuracy, please let me know—I will happily fix it.")}
+            {p("If any section sparks your curiosity, you'll find a curated list of books and resources at the end of the series to help you dive as deep as you'd like.")}
+          </div>
+        )}
+      </Section>
+
       <RelayNav
         hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
         next={{ label: { bn: 'baton প্রথম পর্বে', en: 'baton to the first leg' }, title: bn ? '০১ — Bit-এর ভেতরে কী থাকে?' : "01 — What's inside a bit?", href: '/writing/whats-inside-a-bit', variant: 'next' }}

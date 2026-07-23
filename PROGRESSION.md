@@ -393,3 +393,11 @@ Added Google tag (`G-2CWN5RMGK4`) immediately after `<head>` in `index.html`. Si
 - **SEO** — `<Helmet>` inside `ArticleBody` (has `useLang()` context) so title, description, `<html lang>` update on BN/EN toggle. `scripts/routes.mjs` and `public/sitemap.xml` updated with all three article routes.
 - **Linter clean** — fixed `no-unused-expressions` in `NoiseVsBands.tsx`, moved `ARTICLE_SECTIONS` constant outside component in `Index.tsx`, added `eslint-disable` comments on non-component exports in context files.
 - **Reference files removed** — `Article - *.dc.html`, `Series Hub.dc.html`, `CLAUDE-design.md`, `DESIGN-SPEC.md`, `support.js` deleted after implementation complete.
+
+## Article 0 content + Field Notes update
+**2026-07-23 — Added "An honest disclaimer" section, field note on series publishing, welcome line, BN header weight fix**
+
+- **`MachineBeneathYourCode.tsx`**: added Section 06 "একটা সৎ স্বীকারোক্তি / An honest disclaimer" — content sourced verbatim from `src/articles/series-01/The Machine Beneath Your Code.md` (both BN and EN versions), not invented.
+- **`Section.tsx`**: Bangla h2 bumped to `fontWeight: 900` (inline style, overrides Tailwind) to visually match Bricolage Grotesque `font-bold` weight of English h2. Anek Bangla renders lighter at 700 due to stroke character of the script.
+- **`FieldNotesContent.tsx`**: new note "the paper oscilloscope, half-published" (2026-07-23) prepended — reflects writing all 8 articles while publishing only intro and article 1.
+- **`Editor.tsx`** (welcome section): added `// publishing now` comment line in intro block announcing the series.
