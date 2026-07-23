@@ -10,8 +10,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, '..', 'dist');
 
 const PORT = 5050;
+const isCI = Boolean(process.env.CI || process.env.VERCEL);
 
-function findChrome() {
+function findLocalChrome() {
   if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
 
   const candidates = {
@@ -37,9 +38,32 @@ function findChrome() {
   return paths.find(p => existsSync(p)) ?? null;
 }
 
-const chromePath = findChrome();
+// Resolves a launchable Chrome: local desktop install (dev), else the
+// serverless-compatible binary bundled via @sparticuz/chromium (Vercel build).
+async function resolveBrowserLaunchOptions() {
+  const localChrome = findLocalChrome();
+  if (localChrome) {
+    return { executablePath: localChrome, args: ['--no-sandbox', '--disable-setuid-sandbox'] };
+  }
 
-if (!chromePath) {
+  try {
+    const { default: chromium } = await import('@sparticuz/chromium');
+    const executablePath = await chromium.executablePath();
+    return { executablePath, args: chromium.args, headless: true };
+  } catch (err) {
+    if (isCI) {
+      throw new Error(
+        `Pre-render cannot find a Chrome binary in CI/Vercel and @sparticuz/chromium failed: ${err.message}\n` +
+        'This would ship pages with no per-route meta tags — failing the build instead of shipping broken SEO.'
+      );
+    }
+    return null;
+  }
+}
+
+const launchOptions = await resolveBrowserLaunchOptions();
+
+if (!launchOptions) {
   console.warn(
     'Pre-render skipped: Chrome/Chromium not found.\n' +
     'Set CHROME_PATH env var to enable pre-rendering in this environment.'
@@ -59,8 +83,7 @@ await new Promise((resolve) => server.listen(PORT, resolve));
 console.log(`Static server on http://localhost:${PORT}`);
 
 const browser = await puppeteer.launch({
-  executablePath: chromePath,
-  args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  ...launchOptions,
   headless: true,
 });
 

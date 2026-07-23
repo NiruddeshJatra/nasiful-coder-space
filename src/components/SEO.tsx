@@ -14,6 +14,8 @@ interface SEOProps {
     author?: string;
   };
   structuredData?: object;
+  /** Overrides the site-wide OG image — e.g. a per-article generated image */
+  image?: string;
 }
 
 const SITE_URL = 'https://niruddeshjatra.space';
@@ -30,9 +32,11 @@ const SEO: React.FC<SEOProps> = ({
   ogType = 'website',
   articleMeta,
   structuredData,
+  image,
 }) => {
   const fullUrl = `${SITE_URL}${path}`;
   const fullTitle = title.includes(SITE_NAME) ? title : `${title} — ${SITE_NAME}`;
+  const imageUrl = image ?? OG_IMAGE_URL;
 
   return (
     <Helmet>
@@ -54,11 +58,14 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:url" content={fullUrl} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={OG_IMAGE_URL} />
+      <meta property="og:image" content={imageUrl} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content={lang === 'bn' ? 'bn_BD' : 'en_US'} />
+      {alternateLangPath && (
+        <meta property="og:locale:alternate" content={lang === 'bn' ? 'en_US' : 'bn_BD'} />
+      )}
 
       {ogType === 'article' && articleMeta && (
         <>
@@ -72,7 +79,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:url" content={fullUrl} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={OG_IMAGE_URL} />
+      <meta name="twitter:image" content={imageUrl} />
 
       {structuredData && (
         <script type="application/ld+json">
