@@ -8,9 +8,16 @@ export interface ArticleEntry {
   readTime: { bn: string; en: string };
   state: 'read' | 'next' | 'soon';
   href: string;
+  /** SEO meta description — required once state is 'read' (i.e. routed and prerendered) */
+  enDescription?: string;
+  bnDescription?: string;
+  /** ISO date (YYYY-MM-DD) — required once state is 'read' */
+  datePublished?: string;
 }
 
 export const SERIES_TITLE = 'The Machine Beneath Your Code';
+export const SERIES_DESCRIPTION_EN = 'A series on how computers actually work, from bits to OS. One protagonist — information.';
+export const SERIES_DESCRIPTION_BN = 'কম্পিউটার আসলে কীভাবে কাজ করে তার একটা series — bit থেকে OS পর্যন্ত। একটাই protagonist — তথ্য।';
 
 export const INTRO_ARTICLE = {
   slug: 'the-machine-beneath-your-code',
@@ -19,6 +26,9 @@ export const INTRO_ARTICLE = {
   sub: "series-র roadmap · এখান থেকে শুরু / the series roadmap · start here",
   tag: 'power on ⏻',
   href: '/writing/the-machine-beneath-your-code',
+  enDescription: 'A story of hardware and operating systems from the ground up — where was that 5 stored?',
+  bnDescription: 'হার্ডওয়্যার আর অপারেটিং সিস্টেমের ভেতরের গল্প — সেই ৫ সংখ্যাটা কোথায় গিয়েছিল?',
+  datePublished: '2026-07-18',
 };
 
 export const ARTICLES: ArticleEntry[] = [
@@ -32,6 +42,9 @@ export const ARTICLES: ArticleEntry[] = [
     readTime: { bn: '~১২ মিনিট', en: '~12 min' },
     state: 'read',
     href: '/writing/whats-inside-a-bit',
+    enDescription: 'Transistors, voltage, and the birth of memory — how a bit physically lives in silicon.',
+    bnDescription: 'Transistor, voltage, আর memory-র শুরু — একটা bit কীভাবে physically silicon-এ থাকে।',
+    datePublished: '2026-07-18',
   },
   {
     slug: 'how-does-anything-become-bits',

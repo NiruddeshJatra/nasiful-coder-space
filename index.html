@@ -21,13 +21,12 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#00d26a" />
 
-    <!-- Global OG defaults (title/description injected per-route by react-helmet-async) -->
-    <meta property="og:image" content="https://niruddeshjatra.space/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="niruddeshjatra" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://niruddeshjatra.space/og-image.png" />
+    <!-- Fallback title only — every other meta tag (description, og:*, twitter:*, canonical)
+         is injected per-route by SEO.tsx via react-helmet-async and captured by prerender.mjs.
+         Do not add static og:*/twitter:* meta here: Helmet doesn't remove pre-existing meta
+         tags it didn't render, so a static default here would ship ALONGSIDE the per-route one
+         as a duplicate — scrapers reading the first match would get this generic tag instead. -->
+    <title>niruddeshjatra</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

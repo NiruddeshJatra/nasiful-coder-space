@@ -47,6 +47,8 @@ export const articleSchema = (params: {
   datePublished: string;
   dateModified?: string;
   lang: 'en' | 'bn';
+  image?: string;
+  isPartOf?: { name: string; url: string };
 }) => ({
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -67,5 +69,12 @@ export const articleSchema = (params: {
     name: 'Nasiful Alam',
     alternateName: 'nj',
   },
-  image: `${SITE_URL}/og-image.png`,
+  image: params.image ?? `${SITE_URL}/og-image.png`,
+  ...(params.isPartOf && {
+    isPartOf: {
+      '@type': 'CreativeWorkSeries',
+      name: params.isPartOf.name,
+      url: params.isPartOf.url,
+    },
+  }),
 });
