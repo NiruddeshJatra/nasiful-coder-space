@@ -11,7 +11,7 @@
     "dev": "vite",
     "generate-og": "tsx scripts/generate-og.mjs",
     "generate-favicons": "node scripts/generate-favicons.mjs",
-    "generate-sitemap": "node scripts/generate-sitemap.mjs",
+    "generate-sitemap": "tsx scripts/generate-sitemap.mjs",
     "build": "npm run generate-og && npm run generate-favicons && npm run generate-sitemap && tsc && vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",

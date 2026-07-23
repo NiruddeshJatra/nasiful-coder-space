@@ -1,4 +1,4 @@
-export interface ArticleEntry {
+interface ArticleBase {
   slug: string;
   bnTitle: string;
   enTitle: string;
@@ -6,20 +6,39 @@ export interface ArticleEntry {
   level: string;
   part: string;
   readTime: { bn: string; en: string };
-  state: 'read' | 'next' | 'soon';
   href: string;
-  /** SEO meta description — required once state is 'read' (i.e. routed and prerendered) */
-  enDescription?: string;
-  bnDescription?: string;
-  /** ISO date (YYYY-MM-DD) — required once state is 'read' */
-  datePublished?: string;
 }
+
+/** SEO meta fields, required once an article is routed/prerendered (state: 'read'). */
+interface ArticleSEOFields {
+  enDescription: string;
+  bnDescription: string;
+  /** ISO date (YYYY-MM-DD) */
+  datePublished: string;
+}
+
+export type PublishedArticleEntry = ArticleBase & ArticleSEOFields & { state: 'read' };
+type UnpublishedArticleEntry = ArticleBase & { state: 'next' | 'soon' };
+
+// A union keyed on `state` — TypeScript enforces enDescription/bnDescription/
+// datePublished at compile time for any entry marked 'read', instead of that
+// only surfacing as a runtime throw when the page renders.
+export type ArticleEntry = PublishedArticleEntry | UnpublishedArticleEntry;
 
 export const SERIES_TITLE = 'The Machine Beneath Your Code';
 export const SERIES_DESCRIPTION_EN = 'A series on how computers actually work, from bits to OS. One protagonist — information.';
 export const SERIES_DESCRIPTION_BN = 'কম্পিউটার আসলে কীভাবে কাজ করে তার একটা series — bit থেকে OS পর্যন্ত। একটাই protagonist — তথ্য।';
 
-export const INTRO_ARTICLE = {
+export type IntroArticleEntry = ArticleSEOFields & {
+  slug: string;
+  bnTitle: string;
+  enTitle: string;
+  sub: string;
+  tag: string;
+  href: string;
+};
+
+export const INTRO_ARTICLE: IntroArticleEntry = {
   slug: 'the-machine-beneath-your-code',
   bnTitle: 'ভূমিকা — আপনার কোডের নিচের যন্ত্রটা',
   enTitle: 'Intro — the machine beneath your code',
