@@ -40,8 +40,9 @@ export type IntroArticleEntry = ArticleSEOFields & {
 
 export const INTRO_ARTICLE: IntroArticleEntry = {
   slug: 'the-machine-beneath-your-code',
-  bnTitle: 'ভূমিকা — আপনার কোডের নিচের যন্ত্রটা',
-  enTitle: 'Intro — the machine beneath your code',
+  // Title kept in English even in BN mode — "The Machine Beneath Your Code" is the series name, not translated.
+  bnTitle: 'Intro — The Machine Beneath Your Code',
+  enTitle: 'Intro — The Machine Beneath Your Code',
   sub: "series-র roadmap · এখান থেকে শুরু / the series roadmap · start here",
   tag: 'power on ⏻',
   href: '/writing/the-machine-beneath-your-code',

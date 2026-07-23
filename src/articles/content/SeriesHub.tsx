@@ -92,7 +92,8 @@ export function SeriesHub() {
           <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: 12, color: '#00d26a', flexShrink: 0 }}>pwr ●</span>
           <span style={{ flex: 1, minWidth: 0 }}>
             <span style={{ display: 'block', fontFamily: "'Anek Bangla','Anek Latin',sans-serif", fontSize: 17, color: '#ECE4D4' }}>
-              {bn ? 'ভূমিকা — আপনার কোডের নিচের যন্ত্রটা' : 'Intro — the machine beneath your code'}
+              {/* Title kept in English even in BN mode — series name, not translated */}
+              Intro — The Machine Beneath Your Code
             </span>
             <span style={{ display: 'block', fontFamily: "'Departure Mono',monospace", fontSize: 11, color: '#8aa893', marginTop: 4 }}>
               {bn ? "series-র roadmap · এখান থেকে শুরু" : 'the series roadmap · start here'}
