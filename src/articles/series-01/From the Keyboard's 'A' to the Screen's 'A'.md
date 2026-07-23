@@ -1,0 +1,291 @@
+# Keyboard-এর 'A' থেকে Screen-এর 'A'
+
+## এক keystroke-এর ভেতরে যা কিছু ঘটে
+
+Keyboard-এ 'A' চাপলেন। এক মুহূর্ত পর screen-এ 'A' ফুটে উঠল।
+
+আপনার কাছে মনে হলো instant। কোনো delay টের পাননি, কোনো অপেক্ষাও করতে হয়নি। আঙুল নামল আর অক্ষরটা চলে এল।
+
+কিন্তু বাস্তবে সেটা instant ছিল না। মাঝখানে প্রায় ২০ থেকে ৩০ millisecond সময় লেগেছে, আর সেই সময়ের ভেতরে আপনার laptop-এ কয়েকটা সম্পূর্ণ আলাদা system একের পর এক কাজ করে গেছে। প্রতিটার দায়িত্ব ভিন্ন, প্রতিটা ভিন্ন সময়ে ভিন্ন মানুষের হাতে design করা, কিন্তু সবাই মিলে একসাথে কাজ করেছে।
+
+এই সিরিজে এতদিন আমরা এই system-গুলোকে আলাদা আলাদা করে দেখেছি। আজ দেখব সবাই একসাথে কীভাবে কাজ করে। একটা মাত্র keystroke-কে follow করে পুরো পথটা হেঁটে যাব — আঙুলের চাপ থেকে শুরু করে চোখে আলো পড়া পর্যন্ত।
+
+---
+
+// প্রথম চমক: keyboard-এরও নিজস্ব একটা CPU আছে
+
+'A' চাপলে সরাসরি laptop-এর CPU-তে কিছু যায় না। তার আগে সেই signal-কে থামতে হয় keyboard-এর নিজের ভেতরে বসে থাকা একটা ছোট্ট computer-এ।
+
+শুনতে অদ্ভুত লাগতে পারে। Keyboard তো একটা input device মাত্র, তার আবার নিজের computer কেন থাকবে? কিন্তু আছে। এমনকি সবচেয়ে সস্তা keyboard-এও একটা tiny chip বসানো থাকে, যার ভেতরে থাকে একটা mini CPU, সামান্য memory, আর কিছু আগে থেকে লেখা instruction।
+
+এই chip-এর কাজটা খুব নির্দিষ্ট। সে প্রতি কয়েক millisecond অন্তর keyboard-এর ১০৪টা key-এর প্রতিটার voltage পরীক্ষা করে যায়। যতক্ষণ কোনো key চাপা না হচ্ছে, সব wire-এ voltage একরকম থাকে। কিন্তু যেই কোনো key চাপা হয়, সেই key-এর নিচের switch-এর দুইটা metal contact একসাথে লেগে যায়, circuit complete হয়, আর সেই wire-এ voltage বদলে যায়।
+
+Chip সেই পরিবর্তনটা ধরে ফেলে। তারপর নিজের ভেতরের একটা lookup table থেকে খুঁজে বের করে — এই wire-এ change মানে কোন key? 'A' key-এর জন্য সে একটা নির্দিষ্ট byte তৈরি করে, ধরা যাক `0x04`। সেই byte-টাই USB cable দিয়ে laptop-এ পাঠিয়ে দেয়।
+
+মানে laptop-এর main CPU কিছু জানার আগেই keyboard-এর ভেতরে একটা পুরো computing cycle শেষ হয়ে গেছে। Voltage পড়া হয়েছে, সিদ্ধান্ত নেওয়া হয়েছে, ডেটা তৈরি হয়েছে।
+
+আর সেই ভেতরের CPU-ও কিন্তু আমাদের দেখা সেই একই নিয়মে চলে — fetch করে, decode করে, execute করে। শুধু scale-টা অনেক ছোট।
+
+---
+
+// Interrupt: CPU-কে থামানোর একমাত্র উপায়
+
+USB cable দিয়ে signal ঢুকল laptop-এ। Motherboard-এ বসে থাকা USB controller সেটা receive করল। এই controller একটা আলাদা chip, CPU-র বাইরে, যার একমাত্র কাজ USB device-এর সাথে কথা বলা।
+
+Controller-এর কাছে এখন data আছে, কিন্তু CPU সেটা জানে না। CPU এই মুহূর্তে অন্য কাজে ব্যস্ত — হয়তো Chrome-এর কোনো JavaScript চালাচ্ছে, বা YouTube video decode করছে। তাকে জানাতে হবে যে নতুন কিছু এসেছে।
+
+জানানোর একমাত্র উপায় হলো interrupt। Controller একটা নির্দিষ্ট pin-এর voltage বদলে দেয়, আর সেই wire সরাসরি CPU-তে গিয়ে ঠেকে।
+
+Interrupt পাওয়ার সাথে সাথে CPU যা করছিল তা থামিয়ে দেয়। কিন্তু শুধু থামলেই তো হবে না। CPU-র register-এ এই মুহূর্তে যা কিছু আছে — কোন instruction চালাচ্ছিল, কোন value হাতে ধরা ছিল, সব সাময়িক হিসাব — সেসব হারিয়ে গেলে বিপদ। Interrupt handle করা শেষে যখন সে আগের কাজে ফিরবে, তখন সে জানতেই পারবে না কোথায় থেমেছিল।
+
+তাই থামার আগে CPU সব state একটা নির্দিষ্ট memory area-তে save করে রাখে। এই কাজটা আমরা Article 6-এ দেখেছিলাম — context switch-এর সময় যেভাবে process-এর "মাথার অবস্থা" PCB-তে জমা রাখা হয়, এখানেও প্রায় একই ব্যাপার, শুধু ছোট আকারে।
+
+State save হয়ে গেলে CPU switch করে kernel mode-এ। এতক্ষণ সে user mode-এ ছিল, Chrome-এর code চালাচ্ছিল। এখন OS-এর code চালাতে হবে, আর সেই code-এর hardware access দরকার। তাই privilege level বদলাতেই হবে।
+
+---
+
+// OS-এর ভেতরে: এই event কার জন্য?
+
+Interrupt handler চলতে শুরু করে। এই handler আসলে কী জিনিস? এটা Linux বা Windows kernel-এর একটা অংশ, যেটা বছর কয়েক আগে কোনো developer C-তে লিখেছিলেন। তারপর সেটা compile হয়ে machine code হয়েছে, আর আপনার laptop boot হওয়ার সময় সেই machine code memory-তে load হয়েছে। এই মুহূর্তে সেই বহু পুরনো compiled code-ই চলছে।
+
+Handler প্রথমে USB controller থেকে scancode read করে নেয়। তারপর OS-এর keyboard driver সেই scancode দেখে বুঝে যায় — 'A' চাপা হয়েছে।
+
+এখন প্রশ্ন হলো, এই তথ্যটা কার কাছে যাবে? আপনার laptop-এ তো এই মুহূর্তে ৫০টা program চলছে। সবাইকে জানানোর তো মানে হয় না।
+
+OS জানে এই মুহূর্তে কোন window active আছে — যেটাকে বলে focused window। ধরা যাক সেটা VS Code। OS সেই window-এর সাথে যুক্ত process-টা খুঁজে বের করে, আর সেই process-এর জন্য যে event queue আছে, সেখানে event-টা রেখে দেয়।
+
+কিন্তু এখানে একটা সমস্যা আছে। VS Code-এর process এই মুহূর্তে CPU-তে চলছে না। CPU-তে ছিল Chrome। তাহলে VS Code জানবে কীভাবে যে তার জন্য একটা event এসেছে?
+
+এখানেই scheduler-এর ভূমিকা। Article 6-এ দেখেছিলাম, প্রতিটা context switch-এ scheduler ঠিক করে দেয় পরের বার CPU কে পাবে। এখন তার সামনে একটা choice — Chrome-কে আবার resume করবে, নাকি VS Code-কে জাগিয়ে তুলবে?
+
+Modern OS-এ interactive application-কে সাধারণত দ্রুত response দেওয়া হয়। কারণ user সরাসরি তাদের সাথে কাজ করছে, একটু দেরি হলেই "lag" মনে হবে। তাই scheduler সিদ্ধান্ত নেয় — VS Code-কে এখনই CPU দাও।
+
+Context switch শুরু হয়। Chrome-এর সমস্ত state তার PCB-তে জমা হয়ে যায়। VS Code-এর PCB থেকে তার আগের state আবার CPU-তে load হয়। সাথে virtual memory-র context-ও বদলে যায় — এখন থেকে CPU যেসব virtual address ব্যবহার করবে, সেগুলো VS Code-এর page table দিয়ে translate হবে, Chrome-এর নয়।
+
+সব প্রস্তুত হলে CPU আবার user mode-এ ফিরে আসে, আর VS Code-এর code চালাতে শুরু করে।
+
+---
+
+// App জেগে উঠল
+
+VS Code একটা Electron application, মানে মূলত JavaScript-এ লেখা। Chrome-এর যে V8 engine, সেটাই ভেতরে বসে এই JavaScript চালাচ্ছে।
+
+VS Code-এর event loop-এ একটা `read()` system call অনেকক্ষণ ধরে pending অবস্থায় ছিল। সে user-এর input-এর অপেক্ষায় block হয়ে বসে ছিল। এখন OS-এর কাছে event ready, তাই সেই system call return করল, আর VS Code-এর হাতে 'A' character পৌঁছে গেল।
+
+এই keystroke handle করার যে code, সেটা JavaScript-এ লেখা। কিন্তু আগের আর্টিকেলে দেখেছি, V8 প্রথমে code-কে interpret করে চালায়, তারপর যেসব অংশ বারবার চলে সেগুলোকে JIT দিয়ে native machine code-এ compile করে ফেলে। Keystroke handler নিশ্চয়ই হাজার হাজার বার চলেছে। তাই এই মুহূর্তে সেটা আর interpret হচ্ছে না — সরাসরি compiled machine code-ই চলছে, প্রায় C-র মতো গতিতে।
+
+Code বলল — cursor যেখানে আছে সেখানে 'A' লেখো। কিন্তু "লেখা" মানে screen-এ pixel বসানো। কোন pixel-এ কী রং হবে, সেটা কে ঠিক করবে?
+
+---
+
+// অক্ষর থেকে pixel
+
+এখানে font system কাজে নামে। আপনার editor-এ যে font ব্যবহার করছেন — Consolas, Fira Code, যাই হোক — সেই font file আগে থেকেই RAM-এ load করা আছে।
+
+Font file-এ প্রতিটা character-এর জন্য একটা করে shape-এর বর্ণনা থাকে। বেশিরভাগ modern font-এ সেই বর্ণনা vector আকারে — মানে গাণিতিক curve দিয়ে বলা থাকে অক্ষরটার আকৃতি কেমন হবে। এর সুবিধা হলো, যেকোনো size-এ scale করলেও অক্ষরটা ঝাপসা হয় না।
+
+কিন্তু screen তো vector বোঝে না। Screen বোঝে pixel। তাই সেই vector shape-কে আপনার current font size অনুযায়ী pixel grid-এ রূপান্তর করতে হয়। এই প্রক্রিয়ার নাম rasterization।
+
+Rasterization শেষে 'A' character আর অক্ষর থাকে না। এখন সেটা কয়েকশো pixel-এর একটা grid, যার প্রতিটা pixel-এর জন্য R, G, B value নির্ধারিত। Article 2-তে দেখেছিলাম কীভাবে ছবি binary হয় — এখানেও ঠিক তাই ঘটল। একটা অক্ষর এইমাত্র একটা ছোট্ট ছবিতে পরিণত হলো।
+
+---
+
+// Framebuffer থেকে আলো
+
+VS Code এখন আরেকটা system call করে — "এই pixel data screen-এ দেখাও।" আবার user mode থেকে kernel mode-এ transition, আবার OS-এর দরজায় কড়া নাড়া।
+
+OS-এর window compositor এই data receive করে। Compositor-এর কাজ হলো সব window-এর content মিলিয়ে screen-এর final চেহারা তৈরি করা। সে জানে VS Code-এর window screen-এর ঠিক কোন জায়গায় বসানো, তাই সেই অনুযায়ী pixel-গুলোর সঠিক coordinate হিসাব করে।
+
+তারপর সেই data লেখা হয় framebuffer-এ। Framebuffer হলো GPU-র নিজস্ব memory-তে (VRAM) একটা বিশেষ এলাকা, যেখানে screen-এ এই মুহূর্তে যা দেখাচ্ছে তার পুরো ছবিটা bit আকারে জমা থাকে।
+
+GPU প্রতি ১৬.৬৭ millisecond অন্তর (মানে 60Hz refresh rate-এ) সেই framebuffer পড়ে নেয় আর সেই ডেটা HDMI বা DisplayPort cable দিয়ে monitor-এ পাঠিয়ে দেয়। Cable-এর ভেতরে যা যাচ্ছে সেটা আসলে দ্রুত পরিবর্তিত voltage — high, low, high, low। সেই voltage pattern-ই pixel data-র binary রূপ।
+
+এই সিরিজের একদম প্রথম আর্টিকেলে আমরা যেখান থেকে শুরু করেছিলাম, ঘুরে ফিরে সেই voltage-এই ফিরে এলাম।
+
+Monitor-এর ভেতরের controller সেই signal receive করে। LCD screen-এ প্রতিটা pixel-এর পেছনে থাকে liquid crystal, আর controller সেই crystal-এর orientation নিয়ন্ত্রণ করে ঠিক করে দেয় কোন pixel দিয়ে কতটুকু আলো যাবে। OLED-এ ব্যাপারটা আরও সরাসরি — প্রতিটা pixel নিজেই আলো তৈরি করে।
+
+'A' অক্ষরের আকৃতি অনুযায়ী নির্দিষ্ট pixel-গুলোতে voltage গেল। সেই pixel-গুলো আলো ছাড়ল। Photon বেরিয়ে এসে আপনার চোখে পড়ল।
+
+আপনি screen-এ 'A' দেখলেন।
+
+---
+
+// ২০ millisecond-এ কত কিছু
+
+আপনার কাছে পুরোটা instant মনে হয়েছে। এক আঙুলের চাপ, সাথে সাথে অক্ষর।
+
+কিন্তু এই সময়টুকুর ভেতরে ঘটে গেছে অনেক কিছু। Keyboard-এর নিজস্ব CPU একটা পুরো scan cycle চালিয়েছে। USB controller signal তৈরি করেছে। Main CPU একটা interrupt সামলেছে, নিজের state save করেছে, privilege level বদলেছে। OS-এর driver ডেটা পড়েছে, ঠিক করেছে কোন application এই event পাবে। Scheduler সিদ্ধান্ত নিয়েছে কাকে CPU দেওয়া হবে। একটা full context switch হয়েছে, page table বদলেছে। JIT-compiled JavaScript চলেছে। Font system একটা অক্ষরকে ছবিতে রূপান্তর করেছে। GPU framebuffer update করেছে। Cable-এ voltage-এর ঢেউ গেছে। Monitor-এর pixel জ্বলে উঠেছে।
+
+এই সময়ে CPU-তে কয়েক বিলিয়ন instruction execute হয়েছে। Cache line RAM থেকে L3, L2 হয়ে L1-এ এসেছে বহুবার। Page table lookup হয়েছে প্রতিটা memory access-এ। দুই-তিনটা context switch হয়েছে।
+
+আর সবচেয়ে আশ্চর্যের ব্যাপার হলো, এই পুরো chain-এর প্রতিটা অংশ আলাদা আলাদা মানুষ, আলাদা কোম্পানি, আলাদা সময়ে তৈরি করেছে। Keyboard-এর firmware লিখেছে এক দল, USB protocol design করেছে আরেক দল, kernel-এর driver লিখেছে অন্য কেউ, V8 engine বানিয়েছে Google-এর একটা team, font rendering library লিখেছে আরও কেউ। কেউ কারো সাথে বসে আলোচনা করেনি।
+
+তবু সবাই মিলে flawlessly কাজ করেছে। কারণ প্রতিটা layer পরের layer-এর জন্য একটা পরিষ্কার contract রেখে গেছে — "তুমি আমাকে এই format-এ ডেটা দাও, আমি এই কাজটা করে দেব।" ভেতরে কী হচ্ছে সেটা জানার দরকার নেই।
+
+এটাই abstraction। এবং এটাই আধুনিক computing-এর সবচেয়ে বড় শক্তি।
+
+---
+
+// সিরিজের শেষে
+
+আটটা আর্টিকেল আগে শুরু করেছিলাম একটা সহজ প্রশ্ন দিয়ে — `x = 5` লিখলে সেই ৫ সংখ্যাটা কম্পিউটারের কোথায় যায়?
+
+উত্তরটা খুঁজতে গিয়ে আমাদের অনেক দূর যেতে হয়েছে। Transistor থেকে শুরু করে logic gate, gate থেকে latch, latch থেকে register। তারপর binary encoding, CPU-র ভেতরের ALU আর bus, fetch-decode-execute-এর অবিরাম চক্র। এরপর memory hierarchy, cache-এর চতুরতা, locality-র সৌন্দর্য। তারপর operating system, যে সবার মাঝখানে বসে সবকিছু সামলায়। আর শেষে compiler, interpreter আর JIT — যারা মানুষের ভাষাকে machine-এর ভাষায় অনুবাদ করে।
+
+এই সিরিজ পড়ে আপনি নতুন CPU design করতে পারবেন না। সেটা উদ্দেশ্যও ছিল না। উদ্দেশ্য ছিল অন্য কিছু।
+
+আমরা প্রতিদিন এমন সব tool ব্যবহার করি যাদের ভেতরের কিছুই জানি না। React লিখি, কিন্তু browser কীভাবে সেটা চালায় জানি না। Docker চালাই, কিন্তু container আসলে কী তা নিয়ে ভাবি না। এই না-জানাটা এক অর্থে ভালো — abstraction-এর পুরো উদ্দেশ্যই তো এটা। কিন্তু আরেক অর্থে এটা আমাদের অসহায় করে তোলে। কিছু ভাঙলে আমরা জানি না কোথায় খুঁজতে হবে।
+
+এখন অন্তত একটা মানচিত্র আছে। App slow হলে বুঝবেন cache-এর কথা ভাবা যেতে পারে। Memory leak হলে জানবেন heap কী জিনিস। Deployment-এ 502 এলে অন্তত অনুমান করতে পারবেন কোন layer-এ সমস্যা।
+
+সবচেয়ে বড় কথা, machine আর আগের মতো রহস্যময় থাকবে না। হুড খুলে ইঞ্জিনটা একবার দেখা হয়ে গেছে। ভেতরে কোনো জাদু নেই — আছে শুধু voltage, logic, আর কয়েক দশক ধরে মানুষের জমানো চতুর কিছু ধারণা।
+
+সেটুকু জানাই যথেষ্ট।
+
+**পড়ার জন্য ধন্যবাদ। ভালো থাকবেন।**
+
+# From the Keyboard's 'A' to the Screen's 'A'
+
+## Everything that happens inside one keystroke
+
+You press 'A' on your keyboard. A moment later, 'A' appears on the screen.
+
+It felt instant to you. No delay you could detect, no waiting. Your finger went down and the character showed up.
+
+But it wasn't instant. Roughly 20 to 30 milliseconds passed in between, and in that window several completely separate systems inside your laptop did their work one after another. Each has a different responsibility, each was designed by different people at different times, but together they got the job done.
+
+Throughout this series we've looked at these systems one at a time. Today we watch them work together. We'll follow a single keystroke through the whole path — from the press of a finger to light hitting your eye.
+
+---
+
+## First surprise: your keyboard has its own CPU
+
+When you press 'A', nothing goes directly to the laptop's CPU. Before that, the signal has to stop at a tiny computer sitting inside the keyboard itself.
+
+It sounds strange. A keyboard is just an input device — why would it have its own computer? But it does. Even the cheapest keyboard has a tiny chip inside, holding a mini CPU, a small amount of memory, and some pre-written instructions.
+
+That chip's job is very specific. Every few milliseconds it checks the voltage on each of the keyboard's 104 keys. As long as no key is pressed, all the wires hold the same voltage. But the moment a key goes down, two metal contacts under that key touch, the circuit completes, and the voltage on that wire changes.
+
+The chip catches that change. Then it looks up its own internal table to figure out — a change on this wire means which key? For the 'A' key it produces a specific byte, say `0x04`. That byte gets sent to the laptop over the USB cable.
+
+So before the laptop's main CPU knows anything at all, a complete computing cycle has already finished inside the keyboard. Voltage was read, a decision was made, data was produced.
+
+And that little CPU runs by the same rules we've seen throughout this series — fetch, decode, execute. Just at a much smaller scale.
+
+---
+
+## Interrupt: the only way to stop a CPU
+
+The signal came into the laptop over the USB cable. The USB controller sitting on the motherboard received it. This controller is a separate chip, outside the CPU, whose only job is talking to USB devices.
+
+The controller now has data, but the CPU doesn't know that. The CPU is busy with something else at this moment — maybe running some Chrome JavaScript, maybe decoding a YouTube video. It needs to be told that something new arrived.
+
+The only way to tell it is an interrupt. The controller changes the voltage on a specific pin, and that wire runs straight into the CPU.
+
+The instant the interrupt arrives, the CPU stops what it was doing. But simply stopping isn't enough. Whatever is in the CPU's registers right now — which instruction it was running, which values it was holding, all the intermediate results — losing any of that would be a disaster. When it returns to its previous work after handling the interrupt, it wouldn't know where it had left off.
+
+So before stopping, the CPU saves all its state into a designated memory area. This is the same operation we saw in Article 6 — the way a process's "head state" gets stored in its PCB during a context switch. Same idea here, just at a smaller scale.
+
+Once the state is saved, the CPU switches into kernel mode. Until now it was in user mode, running Chrome's code. Now it has to run OS code, and that code needs hardware access. So the privilege level has to change.
+
+---
+
+## Inside the OS: who is this event for?
+
+The interrupt handler starts running. What is this handler, exactly? It's a piece of the Linux or Windows kernel that some developer wrote in C years ago. That code was then compiled into machine code, and when your laptop booted, that machine code was loaded into memory. Right now, that very old compiled code is what's running.
+
+The handler first reads the scancode from the USB controller. Then the OS's keyboard driver looks at that scancode and figures out — 'A' was pressed.
+
+Now the question is, who does this information go to? Fifty programs are running on your laptop at this moment. Telling all of them makes no sense.
+
+The OS knows which window is currently active — what's called the focused window. Say that's VS Code. The OS finds the process attached to that window, and drops the event into that process's event queue.
+
+But there's a problem here. VS Code's process isn't running on the CPU right now. Chrome was. So how does VS Code find out that an event arrived for it?
+
+This is where the scheduler comes in. As we saw in Article 6, at every context switch the scheduler decides who gets the CPU next. It now faces a choice — resume Chrome, or wake up VS Code?
+
+Modern OSes typically give interactive applications faster response. Because the user is working with them directly, and any delay immediately feels like lag. So the scheduler decides — give VS Code the CPU right now.
+
+The context switch begins. All of Chrome's state gets saved into its PCB. VS Code's earlier state gets loaded back from its PCB into the CPU. The virtual memory context switches too — from now on, the virtual addresses the CPU uses get translated through VS Code's page table, not Chrome's.
+
+Once everything's in place, the CPU returns to user mode and starts running VS Code's code.
+
+---
+
+## The app wakes up
+
+VS Code is an Electron application, meaning it's mostly written in JavaScript. Chrome's V8 engine sits inside it and runs that JavaScript.
+
+In VS Code's event loop, a `read()` system call had been pending for a while. It was blocked, waiting for user input. Now the OS has the event ready, so that system call returns, and the 'A' character lands in VS Code's hands.
+
+The code handling this keystroke is written in JavaScript. But as we saw in the last article, V8 first interprets code, then takes the parts that run repeatedly and JIT-compiles them into native machine code. This keystroke handler has surely run thousands of times. So right now it isn't being interpreted at all — the compiled machine code is running directly, at nearly C-level speed.
+
+The code says — write 'A' at the cursor position. But "writing" means placing pixels on the screen. Who decides which pixel gets what color?
+
+---
+
+## From character to pixel
+
+This is where the font system comes in. The font you're using in your editor — Consolas, Fira Code, whatever it is — has already been loaded into RAM.
+
+A font file contains a shape description for every character. In most modern fonts, that description is in vector form — the shape of the letter is described mathematically with curves. The advantage is that scaling to any size keeps the letter crisp.
+
+But screens don't understand vectors. Screens understand pixels. So that vector shape has to be converted into a pixel grid according to your current font size. That process is called rasterization.
+
+After rasterization, 'A' is no longer a character. It's now a grid of a few hundred pixels, each with a determined R, G, B value. In Article 2 we saw how images become binary — the same thing just happened here. A letter has become a small picture.
+
+---
+
+## From framebuffer to light
+
+VS Code now makes another system call — "show this pixel data on screen." Another user-to-kernel transition, another knock on the OS's door.
+
+The OS's window compositor receives this data. The compositor's job is to combine the content of all windows into the screen's final appearance. It knows exactly where VS Code's window sits on the screen, so it computes the right coordinates for those pixels.
+
+Then that data gets written into the framebuffer. The framebuffer is a special area in the GPU's own memory (VRAM) that holds, in bits, the complete current picture of what the screen is showing.
+
+Every 16.67 milliseconds (at a 60Hz refresh rate) the GPU reads that framebuffer and sends the data over an HDMI or DisplayPort cable to the monitor. What travels through that cable is rapidly changing voltage — high, low, high, low. That voltage pattern is the binary form of the pixel data.
+
+We've come full circle back to the voltage we started with in the very first article of this series.
+
+The controller inside the monitor receives that signal. In an LCD screen, each pixel has liquid crystal behind it, and the controller adjusts the orientation of that crystal to decide how much light passes through each pixel. In OLED, it's more direct — each pixel generates its own light.
+
+Voltage went to the pixels matching the shape of 'A'. Those pixels emitted light. Photons left the glass and hit your eye.
+
+You saw 'A' on the screen.
+
+---
+
+## So much in 20 milliseconds
+
+The whole thing felt instant to you. One press of a finger, and immediately a letter.
+
+But inside that window, a lot happened. The keyboard's own CPU ran a full scan cycle. The USB controller generated a signal. The main CPU handled an interrupt, saved its state, changed privilege level. The OS's driver read the data and decided which application should receive the event. The scheduler decided who gets the CPU. A full context switch happened, page tables changed. JIT-compiled JavaScript ran. The font system converted a letter into a picture. The GPU updated a framebuffer. A wave of voltage went down a cable. Pixels on the monitor lit up.
+
+In that time the CPU executed billions of instructions. Cache lines moved from RAM through L3 and L2 into L1, many times over. A page table lookup happened on every memory access. Two or three context switches occurred.
+
+And the most remarkable part is this — every piece of that chain was built by different people, different companies, at different times. One team wrote the keyboard's firmware, another designed the USB protocol, someone else wrote the kernel driver, a team at Google built the V8 engine, someone else wrote the font rendering library. None of them sat down together to discuss anything.
+
+Yet they all worked together flawlessly. Because each layer left a clear contract for the next — "give me data in this format, and I'll do this job." Nobody needs to know what's happening inside anyone else.
+
+That's abstraction. And it's the greatest strength of modern computing.
+
+---
+
+## At the end of the series
+
+Eight articles ago we started with a simple question — when you write `x = 5`, where does that 5 go inside the computer?
+
+Finding that answer took us a long way. From transistors to logic gates, gates to latches, latches to registers. Then binary encoding, the ALU and buses inside a CPU, the endless cycle of fetch-decode-execute. Then memory hierarchy, the cleverness of caches, the beauty of locality. Then the operating system, sitting between everyone and managing it all. And finally compilers, interpreters, and JIT — translating human language into machine language.
+
+Reading this series won't let you design a new CPU. That was never the goal. The goal was something else.
+
+Every day we use tools whose insides we know nothing about. We write React without knowing how the browser runs it. We run Docker without thinking about what a container actually is. That not-knowing is fine in one sense — the whole point of abstraction is exactly that. But in another sense it leaves us helpless. When something breaks, we don't know where to start looking.
+
+Now at least there's a map. When an app is slow, you'll know caches are worth thinking about. When there's a memory leak, you'll know what a heap is. When a deployment returns 502, you'll at least be able to guess which layer has the problem.
+
+Most of all, the machine won't feel as mysterious anymore. The hood has been opened once and the engine has been looked at. There's no magic inside — just voltage, logic, and a few decades' worth of clever ideas accumulated by people.
+
+Knowing that much is enough.
+
+**Thank you for reading. Take care.**
