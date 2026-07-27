@@ -9,11 +9,12 @@ import { Kicker } from '../articles/primitives/Kicker';
 import { TraceRail } from '../articles/primitives/TraceRail';
 import { MachineBeneathYourCode } from '../articles/content/MachineBeneathYourCode';
 import { WhatsInsideABit } from '../articles/content/WhatsInsideABit';
+import { HowDoesAnythingBecomeBits } from '../articles/content/HowDoesAnythingBecomeBits';
 import { useLang } from '../articles/context/LanguageContext';
-import { INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
+import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
-type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit';
+type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits';
 
 // manifest.ts enforces enDescription/bnDescription/datePublished at compile time
 // for any ARTICLES entry with state: 'read' (see PublishedArticleEntry). This
@@ -60,13 +61,25 @@ const CONFIGS: Record<ArticleSlug, Config> = {
     seriesPos: 1,
     Content: WhatsInsideABit,
   },
+  'how-does-anything-become-bits': {
+    slug: 'how-does-anything-become-bits',
+    bnSubtitle: 'Text, image, sound-এর ভেতরের অনুবাদক',
+    enSubtitle: 'The translator inside text, image, and sound',
+    kickerCells: [
+      { bn: 'LEVEL 1 — THE ATOMS', en: 'LEVEL 1 — THE ATOMS' },
+      { bn: 'পর্ব ০২/০৮', en: 'part 02/08' },
+      { bn: '~১৫ মিনিট', en: '~15 min' },
+    ],
+    seriesPos: 2,
+    Content: HowDoesAnythingBecomeBits,
+  },
 };
 
 function ArticleBody({ config }: { config: Config }) {
   const { bn } = useLang();
   const { Content } = config;
   const slug = config.slug as ArticleSlug;
-  const isBnTitle = slug === 'whats-inside-a-bit';
+  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits';
   const meta = getArticleMeta(slug);
   const pageTitle = bn ? meta.bnTitle : meta.enTitle;
   const pageDesc = bn ? meta.bnDescription : meta.enDescription;
@@ -136,6 +149,8 @@ interface ArticlePageProps {
   article: ArticleSlug;
 }
 
+const READ_COUNT = ARTICLES.filter((a) => a.state === 'read').length;
+
 export default function ArticlePage({ article }: ArticlePageProps) {
   const config = CONFIGS[article];
 
@@ -143,7 +158,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
     <LanguageProvider>
       <TermProvider>
         <div className="article-root" style={{ minHeight: '100vh' }}>
-          <PromptBar slug={config.slug} seriesPos={config.seriesPos} readCount={1} />
+          <PromptBar slug={config.slug} seriesPos={config.seriesPos} readCount={READ_COUNT} />
           <ArticleBody config={config} />
         </div>
       </TermProvider>
