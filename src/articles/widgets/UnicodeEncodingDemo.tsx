@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLang } from '../context/LanguageContext';
 import { Instrument } from '../primitives/Instrument';
 import { Caption } from '../primitives/Caption';
+import { SegmentedToggle } from '../primitives/SegmentedToggle';
 
 type GlyphId = 'a' | 'e' | 'k' | 'p';
 
@@ -17,20 +18,13 @@ export function UnicodeEncodingDemo() {
   const [id, setId] = useState<GlyphId>('k');
   const enc = ENC_DATA[id];
 
-  const segG = (active: boolean): React.CSSProperties => ({
-    background: active ? '#16402a' : 'none', color: active ? '#00d26a' : '#6c8873',
-    border: 'none', padding: '5px 12px', cursor: 'pointer',
-    fontFamily: "'Departure Mono', monospace", fontSize: '13px',
-  });
-
   const control = (
-    <div className="flex" style={{ border: '1px solid #3a5847' }}>
-      {(Object.keys(ENC_DATA) as GlyphId[]).map((k) => (
-        <button key={k} style={segG(id === k)} onClick={() => setId(k)} className="well-focus">
-          {ENC_DATA[k].glyph}
-        </button>
-      ))}
-    </div>
+    <SegmentedToggle
+      value={id}
+      onChange={setId}
+      fontSize="13px"
+      options={(Object.keys(ENC_DATA) as GlyphId[]).map((k) => ({ value: k, label: ENC_DATA[k].glyph }))}
+    />
   );
 
   const byteCountText = bn
