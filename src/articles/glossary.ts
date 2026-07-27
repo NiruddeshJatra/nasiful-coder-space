@@ -50,4 +50,44 @@ export const glossary: Record<string, GlossaryEntry> = {
     bn: 'জটিল mechanism-কে একটা সহজ interface-এর পেছনে লুকিয়ে ফেলা। গাড়ির accelerator-এ চাপ দিলে গাড়ি চলে — engine-এর ভেতরে কী ঘটছে জানতে হয় না। Software-এ প্রতিটা layer-ই নিচের layer-এর abstraction: আপনার কোড → runtime → OS → hardware।',
     en: "Hiding complex machinery behind a simple interface. Press a car's accelerator and it moves — you don't need to know what the engine is doing. In software every layer is an abstraction of the one below: your code → runtime → OS → hardware.",
   },
+  twoscomp: {
+    term: "two's complement",
+    bn: 'ডিজিটাল ইলেকট্রনিক্সে চিহ্নযুক্ত (পজিটিভ ও নেগেটিভ) পূর্ণসংখ্যা রিপ্রেজেন্ট করার সবচেয়ে জনপ্রিয় গাণিতিক পদ্ধতি। এতে কোনো সংখ্যার বিটগুলোকে ইনভার্ট করে ১ যোগ করে নেগেটিভ মান বের করা হয়। এর সবচেয়ে বড় সুবিধা হলো, এর ফলে সিস্টেমে কেবল একটিই শূন্য (0) থাকে এবং প্রসেসর একই হার্ডওয়্যার সার্কিট ব্যবহার করে যোগ ও বিয়োগ সম্পন্ন করতে পারে।',
+    en: 'The mathematical standard used in digital electronics to represent signed (both positive and negative) integers. It is achieved by inverting the bits of a binary number and adding 1. Its primary advantage is that it eliminates the problem of a negative zero (−0) and allows the CPU to perform both addition and subtraction using the exact same hardware circuitry.',
+  },
+  ascii: {
+    term: 'ASCII',
+    bn: 'ASCII (American Standard Code for Information Interchange) — computing-এর সবচেয়ে পুরনো character encoding standard। প্রতিটা ইংরেজি অক্ষর, digit, punctuation-এর জন্য একটা করে ৭-bit code (মোট ১২৮টা possibility)। ১৯৬০-এর দশকে design করা হয়েছিল, তখন শুধু ইংরেজির জন্য বানানো ছিল। এখনো UTF-8-এর ভেতরে backward compatibility হিসেবে টিকে আছে।',
+    en: 'ASCII (American Standard Code for Information Interchange) is computing’s oldest character encoding standard. A 7-bit code for every English letter, digit, and punctuation mark (128 possibilities total). Designed in the 1960s, made only for English at the time. Still lives inside UTF-8 today for backward compatibility.',
+  },
+  unicode: {
+    term: 'Unicode',
+    bn: 'Unicode একটা international standard যেটা পৃথিবীর প্রতিটা language-এর প্রতিটা character-এর জন্য একটা করে unique identity বা code point নির্ধারণ করে — যেমন ‘ক’-এর code point হলো U+0995। মনে রাখবেন, এটা identity assignment, encoding না। কীভাবে সেই identity actual bit-এ রূপান্তর হবে, সেটা encoding-এর কাজ (যেমন UTF-8 বা UTF-16)।',
+    en: 'Unicode is an international standard that assigns a unique identity (code point) to every character in every language on Earth — like U+0995 for ‘ক’. Remember, this is identity assignment, not encoding. How that identity turns into actual bits is the job of encoding schemes like UTF-8 or UTF-16.',
+  },
+  utf8: {
+    term: 'UTF-8',
+    bn: 'UTF-8 হলো Unicode-এর সবচেয়ে জনপ্রিয় encoding। এটা variable-width — সহজ character-এর জন্য কম bit, জটিলের জন্য বেশি। ইংরেজি অক্ষরের জন্য ১ byte, বাংলা character-এর জন্য ৩ byte, complex emoji-র জন্য ৪ byte পর্যন্ত। ASCII-র সাথে সম্পূর্ণ backward compatible — যেকোনো valid ASCII file automatically একটা valid UTF-8 file।',
+    en: 'UTF-8 is the most popular Unicode encoding. Variable-width — fewer bits for simple characters, more for complex ones. 1 byte for English letters, 3 bytes for Bangla characters, up to 4 bytes for complex emoji. Fully backward-compatible with ASCII — any valid ASCII file is automatically a valid UTF-8 file.',
+  },
+  endian: {
+    term: 'endianness',
+    bn: 'যখন কোনো ডেটা ১ byte-এর চেয়ে বড় হয় (যেমন ৩ byte-এর বাংলা অক্ষর বা ৩২-bit integer), তখন সেই মাল্টি-byte ডেটা মেমোরিতে কোন ক্রমানুসারে (byte order) সংরক্ষিত হবে, তা নির্ধারণ করার পদ্ধতি। Big-Endian: সবচেয়ে গুরুত্বপূর্ণ byte (MSB) মেমোরির প্রথম এড্রেসে বসে (স্বাভাবিক মানুষের পড়ার মতো)। Little-Endian: সবচেয়ে কম গুরুত্বপূর্ণ byte (LSB) আগে বসে। আধুনিক x86 এবং ARM প্রসেসরগুলো সাধারণত Little-Endian ব্যবহার করে।',
+    en: 'The system configuration that dictates the byte order used to store multi-byte data (like a 3-byte Bangla character or a 32-bit integer) in memory. Big-Endian stores the most significant byte (MSB) at the lowest address (how humans naturally read numbers). Little-Endian stores the least significant byte (LSB) first. Modern x86 and ARM CPUs predominantly use Little-Endian.',
+  },
+  sampling: {
+    term: 'sampling',
+    bn: 'Sampling হলো continuous জিনিস (যেমন sound wave, temperature reading) থেকে regular interval-এ measurement নিয়ে সেটাকে discrete সংখ্যায় রূপান্তরের process। যেমন একটা video camera প্রতি সেকেন্ডে অনেকগুলো ছবি তুলে সেগুলোকে জোড়া দিয়ে চলমান video বানায় — sampling ঠিক তেমনই একটা wave থেকে অনেকগুলো "snapshot" নিয়ে সেটাকে digital data-য় রূপ দেয়।',
+    en: 'Sampling is the process of turning something continuous (like a sound wave or a temperature reading) into discrete numbers by taking measurements at regular intervals. Like a video camera taking many still pictures per second and stringing them together as a moving video — sampling takes many "snapshots" of a wave to turn it into digital data.',
+  },
+  lossless: {
+    term: 'lossless compression',
+    bn: 'Lossless compression মানে data-কে ছোট করা, কিন্তু কিছুই না হারিয়ে। Compress করার পর যেকোনো সময় সম্পূর্ণ original ফিরে পাওয়া যায়। ট্রিকটা হলো — repetition আর pattern খুঁজে বের করে সেগুলোকে সংক্ষেপে লেখা। Gzip, Brotli, PNG — এসব lossless। Text, code, database backup-এর জন্য mandatory।',
+    en: 'Lossless compression shrinks data without losing anything. Decompress at any time and you get the exact original back. The trick is finding repetition and patterns in the data and writing them more concisely. Gzip, Brotli, PNG — all lossless. Mandatory for text, code, database backups.',
+  },
+  lossy: {
+    term: 'lossy compression',
+    bn: 'Lossy compression মানে সাইজ কমানোর জন্য কিছু data চিরতরে বাদ দেওয়া — কিন্তু এমনভাবে যাতে মানুষের চোখ বা কান পার্থক্য ধরতে না পারে। MP3, JPEG, H.264 — এগুলো সব lossy। মানুষের perception-এর সীমাবদ্ধতা কাজে লাগিয়ে অসাধারণ compression ratio পাওয়া যায়। কিন্তু original data চিরতরে হারিয়ে যায় — decompress করলে exactly একই file আর ফিরে পাওয়া যায় না।',
+    en: 'Lossy compression shrinks by permanently discarding some data — but in ways human eyes and ears can’t detect. MP3, JPEG, H.264 — all lossy. Exploiting the limits of human perception gets you incredible compression ratios. But the original data is gone forever — decompressing doesn’t give you back an exact copy.',
+  },
 };

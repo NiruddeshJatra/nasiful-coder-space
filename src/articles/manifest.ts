@@ -74,8 +74,11 @@ export const ARTICLES: ArticleEntry[] = [
     level: 'LEVEL 1 — THE ATOMS',
     part: '02/08',
     readTime: { bn: '~১৫ মিনিট', en: '~15 min' },
-    state: 'next',
-    href: '#',
+    state: 'read',
+    href: '/writing/how-does-anything-become-bits',
+    enDescription: "Numbers, text, images, and sound — how every kind of information becomes 0s and 1s, and why the CPU understands none of it.",
+    bnDescription: 'সংখ্যা, text, image, sound — সব ধরনের তথ্য কীভাবে ০ আর ১ হয়, আর CPU কেন এর কিছুই বোঝে না।',
+    datePublished: '2026-07-27',
   },
   {
     slug: 'how-do-gates-do-arithmetic',
@@ -85,7 +88,7 @@ export const ARTICLES: ArticleEntry[] = [
     level: 'LEVEL 2 — THE MACHINERY',
     part: '03/08',
     readTime: { bn: '', en: '' },
-    state: 'soon',
+    state: 'next',
     href: '#',
   },
   {

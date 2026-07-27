@@ -270,7 +270,7 @@ export function WhatsInsideABit() {
 
       <RelayNav
         hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
-        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০২ — যেকোনো তথ্য কীভাবে ০ আর ১ হয়?' : '02 — How does anything become 0s and 1s?', href: '#', variant: 'next' }}
+        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০২ — যেকোনো তথ্য কীভাবে ০ আর ১ হয়?' : '02 — How does anything become 0s and 1s?', href: '/writing/how-does-anything-become-bits', variant: 'next' }}
         bridge={{ bn: 'এখন আমরা জানি একটা bit কীভাবে ধরে রাখা যায়। কিন্তু একটা bit দিয়ে তো কিছুই হয় না। তাহলে লক্ষ-কোটি bit একসাথে মিলে কীভাবে একটা বাংলা বাক্য তৈরি করে?', en: 'Now we know how a bit can be held. But one bit alone does nothing. How do trillions of bits together become a Bengali sentence, a JPEG photo, an MP3 song?' }}
       />
       <Colophon />

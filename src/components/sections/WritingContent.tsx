@@ -35,6 +35,11 @@ const techArticles = [
     path: "/writing/whats-inside-a-bit",
     description: "part 01 · transistors, voltage, memory",
   },
+  {
+    title: "how does anything become 0s and 1s?",
+    path: "/writing/how-does-anything-become-bits",
+    description: "part 02 · encoding, numbers, text",
+  },
 ];
 
 const WritingContent = () => {

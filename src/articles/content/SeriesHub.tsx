@@ -16,8 +16,8 @@ export function SeriesHub() {
 
   const data = [
     { bn: 'বিটের ভেতরে কী থাকে?', en: "What's inside a bit?", sub: 'voltage · transistor · latch', state: 'read', href: '/writing/whats-inside-a-bit' },
-    { bn: 'যেকোনো তথ্য কীভাবে ০ আর ১ হয়?', en: 'How does anything become 0s and 1s?', sub: 'encoding · numbers · text', state: 'next', href: '#' },
-    { bn: 'Gate-রা কীভাবে হিসাব করে?', en: 'How do gates do arithmetic?', sub: 'adder · ALU', state: 'soon', href: '#' },
+    { bn: 'যেকোনো তথ্য কীভাবে ০ আর ১ হয়?', en: 'How does anything become 0s and 1s?', sub: 'encoding · numbers · text', state: 'read', href: '/writing/how-does-anything-become-bits' },
+    { bn: 'Gate-রা কীভাবে হিসাব করে?', en: 'How do gates do arithmetic?', sub: 'adder · ALU', state: 'next', href: '#' },
     { bn: 'CPU আসলে কী করে?', en: 'What does a CPU actually do?', sub: 'fetch · decode · execute', state: 'soon', href: '#' },
     { bn: 'Memory-র শহর', en: 'The city of memory', sub: 'RAM · cache · addresses', state: 'soon', href: '#' },
     { bn: 'OS — মহাব্যবস্থাপক', en: 'The OS — grand manager', sub: 'processes · scheduling', state: 'soon', href: '#' },
@@ -63,7 +63,7 @@ export function SeriesHub() {
             {bn ? "SIGNAL MAP — তথ্যের যাত্রাপথ" : "SIGNAL MAP — information's route"}
           </span>
           <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#00753F' }}>
-            {bn ? '১/৮ পড়া হয়েছে' : '1/8 read'}
+            {bn ? '২/৮ পড়া হয়েছে' : '2/8 read'}
           </span>
         </div>
         <div style={{ border: '1px solid #c9bda0', background: 'rgba(255,252,243,0.5)', padding: '8px 0 0' }}>

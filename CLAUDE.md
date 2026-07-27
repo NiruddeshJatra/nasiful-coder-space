@@ -41,8 +41,8 @@ src/
 │   ├── article.css       # Paper-oscilloscope design system: aged-paper bg, fonts, scanlines, animations
 │   ├── context/          # LanguageContext (BN/EN toggle) + TermContext (hover-definition popup state)
 │   ├── primitives/       # Shared article blocks: PromptBar, Kicker, Section, Instrument, Term, Recap, etc.
-│   ├── widgets/          # Interactive instruments: NoiseVsBands, TransistorSwitch, GatePlayground, FeedbackLatch, ThreeBits, AbstractionStack, ProtagonistDisguises
-│   ├── content/          # Article content modules: SeriesHub, MachineBeneathYourCode, WhatsInsideABit
+│   ├── widgets/          # Interactive instruments: NoiseVsBands, TransistorSwitch, GatePlayground, FeedbackLatch, ThreeBits, AbstractionStack, ProtagonistDisguises, PlaceValueBuilder, UnicodeEncodingDemo, PixelColorDemo, SamplingRateDemo, RLECompressionDemo, CPUBlindLens
+│   ├── content/          # Article content modules: SeriesHub, MachineBeneathYourCode, WhatsInsideABit, HowDoesAnythingBecomeBits
 │   ├── glossary.ts       # Bilingual term definitions keyed by id — single source of truth for Term hover cards
 │   └── manifest.ts       # Article metadata: slugs, titles, kicker cells, Content component refs
 ├── pages/
@@ -80,6 +80,7 @@ writing/             → writing (container, also navigable)
   tech-articles/     → writing/tech-articles (container AND navigable; id: writing-tech-articles)
     the-machine-beneath-your-code.md → writing/the-machine-beneath-your-code
     whats-inside-a-bit.md            → writing/whats-inside-a-bit
+    how-does-anything-become-bits.md → writing/how-does-anything-become-bits
 journey/             → container (id: journey)
   running.md         → journey-running
   hiking.md          → journey-hiking
@@ -149,7 +150,8 @@ Adding a new container folder: add a `FileItem` with `isContainer: true`, `id` s
 - **vercel.json rewrite order**: ArcZero proxy rewrites must come BEFORE the SPA fallback `/(.*) → /index.html`. First match wins. Never move the SPA fallback above the game rewrites.
 - **vercel.json www redirect**: `redirects` array contains a host-conditional 301 redirect: `www.niruddeshjatra.space/(.*)` → `https://niruddeshjatra.space/$1`. Redirects run before rewrites in Vercel. The redirect must stay in `redirects`, not `rewrites`. Canonical is always the apex domain (no www).
 - **Article system** (`src/articles/`): "The Paper Oscilloscope" — warm aged-paper design, outside `ResponsiveLayout`. Pages (`ArticlePage.tsx`, `ArticleHub.tsx`) are standalone with own `LanguageProvider` + `TermProvider`. Never import dc-runtime, DCLogic, sc-if/sc-for, {{holes}}, or support.js — all widgets are plain React.
-- **`firePortal()` singleton** — module-level function in `useLoader.ts`. Call from any component (including article pages) to imperatively trigger the portal animation before navigation. `ARTICLE_SECTIONS` set in `Index.tsx` routes sidebar clicks for `writing/tech-articles`, `writing/the-machine-beneath-your-code`, `writing/whats-inside-a-bit` through `firePortal` instead of `startViewTransition`.
+- **`firePortal()` singleton** — module-level function in `useLoader.ts`. Call from any component (including article pages) to imperatively trigger the portal animation before navigation. `ARTICLE_SECTIONS` set in `Index.tsx` routes sidebar clicks for `writing/tech-articles`, `writing/the-machine-beneath-your-code`, `writing/whats-inside-a-bit`, `writing/how-does-anything-become-bits` through `firePortal` instead of `startViewTransition`. A new published article must be added to this set (plus `FileExplorer.files`, `sections.ts` `SECTION_ALIASES`, and the `techArticles` list in `WritingContent.tsx`) or its sidebar/writing-index links silently 404 into the SPA shell instead of navigating.
+- **`PromptBar`'s `readCount`** (series progress dots) is derived in `ArticlePage.tsx` as `ARTICLES.filter(a => a.state === 'read').length` — never hardcode this number; it must track how many articles are actually published.
 - **Article design tokens**: paper bg `#e8dfc9`; ink `#26241C`; ink-green `#00753F` (on paper only); phosphor `#00d26a` (inside dark scope wells only — never on paper). Tokens in `tailwind.config.ts` under `paper`, `ink`, `rule`, `machine`, `well`.
 - **Bilingual articles**: BN default; JS toggle (no URL change). BN numerals via `bd()` helper in BN mode. `lang="bn"` on BN blocks. Definitions follow the toggle. SEO uses `<Helmet>` inside `ArticleBody` (which has `useLang()` context) so title/description/`<html lang>` update dynamically.
 - Commit format: `type(scope): description` (feat/fix/chore/refactor/docs)
