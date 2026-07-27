@@ -9,3 +9,4 @@ export { Recap } from './Recap';
 export { RelayNav } from './RelayNav';
 export { Colophon } from './Colophon';
 export { TraceRail } from './TraceRail';
+export { SegmentedToggle } from './SegmentedToggle';

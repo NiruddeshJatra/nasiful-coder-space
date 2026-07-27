@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLang } from '../context/LanguageContext';
 import { Instrument } from '../primitives/Instrument';
 import { Caption } from '../primitives/Caption';
+import { SegmentedToggle } from '../primitives/SegmentedToggle';
 
 type Pattern = 'flat' | 'noisy';
 const PATTERNS: Record<Pattern, string> = {
@@ -30,21 +31,15 @@ export function RLECompressionDemo() {
   const rawBytes = chars.length;
   const win = rleBytes < rawBytes;
 
-  const segG = (active: boolean): React.CSSProperties => ({
-    background: active ? '#16402a' : 'none', color: active ? '#00d26a' : '#6c8873',
-    border: 'none', padding: '5px 12px', cursor: 'pointer',
-    fontFamily: "'Departure Mono', monospace", fontSize: '11.5px',
-  });
-
   const control = (
-    <div className="flex" style={{ border: '1px solid #3a5847' }}>
-      <button style={segG(pat === 'flat')} onClick={() => setPat('flat')} className="well-focus">
-        {bn ? 'সমান' : 'flat'}
-      </button>
-      <button style={segG(pat === 'noisy')} onClick={() => setPat('noisy')} className="well-focus">
-        {bn ? 'বিশৃঙ্খল' : 'noisy'}
-      </button>
-    </div>
+    <SegmentedToggle
+      value={pat}
+      onChange={setPat}
+      options={[
+        { value: 'flat', label: bn ? 'সমান' : 'flat' },
+        { value: 'noisy', label: bn ? 'বিশৃঙ্খল' : 'noisy' },
+      ]}
+    />
   );
 
   const barW = Math.min(100, (rleBytes / rawBytes) * 100);

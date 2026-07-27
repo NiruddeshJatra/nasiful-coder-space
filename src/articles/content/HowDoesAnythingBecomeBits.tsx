@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useLang } from '../context/LanguageContext';
 import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
@@ -19,7 +20,7 @@ export function HowDoesAnythingBecomeBits() {
     ? { fontFamily: "'Anek Bangla','Anek Latin',sans-serif" }
     : { fontFamily: "'Anek Latin',sans-serif" };
 
-  const p = (s: string | React.ReactNode) => <p style={{ margin: '0 0 16px', ...bodyStyle }}>{s}</p>;
+  const p = (s: string | ReactNode) => <p style={{ margin: '0 0 16px', ...bodyStyle }}>{s}</p>;
   const pre = (s: string) => (
     <pre style={{ fontFamily: "'Departure Mono',monospace", fontSize: '13.5px', background: 'rgba(255,252,243,0.65)', border: '1px solid #c9bda0', color: '#33301F', padding: '13px 18px', margin: '0 0 20px', overflowX: 'auto' }}>{s}</pre>
   );

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLang } from '../context/LanguageContext';
 import { Instrument } from '../primitives/Instrument';
 import { Caption } from '../primitives/Caption';
+import { SegmentedToggle } from '../primitives/SegmentedToggle';
 
 type Lens = 'text' | 'num' | 'pix';
 
@@ -9,18 +10,16 @@ export function CPUBlindLens() {
   const { bn, num } = useLang();
   const [lens, setLens] = useState<Lens>('text');
 
-  const segG = (active: boolean): React.CSSProperties => ({
-    background: active ? '#16402a' : 'none', color: active ? '#00d26a' : '#6c8873',
-    border: 'none', padding: '5px 12px', cursor: 'pointer',
-    fontFamily: "'Departure Mono', monospace", fontSize: '11.5px',
-  });
-
   const control = (
-    <div className="flex" style={{ border: '1px solid #3a5847' }}>
-      <button style={segG(lens === 'text')} onClick={() => setLens('text')} className="well-focus">{bn ? 'text' : 'text'}</button>
-      <button style={segG(lens === 'num')} onClick={() => setLens('num')} className="well-focus">{bn ? 'সংখ্যা' : 'number'}</button>
-      <button style={segG(lens === 'pix')} onClick={() => setLens('pix')} className="well-focus">{bn ? 'pixel' : 'pixel'}</button>
-    </div>
+    <SegmentedToggle
+      value={lens}
+      onChange={setLens}
+      options={[
+        { value: 'text', label: bn ? 'text' : 'text' },
+        { value: 'num', label: bn ? 'সংখ্যা' : 'number' },
+        { value: 'pix', label: bn ? 'pixel' : 'pixel' },
+      ]}
+    />
   );
 
   const stepText = lens === 'text'
