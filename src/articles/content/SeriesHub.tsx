@@ -17,7 +17,7 @@ export function SeriesHub() {
   const data = [
     { bn: 'বিটের ভেতরে কী থাকে?', en: "What's inside a bit?", sub: 'voltage · transistor · latch', state: 'read', href: '/writing/whats-inside-a-bit' },
     { bn: 'যেকোনো তথ্য কীভাবে ০ আর ১ হয়?', en: 'How does anything become 0s and 1s?', sub: 'encoding · numbers · text', state: 'read', href: '/writing/how-does-anything-become-bits' },
-    { bn: 'Gate-রা কীভাবে হিসাব করে?', en: 'How do gates do arithmetic?', sub: 'adder · ALU', state: 'next', href: '#' },
+    { bn: 'CPU-র blueprint', en: "The CPU's blueprint", sub: 'ALU · register · clock', state: 'read', href: '/writing/cpu-blueprint' },
     { bn: 'CPU আসলে কী করে?', en: 'What does a CPU actually do?', sub: 'fetch · decode · execute', state: 'soon', href: '#' },
     { bn: 'Memory-র শহর', en: 'The city of memory', sub: 'RAM · cache · addresses', state: 'soon', href: '#' },
     { bn: 'OS — মহাব্যবস্থাপক', en: 'The OS — grand manager', sub: 'processes · scheduling', state: 'soon', href: '#' },

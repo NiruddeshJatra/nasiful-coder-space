@@ -41,8 +41,8 @@ src/
 │   ├── article.css       # Paper-oscilloscope design system: aged-paper bg, fonts, scanlines, animations
 │   ├── context/          # LanguageContext (BN/EN toggle) + TermContext (hover-definition popup state)
 │   ├── primitives/       # Shared article blocks: PromptBar, Kicker, Section, Instrument, Term, Recap, etc.
-│   ├── widgets/          # Interactive instruments: NoiseVsBands, TransistorSwitch, GatePlayground, FeedbackLatch, ThreeBits, AbstractionStack, ProtagonistDisguises, PlaceValueBuilder, UnicodeEncodingDemo, PixelColorDemo, SamplingRateDemo, RLECompressionDemo, CPUBlindLens
-│   ├── content/          # Article content modules: SeriesHub, MachineBeneathYourCode, WhatsInsideABit, HowDoesAnythingBecomeBits
+│   ├── widgets/          # Interactive instruments: NoiseVsBands, TransistorSwitch, GatePlayground, FeedbackLatch, ThreeBits, AbstractionStack, ProtagonistDisguises, PlaceValueBuilder, UnicodeEncodingDemo, PixelColorDemo, SamplingRateDemo, RLECompressionDemo, CPUBlindLens, AdderWidget, CPUDatapath, ClockVisualizer
+│   ├── content/          # Article content modules: SeriesHub, MachineBeneathYourCode, WhatsInsideABit, HowDoesAnythingBecomeBits, BlueprintOfACPU
 │   ├── glossary.ts       # Bilingual term definitions keyed by id — single source of truth for Term hover cards
 │   └── manifest.ts       # Article metadata: slugs, titles, kicker cells, Content component refs
 ├── pages/
@@ -81,6 +81,7 @@ writing/             → writing (container, also navigable)
     the-machine-beneath-your-code.md → writing/the-machine-beneath-your-code
     whats-inside-a-bit.md            → writing/whats-inside-a-bit
     how-does-anything-become-bits.md → writing/how-does-anything-become-bits
+    cpu-blueprint.md                 → writing/cpu-blueprint
 journey/             → container (id: journey)
   running.md         → journey-running
   hiking.md          → journey-hiking

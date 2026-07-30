@@ -85,6 +85,11 @@ export const glossary: Record<string, GlossaryEntry> = {
     bn: 'Lossless compression মানে data-কে ছোট করা, কিন্তু কিছুই না হারিয়ে। Compress করার পর যেকোনো সময় সম্পূর্ণ original ফিরে পাওয়া যায়। ট্রিকটা হলো — repetition আর pattern খুঁজে বের করে সেগুলোকে সংক্ষেপে লেখা। Gzip, Brotli, PNG — এসব lossless। Text, code, database backup-এর জন্য mandatory।',
     en: 'Lossless compression shrinks data without losing anything. Decompress at any time and you get the exact original back. The trick is finding repetition and patterns in the data and writing them more concisely. Gzip, Brotli, PNG — all lossless. Mandatory for text, code, database backups.',
   },
+  propdelay: {
+    term: 'propagation delay',
+    bn: 'Propagation delay হলো একটা signal-এর circuit-এর এক প্রান্ত থেকে আরেক প্রান্তে পৌঁছাতে যে সময় লাগে। প্রতিটা gate পার হতে signal-এর কয়েক picosecond লাগে — ৬৪টা full adder সিরিজে থাকলে সেই বিলম্ব জমে বড় হয়ে যায়। Clock-এর একটা tick-এর মধ্যে signal পুরো পথ পাড়ি দিতে না পারলে হিসাব ভুল হয়ে যায়।',
+    en: "Propagation delay is the time a signal takes to travel from one end of a circuit to the other. Each gate adds a few picoseconds — chain 64 full adders in series and those delays accumulate. If the signal can't finish the trip within one clock tick, the calculation comes out wrong.",
+  },
   lossy: {
     term: 'lossy compression',
     bn: 'Lossy compression মানে সাইজ কমানোর জন্য কিছু data চিরতরে বাদ দেওয়া — কিন্তু এমনভাবে যাতে মানুষের চোখ বা কান পার্থক্য ধরতে না পারে। MP3, JPEG, H.264 — এগুলো সব lossy। মানুষের perception-এর সীমাবদ্ধতা কাজে লাগিয়ে অসাধারণ compression ratio পাওয়া যায়। কিন্তু original data চিরতরে হারিয়ে যায় — decompress করলে exactly একই file আর ফিরে পাওয়া যায় না।',

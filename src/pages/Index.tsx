@@ -30,6 +30,7 @@ const ARTICLE_SECTIONS = new Set([
   'writing/the-machine-beneath-your-code',
   'writing/whats-inside-a-bit',
   'writing/how-does-anything-become-bits',
+  'writing/cpu-blueprint',
 ]);
 
 const Index = ({ forceSection }: IndexProps = {}) => {

@@ -10,11 +10,12 @@ import { TraceRail } from '../articles/primitives/TraceRail';
 import { MachineBeneathYourCode } from '../articles/content/MachineBeneathYourCode';
 import { WhatsInsideABit } from '../articles/content/WhatsInsideABit';
 import { HowDoesAnythingBecomeBits } from '../articles/content/HowDoesAnythingBecomeBits';
+import { BlueprintOfACPU } from '../articles/content/BlueprintOfACPU';
 import { useLang } from '../articles/context/LanguageContext';
 import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
-type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits';
+type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint';
 
 // manifest.ts enforces enDescription/bnDescription/datePublished at compile time
 // for any ARTICLES entry with state: 'read' (see PublishedArticleEntry). This
@@ -73,13 +74,25 @@ const CONFIGS: Record<ArticleSlug, Config> = {
     seriesPos: 2,
     Content: HowDoesAnythingBecomeBits,
   },
+  'cpu-blueprint': {
+    slug: 'cpu-blueprint',
+    bnSubtitle: 'একটা processor-এর ভেতরে আসলে কী কী থাকে?',
+    enSubtitle: 'What actually lives inside a processor?',
+    kickerCells: [
+      { bn: 'LEVEL 2 — THE MACHINERY', en: 'LEVEL 2 — THE MACHINERY' },
+      { bn: 'পর্ব ০৩/০৮', en: 'part 03/08' },
+      { bn: '~১২ মিনিট', en: '~12 min' },
+    ],
+    seriesPos: 3,
+    Content: BlueprintOfACPU,
+  },
 };
 
 function ArticleBody({ config }: { config: Config }) {
   const { bn } = useLang();
   const { Content } = config;
   const slug = config.slug as ArticleSlug;
-  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits';
+  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint';
   const meta = getArticleMeta(slug);
   const pageTitle = bn ? meta.bnTitle : meta.enTitle;
   const pageDesc = bn ? meta.bnDescription : meta.enDescription;
