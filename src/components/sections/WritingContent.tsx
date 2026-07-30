@@ -40,6 +40,11 @@ const techArticles = [
     path: "/writing/how-does-anything-become-bits",
     description: "part 02 · encoding, numbers, text",
   },
+  {
+    title: "the cpu's blueprint",
+    path: "/writing/cpu-blueprint",
+    description: "part 03 · ALU, register, bus, clock",
+  },
 ];
 
 const WritingContent = () => {

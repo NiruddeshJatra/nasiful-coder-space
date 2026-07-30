@@ -31,6 +31,7 @@ export const files: FileItem[] = [
   { name: 'the-machine-beneath-your-code.md', section: 'writing/the-machine-beneath-your-code', icon: File, parent: 'writing-tech-articles' },
   { name: 'whats-inside-a-bit.md', section: 'writing/whats-inside-a-bit', icon: File, parent: 'writing-tech-articles' },
   { name: 'how-does-anything-become-bits.md', section: 'writing/how-does-anything-become-bits', icon: File, parent: 'writing-tech-articles' },
+  { name: 'cpu-blueprint.md', section: 'writing/cpu-blueprint', icon: File, parent: 'writing-tech-articles' },
   { id: 'journey', name: 'journey/', section: 'journey', icon: Folder, isContainer: true },
   { name: 'running.md', section: 'journey-running', icon: File, parent: 'journey' },
   { name: 'hiking.md', section: 'journey-hiking', icon: File, parent: 'journey' },

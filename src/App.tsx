@@ -39,6 +39,7 @@ const App = () => (
           <Route path="/writing/the-machine-beneath-your-code" element={<ArticlePage article="the-machine-beneath-your-code" />} />
           <Route path="/writing/whats-inside-a-bit" element={<ArticlePage article="whats-inside-a-bit" />} />
           <Route path="/writing/how-does-anything-become-bits" element={<ArticlePage article="how-does-anything-become-bits" />} />
+          <Route path="/writing/cpu-blueprint" element={<ArticlePage article="cpu-blueprint" />} />
           <Route path="*" element={<Index forceSection="404" />} />
         </Routes>
       </BrowserRouter>
