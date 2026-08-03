@@ -283,7 +283,7 @@ export function BlueprintOfACPU() {
 
       <RelayNav
         hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
-        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৪ — হার্টবিট: Fetch-Decode-Execute' : '04 — Heartbeat: Fetch-Decode-Execute', href: '#', variant: 'next' }}
+        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৪ — হার্টবিট: Fetch-Decode-Execute' : '04 — Heartbeat: Fetch-Decode-Execute', href: '/writing/heartbeat-fde', variant: 'next' }}
         bridge={{ bn: 'একটা বিশাল প্রশ্ন এখনো বাকি রয়ে গেল। এই উদাহরণে ধরে নেওয়া হয়েছিল CPU জানত তাকে যোগ করতে হবে — কিন্তু সে সেটা জানল কীভাবে? কে বলল তাকে "এবার Register A আর Register B যোগ করো"? এই instruction কোথা থেকে এল? এখান থেকেই শুরু হচ্ছে CPU-র আসল গল্প।', en: "One huge question is still left over. In this example we assumed the CPU knew it had to add — but how did it know that? Who told it to add Register A and Register B? Where did that instruction come from? That's where the real story of the CPU begins." }}
       />
       <Colophon />

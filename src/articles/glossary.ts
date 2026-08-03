@@ -90,6 +90,26 @@ export const glossary: Record<string, GlossaryEntry> = {
     bn: 'Propagation delay হলো একটা signal-এর circuit-এর এক প্রান্ত থেকে আরেক প্রান্তে পৌঁছাতে যে সময় লাগে। প্রতিটা gate পার হতে signal-এর কয়েক picosecond লাগে — ৬৪টা full adder সিরিজে থাকলে সেই বিলম্ব জমে বড় হয়ে যায়। Clock-এর একটা tick-এর মধ্যে signal পুরো পথ পাড়ি দিতে না পারলে হিসাব ভুল হয়ে যায়।',
     en: "Propagation delay is the time a signal takes to travel from one end of a circuit to the other. Each gate adds a few picoseconds — chain 64 full adders in series and those delays accumulate. If the signal can't finish the trip within one clock tick, the calculation comes out wrong.",
   },
+  pc: {
+    term: 'Program Counter',
+    bn: 'প্রোগ্রাম কাউন্টার (PC) হলো CPU-র ভেতরের একটি বিশেষায়িত রেজিস্টার, যা মেমোরিতে থাকা পরবর্তী instruction-এর সুনির্দিষ্ট address ধরে রাখে। প্রতিবার একটি instruction মেমোরি থেকে তুলে আনার সাথে সাথেই PC স্বয়ংক্রিয়ভাবে এক ধাপ বেড়ে পরবর্তী লাইনের ঠিকানা লক করে ফেলে। কোডে কোনো loop বা if-statement থাকলে এই PC-র ভেতরের address-টি জাম্প করে বদলে যায় — যা সফটওয়্যারকে সিদ্ধান্ত নেওয়ার ক্ষমতা দেয়।',
+    en: 'The Program Counter (PC) is a dedicated register inside the CPU that holds the specific memory address of the next instruction waiting to be executed. As soon as the current instruction is fetched from RAM, the PC automatically increments to point to the next address. When control flow like loops or conditionals occur in code, the PC’s address is forcefully overwritten to cause a branch — enabling software logic decisions.',
+  },
+  ir: {
+    term: 'Instruction Register',
+    bn: 'ইন্সট্রাকশন রেজিস্টার (IR) হলো CPU-র ভেতরে অবস্থিত একটি অস্থায়ী হোল্ডিং জোন বা বাফার। মেমোরি (RAM) থেকে fetch করে আনা instruction-এর র-ভোল্টেজ bit-গুলো সরাসরি এই IR-এ এসে জমা হয়, এবং যতক্ষণ না সেই instruction-এর execution সম্পূর্ণ শেষ হচ্ছে, ততক্ষণ bit-গুলো এখানেই স্থির থাকে — যেন Control Unit নিখুঁতভাবে তা read করতে পারে।',
+    en: 'The Instruction Register (IR) is a dedicated internal hardware buffer within the CPU control path. Raw voltage bits fetched directly from system memory (RAM) are stored in the IR, where they are held completely static until the execution phase is fully completed. This guarantees that the execution logic and control unit have stable, unaltered access to the active instruction bits.',
+  },
+  cu: {
+    term: 'Control Unit',
+    bn: 'কন্ট্রোল ইউনিট (CU) হলো প্রসেসরের ভেতরের মূল ডিরেক্টর বা অর্কেস্ট্রা কন্ডাক্টর। এটি নিজে কোনো গাণিতিক হিসাব করে না বা ডেটা জমা রাখে না; এর কাজ হলো ইন্সট্রাকশন রেজিস্টার (IR) থেকে opcode পড়া এবং ডিকোডার সার্কিটের মাধ্যমে পুরো চিপের নিয়ন্ত্রণ তারগুলোতে (control wires) ভোল্টেজ পাঠানো। এটিই নির্ধারণ করে কখন ALU অন হবে, কখন বাস দিয়ে ডেটা ছুটবে এবং কোন register-এর দরজা খুলবে।',
+    en: 'The Control Unit (CU) serves as the primary director or orchestrator of the entire processor. It contains no arithmetic circuitry and stores no program data; instead, it reads the operational bits from the Instruction Register (IR) and routes them through a decoder network. This hardware logic translates the raw instruction into specific electrical control lines — signaling when the ALU should switch modes, when the data bus should open, or which registers should latch new values.',
+  },
+  opcode: {
+    term: 'Opcode',
+    bn: 'Opcode (Operation Code) হলো একটি বাইনারি instruction-এর একদম শুরুর নির্দিষ্ট কিছু bit (যেমন ১ম ৪ বা ৮ bit), যা মূল অপারেশনের ধরন নির্দেশ করে। এটি CPU-র ভেতরের কন্ট্রোল সার্কিটের জন্য একটি ignition key-র মতো কাজ করে — এই bit প্যাটার্ন দেখেই প্রসেসরের হার্ডওয়্যার বুঝতে পারে তাকে যোগ (ADD), বিয়োগ (SUB), নাকি মেমোরি থেকে ডেটা load (LOAD) করতে হবে।',
+    en: 'The Opcode (Operation Code) comprises the initial, fixed-length bit fields (such as the first 4 or 8 bits) of a raw binary instruction that specify the nature of the execution task. It acts as an ignition key for the internal control unit logic; by matching this specific bit pattern, the processor hardware immediately knows whether it must perform arithmetic (ADD/SUB), move data internally, or fetch data from memory (LOAD).',
+  },
   lossy: {
     term: 'lossy compression',
     bn: 'Lossy compression মানে সাইজ কমানোর জন্য কিছু data চিরতরে বাদ দেওয়া — কিন্তু এমনভাবে যাতে মানুষের চোখ বা কান পার্থক্য ধরতে না পারে। MP3, JPEG, H.264 — এগুলো সব lossy। মানুষের perception-এর সীমাবদ্ধতা কাজে লাগিয়ে অসাধারণ compression ratio পাওয়া যায়। কিন্তু original data চিরতরে হারিয়ে যায় — decompress করলে exactly একই file আর ফিরে পাওয়া যায় না।',

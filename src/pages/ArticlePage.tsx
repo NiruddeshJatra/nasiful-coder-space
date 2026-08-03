@@ -11,11 +11,12 @@ import { MachineBeneathYourCode } from '../articles/content/MachineBeneathYourCo
 import { WhatsInsideABit } from '../articles/content/WhatsInsideABit';
 import { HowDoesAnythingBecomeBits } from '../articles/content/HowDoesAnythingBecomeBits';
 import { BlueprintOfACPU } from '../articles/content/BlueprintOfACPU';
+import { HeartbeatFDE } from '../articles/content/HeartbeatFDE';
 import { useLang } from '../articles/context/LanguageContext';
 import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
-type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint';
+type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde';
 
 // manifest.ts enforces enDescription/bnDescription/datePublished at compile time
 // for any ARTICLES entry with state: 'read' (see PublishedArticleEntry). This
@@ -86,13 +87,25 @@ const CONFIGS: Record<ArticleSlug, Config> = {
     seriesPos: 3,
     Content: BlueprintOfACPU,
   },
+  'heartbeat-fde': {
+    slug: 'heartbeat-fde',
+    bnSubtitle: 'CPU একটা instruction কীভাবে বোঝে আর চালায়?',
+    enSubtitle: 'How does a CPU understand and execute an instruction?',
+    kickerCells: [
+      { bn: 'LEVEL 2 — THE MACHINERY', en: 'LEVEL 2 — THE MACHINERY' },
+      { bn: 'পর্ব ০৪/০৮', en: 'part 04/08' },
+      { bn: '~১৪ মিনিট', en: '~14 min' },
+    ],
+    seriesPos: 4,
+    Content: HeartbeatFDE,
+  },
 };
 
 function ArticleBody({ config }: { config: Config }) {
   const { bn } = useLang();
   const { Content } = config;
   const slug = config.slug as ArticleSlug;
-  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint';
+  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde';
   const meta = getArticleMeta(slug);
   const pageTitle = bn ? meta.bnTitle : meta.enTitle;
   const pageDesc = bn ? meta.bnDescription : meta.enDescription;

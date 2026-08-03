@@ -55,6 +55,7 @@ export const ROUTES = [
   { path: '/writing/whats-inside-a-bit', priority: 0.8, changefreq: 'monthly' },
   { path: '/writing/how-does-anything-become-bits', priority: 0.8, changefreq: 'monthly' },
   { path: '/writing/cpu-blueprint', priority: 0.8, changefreq: 'monthly' },
+  { path: '/writing/heartbeat-fde', priority: 0.8, changefreq: 'monthly' },
 ];
 
 // Flat path list for consumers that only need the URL (e.g. prerender.mjs).
