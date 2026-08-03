@@ -45,6 +45,11 @@ const techArticles = [
     path: "/writing/cpu-blueprint",
     description: "part 03 · ALU, register, bus, clock",
   },
+  {
+    title: "heartbeat: fetch-decode-execute",
+    path: "/writing/heartbeat-fde",
+    description: "part 04 · program counter, IR, control unit",
+  },
 ];
 
 const WritingContent = () => {

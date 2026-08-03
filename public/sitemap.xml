@@ -134,4 +134,16 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://niruddeshjatra.space/writing/cpu-blueprint</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://niruddeshjatra.space/writing/heartbeat-fde</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
