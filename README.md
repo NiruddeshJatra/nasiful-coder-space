@@ -31,32 +31,32 @@ The whole thing deploys as a static site. A custom prerender pipeline (headless 
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="./public/og-image.png" alt="Homepage — niruddeshjatra.space" width="100%" />
-      <sub><b>Homepage</b> — terminal intro, VS Code shell, matrix backdrop</sub>
+      <img src="./public/screenshots/homepage.png" alt="Homepage — VS Code shell with matrix backdrop" width="100%" />
+      <sub><b>Homepage</b> — VS Code shell, matrix backdrop, file tree navigation</sub>
     </td>
     <td align="center" width="50%">
-      <img src="./public/og/tech-articles.png" alt="The Machine Beneath Your Code — article series hub" width="100%" />
-      <sub><b>Article Series Hub</b> — The Machine Beneath Your Code</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./public/og/heartbeat-fde.png" alt="Heartbeat: Fetch-Decode-Execute — article" width="100%" />
-      <sub><b>Tech Article</b> — Heartbeat: Fetch-Decode-Execute (Paper Oscilloscope design system)</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="./public/og/cpu-blueprint.png" alt="The CPU's Blueprint — article" width="100%" />
-      <sub><b>Tech Article</b> — The CPU's Blueprint</sub>
+      <img src="./public/screenshots/essay.png" alt="Essay — On Forgetting" width="100%" />
+      <sub><b>Essay</b> — writing/essays/on-forgetting.md</sub>
     </td>
   </tr>
   <tr>
     <td align="center" width="50%">
-      <img src="./public/og/whats-inside-a-bit.png" alt="What's Inside a Bit — article" width="100%" />
-      <sub><b>Tech Article</b> — What's Inside a Bit</sub>
+      <img src="./public/screenshots/running-page.png" alt="Running race log — journey/running.md" width="100%" />
+      <sub><b>Journey</b> — journey/running.md, race log</sub>
     </td>
     <td align="center" width="50%">
-      <img src="./public/og/how-does-anything-become-bits.png" alt="How Does Anything Become Bits — article" width="100%" />
-      <sub><b>Tech Article</b> — How Does Anything Become Bits</sub>
+      <img src="./public/screenshots/terminal.png" alt="About section with terminal expanded" width="100%" />
+      <sub><b>About + Terminal</b> — me/about.md, terminal with commands</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./public/screenshots/tech-article.png" alt="The Machine Beneath Your Code — article series hub" width="100%" />
+      <sub><b>Article Hub</b> — The Machine Beneath Your Code (Paper Oscilloscope)</sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="./public/screenshots/heartbeat-fde-article.png" alt="Heartbeat: Fetch-Decode-Execute — interactive article" width="100%" />
+      <sub><b>Tech Article</b> — Heartbeat: FDE with interactive instruction widget</sub>
     </td>
   </tr>
 </table>
@@ -169,11 +169,6 @@ npm run lint
 ---
 
 ## Stats
-
-<p>
-  <img height="165" src="https://github-readme-stats.vercel.app/api?username=NiruddeshJatra&show_icons=true&theme=github_dark&hide_border=true&count_private=true&cache_seconds=86400" alt="GitHub Stats" />
-  <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=NiruddeshJatra&layout=compact&theme=github_dark&hide_border=true&langs_count=8&cache_seconds=86400" alt="Top Languages" />
-</p>
 
 <p>
   <img src="https://streak-stats.demolab.com?user=NiruddeshJatra&theme=github-dark&hide_border=true" alt="GitHub Streak" />
