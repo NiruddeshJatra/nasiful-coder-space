@@ -1,4 +1,4 @@
-<img src="./banner.png" alt="Nasiful Alam" width="100%" />
+<img src="./public/og-image.png" alt="Nasiful Alam" width="100%" />
 
 # Nasiful Alam
 
