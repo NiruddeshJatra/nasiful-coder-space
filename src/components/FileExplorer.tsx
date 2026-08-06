@@ -33,6 +33,7 @@ export const files: FileItem[] = [
   { name: 'how-does-anything-become-bits.md', section: 'writing/how-does-anything-become-bits', icon: File, parent: 'writing-tech-articles' },
   { name: 'cpu-blueprint.md', section: 'writing/cpu-blueprint', icon: File, parent: 'writing-tech-articles' },
   { name: 'heartbeat-fde.md', section: 'writing/heartbeat-fde', icon: File, parent: 'writing-tech-articles' },
+  { name: 'memory-hierarchy.md', section: 'writing/memory-hierarchy', icon: File, parent: 'writing-tech-articles' },
   { id: 'journey', name: 'journey/', section: 'journey', icon: Folder, isContainer: true },
   { name: 'running.md', section: 'journey-running', icon: File, parent: 'journey' },
   { name: 'hiking.md', section: 'journey-hiking', icon: File, parent: 'journey' },

@@ -19,8 +19,8 @@ export function SeriesHub() {
     { bn: 'যেকোনো তথ্য কীভাবে ০ আর ১ হয়?', en: 'How does anything become 0s and 1s?', sub: 'encoding · numbers · text', state: 'read', href: '/writing/how-does-anything-become-bits' },
     { bn: 'CPU-র blueprint', en: "The CPU's blueprint", sub: 'ALU · register · clock', state: 'read', href: '/writing/cpu-blueprint' },
     { bn: 'হার্টবিট: Fetch-Decode-Execute', en: 'Heartbeat: Fetch-Decode-Execute', sub: 'fetch · decode · execute', state: 'read', href: '/writing/heartbeat-fde' },
-    { bn: 'Memory-র শহর', en: 'The city of memory', sub: 'RAM · cache · addresses', state: 'soon', href: '#' },
-    { bn: 'OS — মহাব্যবস্থাপক', en: 'The OS — grand manager', sub: 'processes · scheduling', state: 'soon', href: '#' },
+    { bn: 'মেমোরি হায়ারার্কি', en: 'The Memory Hierarchy', sub: 'cache · locality · SRAM vs DRAM', state: 'read', href: '/writing/memory-hierarchy' },
+    { bn: 'OS — মহাব্যবস্থাপক', en: 'The OS — grand manager', sub: 'processes · scheduling', state: 'next', href: '#' },
     { bn: 'Compiler-এর অনুবাদ', en: "The compiler's translation", sub: 'source → machine code', state: 'soon', href: '#' },
     { bn: 'Keypress থেকে screen', en: 'From keypress to screen', sub: 'the relay race, end to end', state: 'soon', href: '#' },
   ];
@@ -63,7 +63,7 @@ export function SeriesHub() {
             {bn ? "SIGNAL MAP — তথ্যের যাত্রাপথ" : "SIGNAL MAP — information's route"}
           </span>
           <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#00753F' }}>
-            {bn ? '২/৮ পড়া হয়েছে' : '2/8 read'}
+            {bn ? '৫/৮ পড়া হয়েছে' : '5/8 read'}
           </span>
         </div>
         <div style={{ border: '1px solid #c9bda0', background: 'rgba(255,252,243,0.5)', padding: '8px 0 0' }}>

@@ -50,6 +50,11 @@ const techArticles = [
     path: "/writing/heartbeat-fde",
     description: "part 04 · program counter, IR, control unit",
   },
+  {
+    title: "the memory hierarchy",
+    path: "/writing/memory-hierarchy",
+    description: "part 05 · cache, locality, SRAM vs DRAM",
+  },
 ];
 
 const WritingContent = () => {

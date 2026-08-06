@@ -115,4 +115,19 @@ export const glossary: Record<string, GlossaryEntry> = {
     bn: 'Lossy compression মানে সাইজ কমানোর জন্য কিছু data চিরতরে বাদ দেওয়া — কিন্তু এমনভাবে যাতে মানুষের চোখ বা কান পার্থক্য ধরতে না পারে। MP3, JPEG, H.264 — এগুলো সব lossy। মানুষের perception-এর সীমাবদ্ধতা কাজে লাগিয়ে অসাধারণ compression ratio পাওয়া যায়। কিন্তু original data চিরতরে হারিয়ে যায় — decompress করলে exactly একই file আর ফিরে পাওয়া যায় না।',
     en: 'Lossy compression shrinks by permanently discarding some data — but in ways human eyes and ears can’t detect. MP3, JPEG, H.264 — all lossy. Exploiting the limits of human perception gets you incredible compression ratios. But the original data is gone forever — decompressing doesn’t give you back an exact copy.',
   },
+  cacheline: {
+    term: 'cache line',
+    bn: 'Cache line হলো ডেটার সেই মৌলিক unit যেটা CPU একবারে memory থেকে cache-এ আনে। সাধারণত 64 byte। মানে CPU কখনো ১ byte আনে না — যে address চাচ্ছে, তার আশেপাশের 64 byte পুরোটা একসাথে টেনে নেয়। Spatial locality কাজ করে এই কারণেই — কাছের ডেটা automatically চলে আসে।',
+    en: 'A cache line is the fundamental, 64-byte aligned unit of data transfer between main memory (DRAM) and the processor cache layers. Whenever a CPU requests a single byte from RAM, the memory controller reads and commits the entire containing 64-byte block into cache — spatial locality works precisely because of this.',
+  },
+  locality: {
+    term: 'locality',
+    bn: 'Locality মানে program-এর memory access random না, বরং একটা predictable pattern মেনে চলে। দুই রকম — Temporal locality: এই মুহূর্তে যা access হচ্ছে, একটু পরে আবার access হওয়ার সম্ভাবনা বেশি (loop counter-এর মতো)। Spatial locality: যে address এখন লাগছে, তার আশপাশের address-ও শীঘ্রই লাগবে (array traverse করার মতো)। পুরো cache hierarchy locality-র ওপরই দাঁড়িয়ে আছে।',
+    en: "Locality means a program's memory access isn't random — it follows a predictable pattern. Two kinds: Temporal locality — data accessed right now is likely to be accessed again soon (like a loop counter). Spatial locality — an address accessed now means its neighbors will likely be needed soon too (like traversing an array). The entire cache hierarchy exists because of locality.",
+  },
+  cachecoherence: {
+    term: 'cache coherence',
+    bn: 'Multi-core CPU-তে প্রতিটা core-এর নিজস্ব L1/L2 cache থাকে। একটা core কোনো variable বদলালে, অন্য core-এর cache-এ থাকা পুরনো copy-টা stale হয়ে যায়। Cache coherence protocol (যেমন MESI — Modified, Exclusive, Shared, Invalid) এই সমস্যা সমাধান করে — কোনো core কিছু বদলালে, বাকি core-দের cache-এ থাকা সেই line-কে "Invalid" ঘোষণা করে দেয়, যাতে কেউ পুরনো ডেটা না পড়ে।',
+    en: 'In a multi-core CPU, each core has its own private L1/L2 cache. If one core modifies a variable, the copy sitting in another core\'s cache goes stale. Cache coherence protocols (like MESI — Modified, Exclusive, Shared, Invalid) solve this — when a core writes, it broadcasts an invalidation signal that marks the matching line "Invalid" in every other core\'s cache, so nobody reads stale data.',
+  },
 };

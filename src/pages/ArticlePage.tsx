@@ -12,11 +12,12 @@ import { WhatsInsideABit } from '../articles/content/WhatsInsideABit';
 import { HowDoesAnythingBecomeBits } from '../articles/content/HowDoesAnythingBecomeBits';
 import { BlueprintOfACPU } from '../articles/content/BlueprintOfACPU';
 import { HeartbeatFDE } from '../articles/content/HeartbeatFDE';
+import { MemoryHierarchy } from '../articles/content/MemoryHierarchy';
 import { useLang } from '../articles/context/LanguageContext';
 import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
-type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde';
+type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde' | 'memory-hierarchy';
 
 // manifest.ts enforces enDescription/bnDescription/datePublished at compile time
 // for any ARTICLES entry with state: 'read' (see PublishedArticleEntry). This
@@ -99,13 +100,25 @@ const CONFIGS: Record<ArticleSlug, Config> = {
     seriesPos: 4,
     Content: HeartbeatFDE,
   },
+  'memory-hierarchy': {
+    slug: 'memory-hierarchy',
+    bnSubtitle: 'কেন এক memory দিয়ে হয় না, আর register থেকে disk পর্যন্ত যাত্রা',
+    enSubtitle: 'Why one memory never works, and the journey from register to disk',
+    kickerCells: [
+      { bn: 'LEVEL 2 — THE MACHINERY', en: 'LEVEL 2 — THE MACHINERY' },
+      { bn: 'পর্ব ০৫/০৮', en: 'part 05/08' },
+      { bn: '~১৬ মিনিট', en: '~16 min' },
+    ],
+    seriesPos: 5,
+    Content: MemoryHierarchy,
+  },
 };
 
 function ArticleBody({ config }: { config: Config }) {
   const { bn } = useLang();
   const { Content } = config;
   const slug = config.slug as ArticleSlug;
-  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde';
+  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde' || slug === 'memory-hierarchy';
   const meta = getArticleMeta(slug);
   const pageTitle = bn ? meta.bnTitle : meta.enTitle;
   const pageDesc = bn ? meta.bnDescription : meta.enDescription;
