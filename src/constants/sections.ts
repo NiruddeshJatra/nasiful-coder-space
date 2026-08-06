@@ -23,6 +23,7 @@ export const SECTION_ALIASES: Record<string, string> = (() => {
   map['writing/how-does-anything-become-bits'] = 'writing/how-does-anything-become-bits';
   map['writing/cpu-blueprint'] = 'writing/cpu-blueprint';
   map['writing/heartbeat-fde'] = 'writing/heartbeat-fde';
+  map['writing/memory-hierarchy'] = 'writing/memory-hierarchy';
   map['writing/essays/on-running-for-nothing'] = 'writing-essays-on-running-for-nothing';
   map['writing/essays/on-running-for-nothing.md'] = 'writing-essays-on-running-for-nothing';
   map['writing/essays/on-running-for-nothing-bn'] = 'writing-essays-on-running-for-nothing-bn';
