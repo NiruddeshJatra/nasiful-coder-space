@@ -1,38 +1,43 @@
-<img src="./public/og-image.png" alt="niruddeshjatra.space — a quiet corner of the internet" width="100%" />
+<img src="./public/og-image.png" alt="niruddeshjatra — a quiet corner of the internet" width="100%" />
 
-<br />
+# Nasiful Alam
 
-# nasiful-coder-space
-
-**A developer portfolio built to feel like a workspace, not a resume.**
-
-VS Code shell. Interactive terminal. Bilingual CS writing. Deployed as a prerendered static site.
-
-[![Live](https://img.shields.io/badge/Live-niruddeshjatra.space-00d26a?style=for-the-badge&logo=vercel&logoColor=white)](https://niruddeshjatra.space/)
-[![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+**Full-Stack Developer — Django · React · AWS**
+Chattogram, Bangladesh
 
 ---
 
-## Overview
+## About
 
-The UI is modeled after VS Code — file explorer on the left, editor pane in the center, terminal at the bottom. Navigation happens through files, not nav links. Every section of my life (writing, running, games, field notes) is a file in a tree.
+I build web applications, mostly backend. Django and Django REST on one side, React on the other, AWS underneath.
 
-The writing section runs a separate design system: **"The Paper Oscilloscope"** — warm aged-paper aesthetic, outside the VS Code shell entirely. It hosts a bilingual (বাংলা / English) series on how computers actually work, with interactive widgets built in plain React: transistors, clock cycles, instruction pipelines, adders.
+Most of what I know is self-taught. I started with problem solving, then moved to building whole products — which turned out to be a completely different skill.
 
-The whole thing deploys as a static site. A custom prerender pipeline (headless Chrome via `puppeteer-core`) crawls every route post-build and writes crawler-visible HTML with full meta — so Facebook, LinkedIn, and search crawlers get real `og:` tags without running JavaScript.
+The main thing I'm building is [Bhara](https://www.bhara.xyz/), a rental marketplace where the platform sits between the two sides: it holds the item, holds the deposit, and releases both when the conditions are met. Neither party has to trust the other. Almost every design decision in the system comes out of that one constraint.
+
+I also write about how computers actually work, in Bangla and English, at [niruddeshjatra.space](https://niruddeshjatra.space/).
 
 ---
 
-## Screenshots
+## Currently
+
+- 🔨 Building **Bhara** — rental marketplace with an 8-state rental lifecycle and escrow-based deposits
+- 📚 Working through a **self-designed CS curriculum**, one module at a time. Current module: networking
+- ⌨️ Writing an **HTTP server by hand** with Python's `socket` module — no framework, no library, no AI
+- ✍️ Writing the **"Machine Beneath Your Code"** series — 8 articles on hardware fundamentals, in Bangla and English
+- 🎮 Maintaining **[ArcZero](https://arczero.app/)** — browser arcade game with a physics engine I wrote from scratch
+
+---
+
+## niruddeshjatra.space
+
+A developer portfolio built to feel like a workspace, not a resume. VS Code shell, interactive terminal, file tree navigation. The writing section runs a separate design system — warm aged-paper aesthetic for a bilingual (বাংলা / English) series on how computers actually work, with interactive instruments built in plain React.
 
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="./public/screenshots/homepage.png" alt="Homepage — VS Code shell with matrix backdrop" width="100%" />
-      <sub><b>Homepage</b> — VS Code shell, matrix backdrop, file tree navigation</sub>
+      <img src="./public/screenshots/homepage.png" alt="Homepage — VS Code shell" width="100%" />
+      <sub><b>Homepage</b> — VS Code shell, matrix backdrop</sub>
     </td>
     <td align="center" width="50%">
       <img src="./public/screenshots/essay.png" alt="Essay — On Forgetting" width="100%" />
@@ -41,142 +46,19 @@ The whole thing deploys as a static site. A custom prerender pipeline (headless 
   </tr>
   <tr>
     <td align="center" width="50%">
-      <img src="./public/screenshots/running-page.png" alt="Running race log — journey/running.md" width="100%" />
-      <sub><b>Journey</b> — journey/running.md, race log</sub>
+      <img src="./public/screenshots/tech-article.png" alt="The Machine Beneath Your Code — article hub" width="100%" />
+      <sub><b>Article Hub</b> — The Machine Beneath Your Code</sub>
     </td>
     <td align="center" width="50%">
-      <img src="./public/screenshots/terminal.png" alt="About section with terminal expanded" width="100%" />
-      <sub><b>About + Terminal</b> — me/about.md, terminal with commands</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./public/screenshots/tech-article.png" alt="The Machine Beneath Your Code — article series hub" width="100%" />
-      <sub><b>Article Hub</b> — The Machine Beneath Your Code (Paper Oscilloscope)</sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="./public/screenshots/heartbeat-fde-article.png" alt="Heartbeat: Fetch-Decode-Execute — interactive article" width="100%" />
-      <sub><b>Tech Article</b> — Heartbeat: FDE with interactive instruction widget</sub>
+      <img src="./public/screenshots/heartbeat-fde-article.png" alt="Heartbeat FDE — interactive article" width="100%" />
+      <sub><b>Tech Article</b> — Heartbeat: FDE with interactive widget</sub>
     </td>
   </tr>
 </table>
 
 ---
 
-## Features
-
-- **VS Code shell** — file explorer, editor pane, interactive terminal with custom commands (`help`, `ls`, `cd`, `open`, `clear`, `whoami`)
-- **Command palette** — `Cmd+P` opens file navigation, `Cmd+Shift+P` opens commands; built with `cmdk`
-- **Paper Oscilloscope** — a separate article design system with aged-paper typography, inline interactive instruments (transistors, adders, clock visualizers, pipeline demos), and bilingual toggle
-- **Bilingual articles** — Bangla/English toggle with no URL change; Bengali numerals via `bd()` helper; `lang="bn"` for correct font rendering; SEO title/description updates dynamically
-- **SSG prerendering** — `puppeteer-core` crawls every route post-build; CI hard-fails if no browser resolves (catches silent meta-less deploys)
-- **Build-time OG images** — `sharp` generates 1200×630 `og/<slug>.png` per published article at build time — no manual step
-- **Build-time sitemap** — `scripts/generate-sitemap.mjs` writes `sitemap.xml` + `robots.txt` with explicit hreflang pairing
-- **Theme switching** — dark / light / system via `next-themes`; phosphor green accent on dark, ink-on-paper for articles
-- **Matrix background** — ambient katakana/digit rain with per-section opacity tuning; GPU-composited on mobile
-- **Mobile layout** — slide-in file drawer + slide-up terminal sheet; visual viewport API for keyboard offset; no separate mobile shell
-- **Portal transitions** — scramble + cloud-dissolve animation between site areas via GSAP (`firePortal()` singleton)
-- **Structured data** — JSON-LD `WebSite`, `Person`, `Article` schemas per route via `react-helmet-async`
-
----
-
-## Tech Stack
-
-| Layer | Choice |
-|-------|--------|
-| Framework | React 19 + TypeScript 5 |
-| Build tool | Vite 5 + `@vitejs/plugin-legacy` (spread — plugin returns `Plugin[]`) |
-| Styling | Tailwind CSS 3 + Radix UI + shadcn/ui |
-| Animation | GSAP 3 |
-| Routing | React Router v6 |
-| State / async | TanStack Query v5 |
-| Forms | React Hook Form + Zod |
-| SEO | `react-helmet-async` + custom prerender pipeline |
-| Image gen | `sharp` (OG images + favicons at build time) |
-| Prerender | `puppeteer-core` + `@sparticuz/chromium` (serverless fallback) |
-| Deploy | Vercel — apex domain canonical, `www` → apex 301 redirect |
-
-**Article instruments** are plain React — no DC runtime, no template engine, no external dependencies.
-
----
-
-## Key Dependencies
-
-| Package | Purpose |
-|---------|---------|
-| `gsap` | Portal scramble + cloud-dissolve transitions |
-| `cmdk` | Command palette (`Cmd+P` / `Cmd+Shift+P`) |
-| `next-themes` | Dark / light / system theme provider |
-| `react-helmet-async` | Per-route `<head>` management (title, meta, JSON-LD) |
-| `react-router-dom` | Client-side routing + catch-all 404 via `forceSection` |
-| `@tanstack/react-query` | Async state, server data fetching |
-| `react-hook-form` + `zod` | Contact form validation |
-| `react-resizable-panels` | Editor / terminal panel layout |
-| `vaul` | Mobile terminal slide-up sheet |
-| `sharp` | Build-time OG + favicon image generation |
-| `puppeteer-core` | Post-build SSG prerendering |
-| `@sparticuz/chromium` | Serverless-compatible Chrome binary (Vercel builds) |
-| `tsx` | Runs `.ts` build scripts (`generate-og`, `generate-sitemap`) |
-| `recharts` | Charts (if/when analytics are surfaced) |
-| `lucide-react` + `react-icons` | Icon sets |
-
----
-
-## Local Setup
-
-```bash
-# Clone and install
-git clone https://github.com/NiruddeshJatra/nasiful-coder-space.git
-cd nasiful-coder-space
-npm install
-
-# Start dev server
-npm run dev
-# → http://localhost:5173
-```
-
-**Full production build** (generates OG images, favicons, sitemap, runs Vite, prerenders all routes):
-
-```bash
-npm run build
-npm run preview
-```
-
-Individual build steps (if iterating):
-
-```bash
-npm run generate-og        # → public/og-image.png + public/og/<slug>.png
-npm run generate-favicons  # → public/favicon-*.png, apple-touch-icon, etc.
-npm run generate-sitemap   # → public/sitemap.xml + public/robots.txt
-npm run prerender          # → crawls dist/ and writes static HTML per route
-```
-
-Prerender with a specific Chrome binary (local dev):
-
-```bash
-CHROME_PATH="/path/to/chrome" npm run prerender
-```
-
-Type check and lint:
-
-```bash
-npx tsc --noEmit
-npm run lint
-```
-
-> **Note on prerender in CI** — the build hard-fails if no browser resolves (`CHROME_PATH`, desktop Chrome, or `@sparticuz/chromium`). This is intentional: a silent failure would ship meta-less HTML.
-
----
-
-## Stats
-
-<p>
-  <img src="https://streak-stats.demolab.com?user=NiruddeshJatra&theme=github-dark&hide_border=true" alt="GitHub Streak" />
-</p>
-
----
-
-## Stack (Personal)
+## Stack
 
 **Backend**
 
@@ -214,10 +96,18 @@ npm run lint
 
 ---
 
+## Stats
+
+<p>
+  <img src="https://streak-stats.demolab.com?user=NiruddeshJatra&theme=github-dark&hide_border=true" alt="GitHub Streak" />
+</p>
+
+---
+
 ## Links
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-niruddeshjatra.space-00d26a?style=for-the-badge&logo=vercel&logoColor=white)](https://niruddeshjatra.space/)
 [![Writing](https://img.shields.io/badge/Writing-The%20Machine%20Beneath%20Your%20Code-00d26a?style=for-the-badge&logo=vercel&logoColor=white)](https://niruddeshjatra.space/writing/tech-articles)
 [![ArcZero](https://img.shields.io/badge/Game-ArcZero-44aaff?style=for-the-badge&logo=gamepad&logoColor=white)](https://arczero.app/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nasiful-alam/)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:nasif@niruddeshjatra.space)
+[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:nasifulalam1212@gmail.com)
