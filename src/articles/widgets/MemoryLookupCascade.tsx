@@ -3,29 +3,17 @@ import { useLang } from '../context/LanguageContext';
 import { Instrument } from '../primitives/Instrument';
 import { Caption } from '../primitives/Caption';
 import { SegmentedToggle } from '../primitives/SegmentedToggle';
-
-const STAGES = [
-  { id: 'reg', bn: 'Register', en: 'Register', cycles: 1 },
-  { id: 'l1', bn: 'L1', en: 'L1', cycles: 2 },
-  { id: 'l2', bn: 'L2', en: 'L2', cycles: 10 },
-  { id: 'l3', bn: 'L3', en: 'L3', cycles: 30 },
-  { id: 'ram', bn: 'RAM', en: 'RAM', cycles: 300 },
-  { id: 'disk', bn: 'Disk', en: 'Disk', cycles: 100000 },
-] as const;
-
-type TargetId = (typeof STAGES)[number]['id'];
-
-const useReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { MEMORY_LAYERS, type MemoryLayerId } from '../data/memoryLayers';
 
 export function MemoryLookupCascade() {
   const { bn, num } = useLang();
   const reduced = useReducedMotion();
-  const [target, setTarget] = useState<TargetId>('ram');
+  const [target, setTarget] = useState<MemoryLayerId>('ram');
   const [revealed, setRevealed] = useState(0);
   const [playing, setPlaying] = useState(false);
 
-  const targetIdx = STAGES.findIndex((s) => s.id === target);
+  const targetIdx = MEMORY_LAYERS.findIndex((s) => s.id === target);
 
   const play = () => {
     setRevealed(0);
@@ -40,9 +28,9 @@ export function MemoryLookupCascade() {
     return () => clearTimeout(t);
   }, [playing, revealed, targetIdx, reduced]);
 
-  const changeTarget = (t: TargetId) => { setTarget(t); setRevealed(0); setPlaying(false); };
+  const changeTarget = (t: MemoryLayerId) => { setTarget(t); setRevealed(0); setPlaying(false); };
 
-  const totalCycles = STAGES.slice(0, targetIdx + 1).reduce((a, s) => a + s.cycles, 0);
+  const totalCycles = MEMORY_LAYERS.slice(0, targetIdx + 1).reduce((a, s) => a + s.cycles, 0);
 
   return (
     <>
@@ -53,13 +41,13 @@ export function MemoryLookupCascade() {
           <SegmentedToggle
             value={target}
             onChange={changeTarget}
-            options={STAGES.map((s) => ({ value: s.id, label: bn ? s.bn : s.en }))}
+            options={MEMORY_LAYERS.map((s) => ({ value: s.id, label: bn ? s.bn : s.en }))}
           />
         }
       >
         <div className="flex flex-col gap-[14px] py-[18px] px-4">
           <div className="flex flex-wrap gap-[6px]">
-            {STAGES.map((s, i) => {
+            {MEMORY_LAYERS.map((s, i) => {
               if (i > targetIdx) return null;
               const isShown = i < revealed;
               const isFinal = i === targetIdx;
