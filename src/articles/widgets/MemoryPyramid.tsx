@@ -52,8 +52,8 @@ export function MemoryPyramid() {
         </div>
       </Instrument>
       <Caption
-        bn="ওপর থেকে নিচে — ছোট থেকে বড়, দ্রুত থেকে ধীর, দামি থেকে সস্তা। একটা layer-এ চাপ দিয়ে size আর speed দেখুন।"
-        en="Top to bottom — small to big, fast to slow, expensive to cheap. Tap a layer to see its size and speed."
+        bn="ওপর থেকে নিচে — ছোট থেকে বড়, দ্রুত থেকে ধীর, দামি থেকে সস্তা।"
+        en="Top to bottom — small to big, fast to slow, expensive to cheap."
       />
     </>
   );
