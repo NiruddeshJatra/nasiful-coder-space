@@ -22,7 +22,7 @@ function buildOrder(mode: Mode): number[] {
 export function RowColumnTraversal() {
   const { bn, num } = useLang();
   const [mode, setMode] = useState<Mode>('row');
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(-1);
 
   const order = useMemo(() => buildOrder(mode), [mode]);
 
@@ -33,11 +33,11 @@ export function RowColumnTraversal() {
     if (line === lastLine) hits++; else { misses++; lastLine = line; }
   }
 
-  const current = order[step];
+  const current = step >= 0 ? order[step] : undefined;
 
-  const changeMode = (m: Mode) => { setMode(m); setStep(0); };
+  const changeMode = (m: Mode) => { setMode(m); setStep(-1); };
   const next = () => setStep((s) => Math.min(order.length - 1, s + 1));
-  const reset = () => setStep(0);
+  const reset = () => setStep(-1);
 
   return (
     <>

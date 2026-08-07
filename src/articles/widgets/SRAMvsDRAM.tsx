@@ -3,11 +3,9 @@ import { useLang } from '../context/LanguageContext';
 import { Instrument } from '../primitives/Instrument';
 import { Caption } from '../primitives/Caption';
 import { SegmentedToggle } from '../primitives/SegmentedToggle';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 type Mode = 'sram' | 'dram';
-
-const useReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function SRAMvsDRAM() {
   const { bn } = useLang();
