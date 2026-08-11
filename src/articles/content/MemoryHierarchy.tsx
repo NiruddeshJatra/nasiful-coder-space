@@ -101,7 +101,7 @@ export function MemoryHierarchy() {
             {p('আপনার laptop-এ এই মুহূর্তে যেসব memory কাজ করছে:')}
             <ul style={ulStyle}>
               <li><strong>Register</strong> — CPU-র একদম ভেতরে। আকার সবমিলিয়ে কয়েক হাজার bit। Speed এক clock cycle। CPU এই মুহূর্তে যা নিয়ে কাজ করছে — সব এখানে।</li>
-              <li><strong>L1 Cache</strong> — CPU-র ভেতরেই, প্রতিটা core-এর জন্য আলাদা। আকার 32-64 KB। Speed 1-2 clock cycle। দুই ভাগে বিভক্ত — L1i (instruction) আর L1d (data)।</li>
+              <li><strong>L1 Cache</strong> — CPU-র ভেতরেই, প্রতিটা core-এর জন্য আলাদা। আকার 32-64 KB। Speed 4-5 clock cycles। দুই ভাগে বিভক্ত — L1i (instruction) আর L1d (data)।</li>
               <li><strong>L2 Cache</strong> — এটাও CPU-র ভেতরে, প্রতি core-এর জন্য আলাদা। আকার 256 KB থেকে 1 MB। Speed 3-10 clock cycle।</li>
               <li><strong>L3 Cache</strong> — সব core-এর মধ্যে shared। আকার 4 থেকে 64 MB। Speed 10-30 clock cycle।</li>
               <li><strong>RAM (Main Memory)</strong> — CPU-র বাইরে, motherboard-এ। আকার 8-32 GB, কখনো আরও বেশি। Speed 100-300 clock cycle।</li>
@@ -114,7 +114,7 @@ export function MemoryHierarchy() {
             {p("Here are the memories running in your laptop right now:")}
             <ul style={ulStyle}>
               <li><strong>Register</strong> — right inside the CPU. Total size a few thousand bits. Speed: one clock cycle. Whatever the CPU is working on right now lives here.</li>
-              <li><strong>L1 Cache</strong> — inside the CPU, separate for each core. Size 32-64 KB. Speed 1-2 clock cycles. Split into two parts — L1i (instructions) and L1d (data).</li>
+              <li><strong>L1 Cache</strong> — inside the CPU, separate for each core. Size 32-64 KB. Speed 4-5 clock cycless. Split into two parts — L1i (instructions) and L1d (data).</li>
               <li><strong>L2 Cache</strong> — also inside the CPU, separate for each core. Size 256 KB to 1 MB. Speed 3-10 clock cycles.</li>
               <li><strong>L3 Cache</strong> — shared across all cores. Size 4 to 64 MB. Speed 10-30 clock cycles.</li>
               <li><strong>RAM (Main Memory)</strong> — outside the CPU, on the motherboard. Size 8-32 GB, sometimes more. Speed 100-300 clock cycles.</li>
@@ -229,13 +229,13 @@ for (int j = 0; j < SIZE; j++) {
           <div lang="bn" style={bodyStyle}>
             {p('L1, L2, L3 cache আর RAM — সবই semiconductor memory। কিন্তু ভেতরের transistor বিন্যাসে বড় ফারাক আছে।')}
             <p style={{ margin: '0 0 16px', ...bodyStyle }}><strong>SRAM (Static RAM):</strong> প্রতি ১-bit ডেটা ধরে রাখতে ৬টি transistor দিয়ে তৈরি একটা flip-flop latch circuit ব্যবহার হয়। কোনো চার্জ leak-এর ঝামেলা নেই, অত্যন্ত দ্রুত। কিন্তু ৬টি transistor অনেক বেশি জায়গা নেয়, দাম বেশি — তাই শুধু CPU cache-এ অল্প পরিমাণে ব্যবহার হয়।</p>
-            <p style={{ margin: '0 0 16px', ...bodyStyle }}><strong>DRAM (Dynamic RAM):</strong> প্রতি ১-bit ডেটার জন্য মাত্র ১টি transistor আর ১টি ক্ষুদ্র capacitor ব্যবহার হয়। Density মারাত্মক বেশি — কোটি কোটি bit বসানো যায়, তাই সস্তা। কিন্তু capacitor একটা চার্জ ধরে রাখা বালতির মতো, যার electron সময়ের সাথে leak হয়ে যায়। তাই প্রতি কয়েক মিলিসেকেন্ড পরপর প্রতিটা cell-কে refresh করতে হয় — এই refresh cycle-ই DRAM-কে SRAM-এর চেয়ে ধীর করে দেয়।</p>
+            <p style={{ margin: '0 0 16px', ...bodyStyle }}><strong>DRAM (Dynamic RAM):</strong> প্রতি ১-bit ডেটার জন্য মাত্র ১টি transistor আর ১টি ক্ষুদ্র capacitor ব্যবহার হয়। Density মারাত্মক বেশি — কোটি কোটি bit বসানো যায়, তাই সস্তা। কিন্তু capacitor একটা চার্জ ধরে রাখা বালতির মতো, যার electron সময়ের সাথে leak হয়ে যায়। তাই প্রতি ৬৪ millisecond-এর মধ্যে প্রতিটা cell-কে অন্তত একবার refresh করতে হয় (উচ্চ তাপমাত্রায় ৩২ ms) — এই refresh cycle-ই DRAM-কে SRAM-এর চেয়ে ধীর করে দেয়।</p>
           </div>
         ) : (
           <div style={bodyStyle}>
             {p('L1/L2/L3 caches and system RAM are all semiconductor memory, but their internal transistor layouts differ significantly.')}
             <p style={{ margin: '0 0 16px', ...bodyStyle }}><strong>SRAM (Static RAM):</strong> uses a 6-transistor flip-flop latch circuit per bit. No charge-leakage problem, extremely fast. But six transistors take up far more space and cost far more to manufacture — so it's used sparingly, only inside CPU caches.</p>
-            <p style={{ margin: '0 0 16px', ...bodyStyle }}><strong>DRAM (Dynamic RAM):</strong> uses just one transistor and one tiny capacitor per bit. Density is enormous — billions of bits fit on a chip, so it's cheap. But a capacitor is like a bucket holding charge, and its electrons leak away over time. Every cell has to be refreshed every few milliseconds — and that refresh cycle is exactly what makes DRAM slower than SRAM.</p>
+            <p style={{ margin: '0 0 16px', ...bodyStyle }}><strong>DRAM (Dynamic RAM):</strong> uses just one transistor and one tiny capacitor per bit. Density is enormous — billions of bits fit on a chip, so it's cheap. But a capacitor is like a bucket holding charge, and its electrons leak away over time. Every cell must be refreshed at least once within a 64-millisecond window (32 ms at high temperature) — and that refresh cycle is exactly what makes DRAM slower than SRAM.</p>
           </div>
         )}
         <SRAMvsDRAM />
@@ -344,7 +344,7 @@ for (int j = 0; j < SIZE; j++) {
 
       <RelayNav
         hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
-        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৬ — OS, মহাব্যবস্থাপক' : '06 — The OS, grand manager', href: '#', variant: 'next' }}
+        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৬ — অপারেটিং সিস্টেম: মহাব্যবস্থাপক' : '06 — Operating System: The Grand Conductor', href: '/writing/os-grand-conductor', variant: 'next' }}
         bridge={{
           bn: 'এখন পর্যন্ত সব দেখা হয়েছে hardware level-এ। CPU, register, cache, RAM, disk — সব physical component। কিন্তু বাস্তবে laptop-এ একই সাথে ৫০টা program চলছে। Browser, Spotify, VS Code, video call, terminal — সব একই RAM, একই CPU share করছে। কে ঠিক করে কে কখন কতটুকু resource পাবে? কে ঠিক করে কোন program-এর ডেটা memory-র কোন address-এ থাকবে? এইখানে আসে Operating System — hardware-এর ওপরে সবচেয়ে গুরুত্বপূর্ণ software layer। পরের আর্টিকেলে সেই গল্প।',
           en: "Up till now everything's been at the hardware level — CPU, register, cache, RAM, disk, all physical. But in reality your laptop runs 50 programs at once. Browser, Spotify, VS Code, a video call, a terminal — all sharing the same RAM, the same CPU. Who decides who gets how much, and when? Who decides which address a program's data lives at? This is where the Operating System comes in — the most important software layer above the hardware. That's the next article's story.",

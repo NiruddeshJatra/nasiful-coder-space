@@ -13,11 +13,12 @@ import { HowDoesAnythingBecomeBits } from '../articles/content/HowDoesAnythingBe
 import { BlueprintOfACPU } from '../articles/content/BlueprintOfACPU';
 import { HeartbeatFDE } from '../articles/content/HeartbeatFDE';
 import { MemoryHierarchy } from '../articles/content/MemoryHierarchy';
+import { OSGrandConductor } from '../articles/content/OSGrandConductor';
 import { useLang } from '../articles/context/LanguageContext';
 import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
-type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde' | 'memory-hierarchy';
+type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde' | 'memory-hierarchy' | 'os-grand-conductor';
 
 // manifest.ts enforces enDescription/bnDescription/datePublished at compile time
 // for any ARTICLES entry with state: 'read' (see PublishedArticleEntry). This
@@ -112,13 +113,25 @@ const CONFIGS: Record<ArticleSlug, Config> = {
     seriesPos: 5,
     Content: MemoryHierarchy,
   },
+  'os-grand-conductor': {
+    slug: 'os-grand-conductor',
+    bnSubtitle: 'process, scheduling, virtual memory, syscall — OS কীভাবে সব চালায়',
+    enSubtitle: 'Process, scheduling, virtual memory, syscall — how the OS runs everything',
+    kickerCells: [
+      { bn: 'LEVEL 3 — THE SOFTWARE', en: 'LEVEL 3 — THE SOFTWARE' },
+      { bn: 'পর্ব ০৬/০৮', en: 'part 06/08' },
+      { bn: '~২০ মিনিট', en: '~20 min' },
+    ],
+    seriesPos: 6,
+    Content: OSGrandConductor,
+  },
 };
 
 function ArticleBody({ config }: { config: Config }) {
   const { bn } = useLang();
   const { Content } = config;
   const slug = config.slug as ArticleSlug;
-  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde' || slug === 'memory-hierarchy';
+  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde' || slug === 'memory-hierarchy' || slug === 'os-grand-conductor';
   const meta = getArticleMeta(slug);
   const pageTitle = bn ? meta.bnTitle : meta.enTitle;
   const pageDesc = bn ? meta.bnDescription : meta.enDescription;

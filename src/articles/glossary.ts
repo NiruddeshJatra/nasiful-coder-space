@@ -130,4 +130,44 @@ export const glossary: Record<string, GlossaryEntry> = {
     bn: 'Multi-core CPU-তে প্রতিটা core-এর নিজস্ব L1/L2 cache থাকে। একটা core কোনো variable বদলালে, অন্য core-এর cache-এ থাকা পুরনো copy-টা stale হয়ে যায়। Cache coherence protocol (যেমন MESI — Modified, Exclusive, Shared, Invalid) এই সমস্যা সমাধান করে — কোনো core কিছু বদলালে, বাকি core-দের cache-এ থাকা সেই line-কে "Invalid" ঘোষণা করে দেয়, যাতে কেউ পুরনো ডেটা না পড়ে।',
     en: 'In a multi-core CPU, each core has its own private L1/L2 cache. If one core modifies a variable, the copy sitting in another core\'s cache goes stale. Cache coherence protocols (like MESI — Modified, Exclusive, Shared, Invalid) solve this — when a core writes, it broadcasts an invalidation signal that marks the matching line "Invalid" in every other core\'s cache, so nobody reads stale data.',
   },
+  process: {
+    term: 'process',
+    bn: 'Process হলো একটা running program। Program মানে disk-এ পড়ে থাকা file; সেটাতে click করলে OS একটা process তৈরি করে — নিজস্ব memory, PID (unique ID), file descriptor, register state সহ। একই program থেকে একাধিক process চলতে পারে।',
+    en: 'A process is a running program. A program is a file sitting on disk; when you launch it, the OS creates a process — with its own memory, PID (unique ID), file descriptors, and register state. Multiple processes can run from the same program at once.',
+  },
+  pcb: {
+    term: 'PCB',
+    bn: 'Process Control Block — OS-এ প্রতিটা process-এর "ফাইল"। এতে থাকে PID, register এর current values, memory map, open file-এর list, scheduling priority, আর process-এর state (running/ready/waiting)। Context switch-এর সময় CPU-র সব state এখানে save হয়।',
+    en: 'Process Control Block — the OS\'s record for each process. Contains the PID, current register values, memory map, list of open files, scheduling priority, and process state (running/ready/waiting). On a context switch, all CPU state is saved here.',
+  },
+  contextswitch: {
+    term: 'context switch',
+    bn: 'এক process-এর "context" (register state, program counter) save করে অন্য process-এর context load করার কাজ। OS এটা করে যখন একটা process-এর time slice শেষ হয় বা সে নিজে থেকে wait-এ যায়। প্রতিটা switch-এ কিছু CPU cycle খরচ হয় — এটাই multitasking-এর "ফি"।',
+    en: "Saving one process's context (register state, program counter) and loading another's. The OS does this when a process's time slice ends or it voluntarily waits. Each switch costs some CPU cycles — the \"fee\" for multitasking.",
+  },
+  scheduler: {
+    term: 'scheduler',
+    bn: 'OS-এর সেই অংশ যেটা সিদ্ধান্ত নেয় পরবর্তী CPU time কোন process পাবে। বিভিন্ন algorithm আছে — Round-Robin (সবাইকে সমান সময়), Priority-based (বেশি priority আগে), CFS/EEVDF (যে কম পেয়েছে তাকে পরের চান্স)। Linux 6.6-এ CFS-এর জায়গায় EEVDF এসেছে।',
+    en: 'The OS component that decides which process gets the CPU next. Various algorithms exist — Round-Robin (equal time to all), Priority-based (higher priority first), CFS/EEVDF (least-served goes next). Linux 6.6 replaced CFS with EEVDF.',
+  },
+  virtualmem: {
+    term: 'virtual memory',
+    bn: 'প্রতিটা process-কে OS একটা নিজস্ব "কল্পিত" address space দেয়। Process ভাবে সে পুরো RAM-এর মালিক, কিন্তু আসলে মাঝখানে MMU (Memory Management Unit) সব address real physical RAM-এ translate করে দেয়। এতে isolation নিশ্চিত হয় — এক process আরেকটার memory ছুঁতে পারে না।',
+    en: "The OS gives each process its own imaginary address space. The process believes it owns all of RAM, but the MMU (Memory Management Unit) transparently translates every address to real physical RAM. This ensures isolation — one process can't touch another's memory.",
+  },
+  pagefault: {
+    term: 'page fault',
+    bn: 'Process যখন এমন কোনো virtual address access করতে চায় যেটার ডেটা এই মুহূর্তে physical RAM-এ নেই (disk-এ swap করা আছে), তখন CPU একটা "page fault" exception তোলে। OS তখন disk থেকে সেই page RAM-এ আনে, page table update করে, আর process-কে আবার চালায়।',
+    en: "When a process tries to access a virtual address whose data isn't currently in physical RAM (it's been swapped to disk), the CPU raises a \"page fault\" exception. The OS fetches that page from disk, updates the page table, and resumes the process.",
+  },
+  syscall: {
+    term: 'system call',
+    bn: 'User mode-এ চলা program hardware access করতে পারে না সরাসরি। OS-এর একটা pre-defined function call করে সে kernel mode-এ কাজটা করিয়ে নেয়। এই "call" করার পদ্ধতিই system call। যেমন: open(), read(), write(), socket(), fork()। প্রতিটা system call-এ CPU user mode থেকে kernel mode-এ যায়, কাজ শেষে ফিরে আসে।',
+    en: 'A program running in user mode cannot directly access hardware. It asks the OS to do the work by making a predefined call that switches into kernel mode. That call is a system call — e.g. open(), read(), write(), socket(), fork(). On each system call the CPU flips to kernel mode, does the work, and flips back.',
+  },
+  interrupt: {
+    term: 'interrupt',
+    bn: 'Hardware বা software থেকে CPU-কে পাঠানো একটা signal যে "এখনই একটা জরুরি কাজ আছে।" CPU চলতি কাজ থামিয়ে একটা pre-registered "interrupt handler" function-এ লাফ দেয়, সেটা শেষ করে, তারপর আগের কাজে ফিরে আসে। Keyboard press, timer tick, network packet আসা — সবই interrupt দিয়ে CPU-কে জানায়।',
+    en: 'A signal from hardware or software to the CPU meaning "there\'s urgent work right now." The CPU pauses whatever it\'s doing, jumps to a pre-registered interrupt handler function, finishes it, and returns to the previous task. Keyboard presses, timer ticks, arriving network packets — all notify the CPU via interrupts.',
+  },
 };
