@@ -55,6 +55,11 @@ const techArticles = [
     path: "/writing/memory-hierarchy",
     description: "part 05 · cache, locality, SRAM vs DRAM",
   },
+  {
+    title: "operating system — the grand conductor",
+    path: "/writing/os-grand-conductor",
+    description: "part 06 · processes, scheduling, virtual memory",
+  },
 ];
 
 const WritingContent = () => {
