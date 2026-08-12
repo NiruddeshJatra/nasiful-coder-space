@@ -114,7 +114,7 @@ export function MemoryHierarchy() {
             {p("Here are the memories running in your laptop right now:")}
             <ul style={ulStyle}>
               <li><strong>Register</strong> — right inside the CPU. Total size a few thousand bits. Speed: one clock cycle. Whatever the CPU is working on right now lives here.</li>
-              <li><strong>L1 Cache</strong> — inside the CPU, separate for each core. Size 32-64 KB. Speed 4-5 clock cycless. Split into two parts — L1i (instructions) and L1d (data).</li>
+              <li><strong>L1 Cache</strong> — inside the CPU, separate for each core. Size 32-64 KB. Speed 4-5 clock cycles. Split into two parts — L1i (instructions) and L1d (data).</li>
               <li><strong>L2 Cache</strong> — also inside the CPU, separate for each core. Size 256 KB to 1 MB. Speed 3-10 clock cycles.</li>
               <li><strong>L3 Cache</strong> — shared across all cores. Size 4 to 64 MB. Speed 10-30 clock cycles.</li>
               <li><strong>RAM (Main Memory)</strong> — outside the CPU, on the motherboard. Size 8-32 GB, sometimes more. Speed 100-300 clock cycles.</li>
