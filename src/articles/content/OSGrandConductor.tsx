@@ -108,24 +108,10 @@ export function OSGrandConductor() {
             <p style={{ margin: '0 0 8px', ...body }}>সেই memory এলাকার ভেতরে আবার কয়েকটা section:</p>
             {p(<><strong>Code section:</strong> Program-এর instruction গুলো এখানে থাকে। এই অংশ read-only, যাতে program ভুল করে বা কেউ ইচ্ছা করে নিজের কোড পাল্টে ফেলতে না পারে।</>)}
             {p(<><strong>Data section:</strong> এখানে থাকে সেই সব variable যেগুলো program-এর শুরু থেকে শেষ পর্যন্ত টিকে থাকে। যেমন C-তে function-এর বাইরে declare করা {MONO('int counter = 0;')} — এই ধরনের global variable এখানে বসে থাকে। Program যতক্ষণ চলবে, ততক্ষণ এই variable-ও থাকবে।</>)}
-            {p(<><strong>Stack:</strong> যখন একটা function call হয়, তার parameter আর local variable-এর জন্য সাময়িক জায়গা লাগে। Function শেষ হলে সেই জায়গা মুছে যাবে। এই সাময়িক জায়গার নাম stack।<br /><br />কল্পনা করুন একটা কাগজের tray-তে একের পর এক কাগজ রাখছেন — সবশেষ কাগজটা সবার ওপরে থাকে, সেটাই আগে সরাতে হবে। Function call-ও এভাবেই — যে function সবশেষ call হয়েছে, সে-ই আগে শেষ হয়। এই "শেষে এসে আগে যায়" pattern-এর নামই stack।</>)}
+            {p(<><strong>Stack:</strong> যখন একটা function call হয়, তার parameter আর local variable-এর জন্য সাময়িক জায়গা লাগে। Function শেষ হলে সেই জায়গা মুছে যাবে। এই সাময়িক জায়গার নাম stack।<br />কল্পনা করুন একটা কাগজের tray-তে একের পর এক কাগজ রাখছেন — সবশেষ কাগজটা সবার ওপরে থাকে, সেটাই আগে সরাতে হবে। Function call-ও এভাবেই — যে function সবশেষ call হয়েছে, সে-ই আগে শেষ হয়। এই "শেষে এসে আগে যায়" pattern-এর নামই stack।</>)}
             {p(<><strong>Heap:</strong> কখনো কখনো program চলাকালীন হঠাৎ বড় একটা array বা object তৈরি করতে হয় — যেটা কতটা বড় হবে তা আগে জানা ছিল না। এই dynamic memory-র জন্য জায়গা আসে heap থেকে। JavaScript-এ যখন {MONO('new Array(1000)')} লেখেন, বা C-তে {MONO('malloc()')} করেন — memory আসে heap থেকে।</>)}
             {p(<><strong>File descriptors:</strong> Program চলাকালীন file খুলল, network connection বানাল — এসব track করতে হয়। কারণ পরে আবার সেই file-এ কিছু লিখতে হতে পারে, বা সেই connection বন্ধ করতে হতে পারে। File descriptor হলো এই connection-গুলোর "handle" — একটা ছোট নম্বর, যেটা দিয়ে program বলতে পারে "এই connection-টার সাথে কাজ করো।"</>)}
             {p(<><strong>Register state:</strong> এই process যখন CPU-তে চলছিল, তখন CPU-র register-এ যা যা ছিল — সেই সব। কেন এটা track করে রাখতে হবে? কারণ OS এই process-কে সরিয়ে অন্যটা চালাবে। কিছুক্ষণ পর যখন এই process আবার চালু হবে, তখন সে ভুলে যাবে সে কোথায় থেমেছিল, কোন value নিয়ে কাজ করছিল। তাই সরিয়ে রাখার আগে সব save করা লাগে।</>)}
-            <p style={{ margin: '0 0 8px', ...body }}>Process-এর memory layout সাধারণত এভাবে সাজানো:</p>
-            <pre style={{ fontFamily: "'Departure Mono',monospace", fontSize: 12, lineHeight: 1.7, background: 'rgba(0,0,0,0.04)', border: '1px solid #c9bda0', padding: '12px 16px', overflowX: 'auto', margin: '0 0 16px' }}>{`উপরের address    ┌─────────────────────┐
-                 │       Stack         │  ← function call-এর সাথে বাড়ে-কমে
-                 │         ↓           │      নিচের দিকে বাড়ে
-                 │                     │
-                 │      (unused)       │
-                 │                     │
-                 │         ↑           │
-                 │        Heap         │  ← malloc/new-এ বাড়ে
-                 ├─────────────────────┤       উপরের দিকে বাড়ে
-                 │    Data / BSS       │  ← global variables
-                 ├─────────────────────┤
-                 │       Code          │  ← program-এর instruction
-নিচের address    └─────────────────────┘`}</pre>
             {p(<>এই সবগুলো OS একটা কেন্দ্রীয় জায়গায় track করে রাখে, যাকে বলে <Term id="pcb">PCB</Term> (Process Control Block)। OS-এর কাছে প্রতিটা process মানে PCB-তে একটা entry। নিচের যন্ত্রে process-এর memory কীভাবে সাজানো, সেটা দেখানো হয়েছে:</>)}
           </div>
         ) : (
@@ -136,24 +122,10 @@ export function OSGrandConductor() {
             <p style={{ margin: '0 0 8px', ...body }}>Inside that memory area are a few sections:</p>
             {p(<><strong>Code section:</strong> The program's instructions live here. This section is read-only — so the program can't accidentally rewrite its own code, and no one else can either.</>)}
             {p(<><strong>Data section:</strong> Variables that stick around from the beginning of the program to the end. Something like {MONO('int counter = 0;')} declared outside any function in C — that global variable sits here. As long as the program runs, this variable stays.</>)}
-            {p(<><strong>Stack:</strong> When a function is called, its parameters and local variables need temporary space. When the function ends, that space vanishes. That temporary space is the stack.<br /><br />Picture stacking papers into a tray, one after another — the last paper on top is the first one you take out. Function calls work the same way — the function called last is the first to finish. That "last-in, first-out" pattern is where the stack gets its name.</>)}
+            {p(<><strong>Stack:</strong> When a function is called, its parameters and local variables need temporary space. When the function ends, that space vanishes. That temporary space is the stack.<br />Picture stacking papers into a tray, one after another — the last paper on top is the first one you take out. Function calls work the same way — the function called last is the first to finish. That "last-in, first-out" pattern is where the stack gets its name.</>)}
             {p(<><strong>Heap:</strong> Sometimes during execution the program needs to suddenly create a big array or object — something whose size wasn't known ahead of time. That dynamic memory comes from the heap. When you write {MONO('new Array(1000)')} in JavaScript, or {MONO('malloc()')} in C — memory comes from the heap.</>)}
             {p(<><strong>File descriptors:</strong> As the program runs, it opens files, creates network connections. These need to be tracked. Because the program might later want to write to that file, or close that connection. A file descriptor is the "handle" for one of these connections — a small number the program can use to say "work with this connection."</>)}
             {p(<><strong>Register state:</strong> Whatever was in the CPU's registers while this process was running — all of it. Why track it? Because the OS is going to move this process off the CPU and let another one run. When this process's turn comes again, it will have forgotten where it was, which values it was working with. So it all needs to be saved before it's moved off.</>)}
-            <p style={{ margin: '0 0 8px', ...body }}>A typical process memory layout:</p>
-            <pre style={{ fontFamily: "'Departure Mono',monospace", fontSize: 12, lineHeight: 1.7, background: 'rgba(0,0,0,0.04)', border: '1px solid #c9bda0', padding: '12px 16px', overflowX: 'auto', margin: '0 0 16px' }}>{`High address    ┌─────────────────────┐
-                │       Stack         │  ← grows and shrinks with function calls
-                │         ↓           │      grows downward
-                │                     │
-                │      (unused)       │
-                │                     │
-                │         ↑           │
-                │        Heap         │  ← grows with malloc/new
-                ├─────────────────────┤      grows upward
-                │    Data / BSS       │  ← global variables
-                ├─────────────────────┤
-                │       Code          │  ← program's instructions
-Low address     └─────────────────────┘`}</pre>
             {p(<>The OS tracks all of this in one central place, called a <Term id="pcb">PCB</Term> (Process Control Block). To the OS, every process is essentially one entry in a PCB table. Build up a process's memory layout on the instrument below:</>)}
           </div>
         )}
