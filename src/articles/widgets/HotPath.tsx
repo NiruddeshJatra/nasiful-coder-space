@@ -1,20 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLang } from '../context/LanguageContext';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { Instrument } from '../primitives/Instrument';
 import { Caption } from '../primitives/Caption';
 
+/** Calls before the JIT declares square() "hot" and compiles it to native. */
 const THRESH = 8;
+/** Where the demo stops counting — the call-count meter is full at this value. */
 const CAP = 20;
 
 export function HotPath() {
   const { bn, num } = useLang();
   const [count, setCount] = useState(0);
   const [running, setRunning] = useState(false);
-  const reduced = useRef(false);
-
-  useEffect(() => {
-    reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }, []);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     if (!running) return;
@@ -23,9 +22,9 @@ export function HotPath() {
         if (c + 1 >= CAP) { setRunning(false); return CAP; }
         return c + 1;
       });
-    }, reduced.current ? 140 : 560);
+    }, reduced ? 140 : 560);
     return () => clearInterval(iv);
-  }, [running]);
+  }, [running, reduced]);
 
   const hot = count >= THRESH;
   const justHot = count === THRESH;

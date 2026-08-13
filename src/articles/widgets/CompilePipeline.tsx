@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLang } from '../context/LanguageContext';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { Instrument } from '../primitives/Instrument';
 import { Caption } from '../primitives/Caption';
-
-const LAST = 8;
 
 const STAGES = [
   { bn: 'Node startup — V8 engine load হয়', en: 'Node starts up — the V8 engine loads', badge: 'BOOT' },
@@ -16,6 +15,9 @@ const STAGES = [
   { bn: "loop-এর body-ও একইভাবে JIT-compile হয়", en: 'the loop body gets JIT-compiled the same way', badge: 'JIT' },
   { bn: 'Result — C-র কাছাকাছি speed', en: 'Result — close to C-level speed', badge: 'DONE' },
 ];
+
+/** Index of the final stage — derived so adding a STAGES entry needs no other edit. */
+const LAST = STAGES.length - 1;
 
 const FUNNEL = [
   { label: 'source', reach: 0 },
@@ -35,11 +37,7 @@ export function CompilePipeline() {
   const { bn, num } = useLang();
   const [step, setStep] = useState(0);
   const [running, setRunning] = useState(false);
-  const reduced = useRef(false);
-
-  useEffect(() => {
-    reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }, []);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     if (!running) return;
@@ -48,9 +46,9 @@ export function CompilePipeline() {
         if (k + 1 >= LAST) { setRunning(false); return LAST; }
         return k + 1;
       });
-    }, reduced.current ? 140 : 640);
+    }, reduced ? 140 : 640);
     return () => clearInterval(iv);
-  }, [running]);
+  }, [running, reduced]);
 
   const tier = step <= 0 ? 'boot' : step <= 2 ? 'parse/compile' : step === 3 ? 'interpreter' : step <= 5 ? 'JIT' : 'native';
   const tierCol = step >= 6 ? '#00d26a' : step >= 4 ? '#e0c264' : '#8aa893';
@@ -123,7 +121,7 @@ export function CompilePipeline() {
           </button>
           <button onClick={() => { setRunning(false); setStep(0); }} style={btn(false)}>↺ reset</button>
           <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: 11.5, color: '#8aa893', flex: 1, minWidth: 160 }}>
-            {bn ? `ধাপ ${num(Math.min(step + 1, 9))}/${num(9)}` : `step ${Math.min(step + 1, 9)}/9`} · source → AST → bytecode → interpret → JIT → native
+            {bn ? `ধাপ ${num(step + 1)}/${num(STAGES.length)}` : `step ${step + 1}/${STAGES.length}`} · source → AST → bytecode → interpret → JIT → native
           </span>
         </div>
       </Instrument>

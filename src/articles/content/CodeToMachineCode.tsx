@@ -1,46 +1,17 @@
-import type { ReactNode } from 'react';
-import { useLang } from '../context/LanguageContext';
 import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
 import { Deeper } from '../primitives/Deeper';
 import { Recap } from '../primitives/Recap';
 import { RelayNav } from '../primitives/RelayNav';
 import { Colophon } from '../primitives/Colophon';
+import { useProse, LINK, WELL, mono as MONO } from '../primitives/useProse';
 import { TwoStrategies } from '../widgets/TwoStrategies';
 import { MiddleLayer } from '../widgets/MiddleLayer';
 import { HotPath } from '../widgets/HotPath';
 import { CompilePipeline } from '../widgets/CompilePipeline';
 
-const LINK: React.CSSProperties = { color: '#00753F' };
-const MONO = (s: string) => <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: '0.85em' }}>{s}</span>;
-
-const SHELL: React.CSSProperties = {
-  background: '#232b23', border: '1px solid #4a493a', padding: '11px 14px', margin: '0 0 16px',
-  fontFamily: "'Departure Mono',monospace", fontSize: 12.5, color: '#cfe8d8', overflowX: 'auto',
-};
-
 export function CodeToMachineCode() {
-  const { bn } = useLang();
-
-  const body: React.CSSProperties = bn
-    ? { fontFamily: "'Anek Bangla','Anek Latin',sans-serif" }
-    : { fontFamily: "'Anek Latin',sans-serif" };
-
-  const p = (s: ReactNode) => <p style={{ margin: '0 0 16px', ...body }}>{s}</p>;
-  const ul = (items: ReactNode[]) => (
-    <ul style={{ margin: '0 0 16px', paddingLeft: 22, lineHeight: 1.9, ...body }}>
-      {items.map((item, i) => <li key={i} style={{ marginBottom: 8 }}>{item}</li>)}
-    </ul>
-  );
-  const box = (label: string, children: ReactNode) => (
-    <div style={{ border: '1px solid #c9bda0', background: 'rgba(255,252,243,0.65)', padding: '14px 18px', margin: '0 0 16px' }}>
-      <div style={{ fontFamily: "'Departure Mono',monospace", fontSize: 11.5, color: '#00753F', letterSpacing: '0.08em', marginBottom: 8 }}>{label}</div>
-      <div style={{ margin: 0, fontSize: 15.5, ...body }}>{children}</div>
-    </div>
-  );
-  const shell = (cmd: string) => (
-    <div style={SHELL}><span style={{ color: '#6c8873' }}>$</span> {cmd}</div>
-  );
+  const { bn, body, p, lead, ul, box, shell } = useProse();
 
   return (
     <article style={{ marginTop: 40, fontSize: '16.5px', lineHeight: 1.9 }}>
@@ -74,7 +45,7 @@ export function CodeToMachineCode() {
           <div lang="bn" style={body}>
             {p(<>Node চালালেন। Screen-এ {MONO('8')} দেখলেন।</>)}
             {p(<>কিন্তু আগের আর্টিকেলগুলোতে দেখেছি — CPU JavaScript বোঝে না। CPU শুধু machine code বোঝে, সেই hex numbers যা <a href="/writing/heartbeat-fde" style={LINK}>Article 4</a>-এ দেখেছিলাম:</>)}
-            <div style={SHELL}>89 E5 83 EC 10 C7 45 FC ...</div>
+            <div style={WELL}>89 E5 83 EC 10 C7 45 FC ...</div>
             {p('তাহলে মাঝখানে কী ঘটল? আপনার লেখা text কীভাবে CPU-র জন্য executable instruction হয়ে গেল?')}
             {p('এটাই আজকের গল্প।')}
             {box('// একটা কথা আগে বলে রাখি', <>
@@ -87,7 +58,7 @@ export function CodeToMachineCode() {
           <div style={body}>
             {p(<>Ran Node. Saw {MONO('8')} on screen.</>)}
             {p(<>But we've seen in earlier articles — the CPU doesn't understand JavaScript. The CPU only understands machine code, those hex numbers from <a href="/writing/heartbeat-fde" style={LINK}>Article 4</a>:</>)}
-            <div style={SHELL}>89 E5 83 EC 10 C7 45 FC ...</div>
+            <div style={WELL}>89 E5 83 EC 10 C7 45 FC ...</div>
             {p('So what happened in between? How did the text you wrote become executable CPU instructions?')}
             {p("That's today's story.")}
             {box('// one thing to clear up first', <>
@@ -104,7 +75,7 @@ export function CodeToMachineCode() {
           <div lang="bn" style={body}>
             {p('একটা foreign language বই পড়তে চাইলে একজন অনুবাদক লাগে। Computer-এর ক্ষেত্রেও তেমনই। যেকোনো high-level language (JavaScript, Python, Go) থেকে CPU-র machine code পর্যন্ত পৌঁছাতে একটা translator software লাগবে। এই translator নিজেও একটা program, যেটা CPU-তে চলে।')}
             {p('কিন্তু translator-দের কাজের ধরন আলাদা। কেউ পুরো বইটা আগে থেকে অনুবাদ করে ছাপিয়ে দেয়। কেউ বাক্য পড়ে পড়ে on-the-spot বলে দেয়। কেউ আবার প্রথমে একটা middle language-এ নামায়, তারপর সেটা কেউ পড়ে।')}
-            <p style={{ margin: '0 0 8px', ...body }}>এই ভিন্ন approach-গুলোর মধ্যে মূল কয়েকটা:</p>
+            {lead(<>এই ভিন্ন approach-গুলোর মধ্যে মূল কয়েকটা:</>)}
             {ul([
               <><strong><Term id="compiler">Compiler</Term>:</strong> পুরো code আগে থেকে একবারে অনুবাদ করে (C, Go, Rust)।</>,
               <><strong><Term id="interpreter">Interpreter</Term>:</strong> লাইন ধরে ধরে on-the-fly অনুবাদ করে (আদি Python, Bash)।</>,
@@ -117,7 +88,7 @@ export function CodeToMachineCode() {
           <div style={body}>
             {p('To read a book in a foreign language, you need a translator. Same for computers. Getting from any high-level language (JavaScript, Python, Go) down to the CPU\'s machine code requires translator software. That translator is itself a program, running on the CPU.')}
             {p('But translators work in different ways. Some translate the entire book ahead of time and print it. Some read sentence by sentence and speak it out on the spot. Some first bring it down to a middle language, and then someone else reads that.')}
-            <p style={{ margin: '0 0 8px', ...body }}>The main approaches:</p>
+            {lead(<>The main approaches:</>)}
             {ul([
               <><strong><Term id="compiler">Compiler</Term>:</strong> Translates the entire code ahead of time, all at once (C, Go, Rust).</>,
               <><strong><Term id="interpreter">Interpreter</Term>:</strong> Translates line by line on the fly (early Python, Bash).</>,
