@@ -34,6 +34,7 @@ const ARTICLE_SECTIONS = new Set([
   'writing/heartbeat-fde',
   'writing/memory-hierarchy',
   'writing/os-grand-conductor',
+  'writing/code-to-machine-code',
 ]);
 
 const Index = ({ forceSection }: IndexProps = {}) => {
