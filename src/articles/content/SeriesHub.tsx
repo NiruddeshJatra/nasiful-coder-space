@@ -20,9 +20,9 @@ export function SeriesHub() {
     { bn: 'CPU-র blueprint', en: "The CPU's blueprint", sub: 'ALU · register · clock', state: 'read', href: '/writing/cpu-blueprint' },
     { bn: 'হার্টবিট: Fetch-Decode-Execute', en: 'Heartbeat: Fetch-Decode-Execute', sub: 'fetch · decode · execute', state: 'read', href: '/writing/heartbeat-fde' },
     { bn: 'মেমোরি হায়ারার্কি', en: 'The Memory Hierarchy', sub: 'cache · locality · SRAM vs DRAM', state: 'read', href: '/writing/memory-hierarchy' },
-    { bn: 'OS — মহাব্যবস্থাপক', en: 'The OS — grand manager', sub: 'processes · scheduling', state: 'next', href: '#' },
-    { bn: 'Compiler-এর অনুবাদ', en: "The compiler's translation", sub: 'source → machine code', state: 'soon', href: '#' },
-    { bn: 'Keypress থেকে screen', en: 'From keypress to screen', sub: 'the relay race, end to end', state: 'soon', href: '#' },
+    { bn: 'অপারেটিং সিস্টেম: মহাব্যবস্থাপক', en: 'Operating System — The Grand Conductor', sub: 'processes · scheduling · virtual memory', state: 'read', href: '/writing/os-grand-conductor' },
+    { bn: 'কোড থেকে মেশিন কোড', en: 'From Code to Machine Code', sub: 'compiler · interpreter · bytecode · JIT', state: 'read', href: '/writing/code-to-machine-code' },
+    { bn: 'Keypress থেকে screen', en: 'From keypress to screen', sub: 'the relay race, end to end', state: 'next', href: '#' },
   ];
 
   // Signal map SVG

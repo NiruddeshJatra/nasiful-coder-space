@@ -483,7 +483,7 @@ export function OSGrandConductor() {
 
       <RelayNav
         hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
-        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৭ — কোড থেকে মেশিন কোড' : '07 — Code to Machine Code', href: '#', variant: 'next' }}
+        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৭ — কোড থেকে মেশিন কোড' : '07 — Code to Machine Code', href: '/writing/code-to-machine-code', variant: 'next' }}
         bridge={{
           bn: 'Hardware দেখা হলো। OS দেখা হলো। কিন্তু আপনি যে code লেখেন — JavaScript, Python, Go — সেটা তো CPU-এর নিজস্ব ভাষা না। CPU শুধু machine code বোঝে, সেই hex numbers। মাঝখানে তাহলে কী ঘটে? আপনার লেখা text file কীভাবে CPU-র জন্য executable instruction হয়ে যায়? Compiler, interpreter, JIT — এদের গল্পটা পরের আর্টিকেলে।',
           en: "Hardware — done. OS — done. But the code you write — JavaScript, Python, Go — isn't the CPU's own language. The CPU only understands machine code, those hex numbers. So what's happening in between? How does the text file you write become executable CPU instructions? Compiler, interpreter, JIT — those stories are next.",

@@ -43,6 +43,7 @@ const App = () => (
           <Route path="/writing/heartbeat-fde" element={<ArticlePage article="heartbeat-fde" />} />
           <Route path="/writing/memory-hierarchy" element={<ArticlePage article="memory-hierarchy" />} />
           <Route path="/writing/os-grand-conductor" element={<ArticlePage article="os-grand-conductor" />} />
+          <Route path="/writing/code-to-machine-code" element={<ArticlePage article="code-to-machine-code" />} />
           <Route path="*" element={<Index forceSection="404" />} />
         </Routes>
       </BrowserRouter>

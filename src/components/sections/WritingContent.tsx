@@ -60,6 +60,11 @@ const techArticles = [
     path: "/writing/os-grand-conductor",
     description: "part 06 · processes, scheduling, virtual memory",
   },
+  {
+    title: "from code to machine code",
+    path: "/writing/code-to-machine-code",
+    description: "part 07 · compiler, interpreter, bytecode, JIT",
+  },
 ];
 
 const WritingContent = () => {

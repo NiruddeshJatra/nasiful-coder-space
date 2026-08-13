@@ -170,4 +170,34 @@ export const glossary: Record<string, GlossaryEntry> = {
     bn: 'Hardware বা software থেকে CPU-কে পাঠানো একটা signal যে "এখনই একটা জরুরি কাজ আছে।" CPU চলতি কাজ থামিয়ে একটা pre-registered "interrupt handler" function-এ লাফ দেয়, সেটা শেষ করে, তারপর আগের কাজে ফিরে আসে। Keyboard press, timer tick, network packet আসা — সবই interrupt দিয়ে CPU-কে জানায়।',
     en: 'A signal from hardware or software to the CPU meaning "there\'s urgent work right now." The CPU pauses whatever it\'s doing, jumps to a pre-registered interrupt handler function, finishes it, and returns to the previous task. Keyboard presses, timer ticks, arriving network packets — all notify the CPU via interrupts.',
   },
+  compiler: {
+    term: 'compiler',
+    bn: 'Compiler এমন একটা program যা পুরো একটা source file পড়ে এবং একবারে সেটাকে machine code (বা bytecode)-এ পরিণত করে। Output সাধারণত একটা executable file, যা compiler ছাড়াই চলতে পারে। C-র gcc, Rust-এর rustc, Go-র go build — সবই compiler।',
+    en: "A compiler is a program that reads an entire source file and converts it, all at once, into machine code (or bytecode). The output is usually an executable file that can run without the compiler. C's gcc, Rust's rustc, Go's go build — all compilers.",
+  },
+  interpreter: {
+    term: 'interpreter',
+    bn: 'Interpreter এমন একটা program যা source code লাইন ধরে ধরে পড়ে, বোঝে, আর সাথে সাথে execute করে। কোনো binary output তৈরি হয় না — code চালানোর প্রতিবার interpreter লাগে। খাঁটি interpreter আজকাল বিরল — বেশিরভাগ modern "interpreted" ভাষা আসলে bytecode-এ compile করে VM-এ চালায়।',
+    en: 'An interpreter is a program that reads source code line by line, understands it, and executes it immediately. No binary output is created — the interpreter is needed every time the code runs. Pure interpreters are rare today — most modern "interpreted" languages actually compile to bytecode and run it on a VM.',
+  },
+  bytecode: {
+    term: 'bytecode',
+    bn: 'Bytecode হলো একটা intermediate language — মানুষের source code-এর চেয়ে নিচে, কিন্তু CPU-র machine code-এর চেয়ে উপরে। একটা VM (Virtual Machine) এই bytecode পড়ে execute করে। Java-র .class file, Python-এর .pyc file — সবই bytecode।',
+    en: "Bytecode is an intermediate language — lower level than human source code, but higher level than the CPU's machine code. A VM (Virtual Machine) reads and executes this bytecode. Java's .class files, Python's .pyc files — all bytecode.",
+  },
+  vm: {
+    term: 'virtual machine (VM)',
+    bn: 'Software-এ implemented একটা "কৃত্রিম computer" যা bytecode চালায়। VM নিজে একটা program, যেটা real CPU-তে চলে। JVM (Java Virtual Machine), CPython VM — এই sense-এ VM। এটাকে virtualization-এর VM (VirtualBox, VMware)-এর সাথে গুলিয়ে ফেলবেন না — সেটা আলাদা concept।',
+    en: 'A software-implemented "imaginary computer" that runs bytecode. The VM is itself a program running on a real CPU. The JVM (Java Virtual Machine) and the CPython VM are VMs in this sense. Don\'t confuse this with virtualization VMs (VirtualBox, VMware) — that\'s a different concept.',
+  },
+  jit: {
+    term: 'JIT',
+    bn: 'JIT (Just-In-Time compilation) হলো runtime-এ code compile করার কৌশল। Program শুরু হয় interpreter mode-এ, কিন্তু ঘন ঘন execute হওয়া code (hot path) execution চলাকালীন native machine code-এ compile হয়ে যায়। এরপর সেই code আর interpret হয় না — সরাসরি native চলে। V8 (JavaScript), HotSpot (Java), PyPy — সবই JIT compiler।',
+    en: "JIT (Just-In-Time compilation) is the technique of compiling code at runtime. A program starts in interpreter mode, but frequently-executed code (hot paths) gets compiled into native machine code during execution. From then on, that code isn't interpreted — it runs natively. V8 (JavaScript), HotSpot (Java), PyPy — all JIT compilers.",
+  },
+  ast: {
+    term: 'AST — Abstract Syntax Tree',
+    bn: 'AST হলো parse করার পর তৈরি হওয়া source code-এর গঠনের একটা গাছ-আকৃতির রূপ। Engine এই গাছ ধরে হেঁটে bytecode তৈরি করে। এটা code-এর মানে ধরে রাখে — কোন expression কার ভেতরে — কাঁচা text-এর যতিচিহ্ন বা whitespace ছাড়াই।',
+    en: "An AST (Abstract Syntax Tree) is a tree-shaped representation of your source code's structure, built after parsing. The engine walks this tree to generate bytecode. It captures what the code means — which expression nests inside which — without the raw text's punctuation or whitespace.",
+  },
 };
