@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { firePortal } from "@/hooks/useLoader";
 import SEO from "../SEO";
+import SectionCard from "./SectionCard";
 import {
   ARTICLES,
   SERIES_TITLE,
@@ -14,7 +15,8 @@ const TechArticlesContent = () => {
   const complete = readCount === ARTICLES.length;
 
   // Entering a series crosses into the paper-oscilloscope world — portal first.
-  const goSeries = () => {
+  const goSeries = (e: React.MouseEvent) => {
+    e.preventDefault();
     firePortal({
       destination: "> Entering the tech world",
       onComplete: () => navigate(SERIES_HUB_PATH),
@@ -30,43 +32,43 @@ const TechArticlesContent = () => {
       />
       <div className="animate-fade-in font-mono max-w-xl mx-auto px-4 py-6 pb-16 sm:pb-4 text-foreground/85">
         <div className="pl-2 mb-6">
-          <p className="mb-1"><span className="text-phosphor">&gt; </span>tech-articles/</p>
-          <p className="mb-1"><span className="text-phosphor">&gt; </span>long-form series on how machines actually work.</p>
-          <p className="mb-1"><span className="text-phosphor">&gt; </span>each series is its own world — different design, bilingual, interactive.</p>
+          <p className="text-sm mb-1"><span className="text-phosphor">&gt; </span>tech-articles/</p>
+          <p className="text-sm mb-1"><span className="text-phosphor">&gt; </span>long-form series on how machines actually work.</p>
+          <p className="text-sm mb-1"><span className="text-phosphor">&gt; </span>each series is its own world — different design, bilingual, interactive.</p>
         </div>
 
         <div className="text-phosphor-dim text-sm mt-10 mb-4 font-mono">// series</div>
 
-        <button
+        <SectionCard
+          eyebrow="SERIES 001"
+          meta={complete ? `complete · ${ARTICLES.length} parts` : `${readCount}/${ARTICLES.length} published`}
+          title={SERIES_TITLE}
+          tagline="from voltage in silicon to the letter on screen"
+          description={SERIES_DESCRIPTION_EN}
+          facets="transistors · encoding · the CPU · fetch-decode-execute · memory · the OS · compilers · one keystroke"
+          cta="open series →"
+          href={SERIES_HUB_PATH}
           onClick={goSeries}
-          className="w-full text-left font-mono p-5 sm:p-6 mb-6 bg-transparent border border-border/60 hover:border-phosphor/60 transition-colors cursor-pointer"
-        >
-          <div className="flex items-baseline justify-between gap-3 flex-wrap">
-            <span className="text-phosphor-dim text-xs">SERIES 001</span>
-            <span className="text-phosphor-dim text-xs">
-              {complete ? `complete · ${ARTICLES.length} parts` : `${readCount}/${ARTICLES.length} published`}
-            </span>
-          </div>
-
-          <h3 className="text-phosphor text-lg sm:text-xl mt-2 mb-1 tracking-wide">
-            {SERIES_TITLE}
-          </h3>
-
-          <p className="text-foreground/70 text-xs sm:text-sm leading-relaxed mb-3">
-            {SERIES_DESCRIPTION_EN}
-          </p>
-
-          <p className="text-phosphor-dim text-[11px] leading-relaxed mb-3">
-            transistors · encoding · the CPU · fetch-decode-execute · memory hierarchy ·
-            the operating system · compilers and JIT · one keystroke, end to end
-          </p>
-
-          <span className="text-phosphor text-xs">open series →</span>
-        </button>
+          ariaLabel={`open series: ${SERIES_TITLE}`}
+        />
 
         <div className="text-phosphor-dim text-sm mt-10 mb-4 font-mono">// queued</div>
-        <div className="pl-2 text-phosphor-dim text-xs">
-          SERIES 002 — ░░░░░░░░░░ <span className="text-foreground/50">(no signal yet)</span>
+
+        <div className="pl-2 mb-4 opacity-70">
+          <p className="text-phosphor-dim text-sm font-mono mb-1">series 002 — ░░░░░░░░░░</p>
+          <p className="text-phosphor-dim text-xs font-mono leading-relaxed">
+            no signal yet. the next one starts when there's something worth eight articles.
+          </p>
+        </div>
+
+        <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// the rule</div>
+
+        <div className="pl-2">
+          <p className="text-foreground/85 text-sm leading-relaxed mb-4 pr-12 sm:pr-2">
+            every series gets its own design language. this one is the paper
+            oscilloscope — warm paper, bangla-first, an instrument in every section.
+            this page is the doorway.
+          </p>
         </div>
 
         <div className="mt-12 pt-3 border-t border-border/40 text-[10px] text-phosphor-dim font-mono">

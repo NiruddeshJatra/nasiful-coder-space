@@ -1,6 +1,18 @@
 import React from "react";
 import { firePortal } from "@/hooks/useLoader";
 import SEO from "../SEO";
+import SectionCard, { type CardTheme } from "./SectionCard";
+
+// ArcZero announces itself in its own palette, not the site's phosphor tokens.
+// Deliberate — see CLAUDE.md. Only the card *structure* is shared.
+const ARCZERO_THEME: CardTheme = {
+  accent: '#44aaff',
+  border: 'rgba(68, 170, 255, 0.4)',
+  background: 'rgba(10, 10, 15, 0.92)',
+  fontFamily: '"Courier New", monospace',
+  body: 'rgba(255, 255, 255, 0.7)',
+  dim: 'rgba(255, 255, 255, 0.5)',
+};
 
 const GamesContent = () => {
   const handlePlayClick = (e: React.MouseEvent) => {
@@ -23,79 +35,25 @@ const GamesContent = () => {
     />
   <div className="animate-fade-in font-mono max-w-xl mx-auto px-4 py-6 pb-16 sm:pb-4 text-foreground/85">
     <div className="pl-2 mb-6">
-      <p className="mb-1"><span className="text-phosphor">&gt; </span>games/</p>
-      <p className="mb-1"><span className="text-phosphor">&gt; </span>things i made that you can play.</p>
-      <p className="mb-1"><span className="text-phosphor">&gt; </span>each one is its own world, deployed separately.</p>
+      <p className="text-sm mb-1"><span className="text-phosphor">&gt; </span>games/</p>
+      <p className="text-sm mb-1"><span className="text-phosphor">&gt; </span>things i made that you can play.</p>
+      <p className="text-sm mb-1"><span className="text-phosphor">&gt; </span>each one is its own world, deployed separately.</p>
     </div>
 
     <div className="text-phosphor-dim text-sm mt-10 mb-4 font-mono">// deployed</div>
 
-    <div
-      className="font-mono p-6 sm:p-8 mb-6"
-      style={{
-        backgroundColor: 'rgba(10, 10, 15, 0.92)',
-        border: '1px solid rgba(68, 170, 255, 0.4)',
-        borderRadius: '4px',
-      }}
-    >
-
-      <h3 style={{
-        fontFamily: '"Courier New", monospace',
-        color: '#44aaff',
-        fontSize: 'clamp(2rem, 8vw, 2.5rem)',
-        letterSpacing: '0.15em',
-        marginBottom: '4px',
-        fontWeight: 'normal',
-      }}>
-        ARCZERO
-      </h3>
-
-      <p style={{
-        fontFamily: '"Courier New", monospace',
-        color: 'rgba(255, 255, 255, 0.7)',
-        fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)',
-        letterSpacing: '0.2em',
-        textTransform: 'uppercase',
-        marginBottom: '20px',
-      }}>
-        PHYSICS-BASED MISSILE INTERCEPTION
-      </p>
-
-      <p style={{
-        fontFamily: '"Courier New", monospace',
-        color: 'rgba(255, 255, 255, 0.7)',
-        fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)',
-        lineHeight: '1.6',
-        marginBottom: '24px',
-      }}>
-        a two-minute physics puzzle disguised as an arcade reflex game.
-        you read a falling parabola, launch a rising one, and meet them
-        in the air — one shot at a time, one second of commitment at a time.
-      </p>
-
-      <p style={{
-        fontFamily: '"Courier New", monospace',
-        color: 'rgba(255, 255, 255, 0.5)',
-        fontSize: '0.75rem',
-        letterSpacing: '0.1em',
-        marginBottom: '24px',
-      }}>
-        10 levels · daily challenge · leaderboards · endless mode
-      </p>
-
-      <a
-        href="/games/arczero/"
-        onClick={handlePlayClick}
-        style={{
-          fontFamily: '"Courier New", monospace',
-          fontSize: '0.95rem',
-          letterSpacing: '0.15em',
-        }}
-        className="inline-block text-[#44aaff] border border-[#44aaff] rounded-[2px] px-[28px] py-[10px] no-underline transition-colors duration-150 hover:bg-[rgba(68,170,255,0.12)] focus-visible:bg-[rgba(68,170,255,0.12)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#44aaff]"
-      >
-        ▶ PLAY
-      </a>
-    </div>
+    <SectionCard
+      eyebrow="DEPLOYED"
+      title="ARCZERO"
+      tagline="physics-based missile interception"
+      description="a two-minute physics puzzle disguised as an arcade reflex game. you read a falling parabola, launch a rising one, and meet them in the air — one shot at a time, one second of commitment at a time."
+      facets="10 levels · daily challenge · leaderboards · endless mode"
+      cta="▶ PLAY"
+      href="/games/arczero/"
+      onClick={handlePlayClick}
+      ariaLabel="play arczero"
+      theme={ARCZERO_THEME}
+    />
 
     <div className="text-phosphor-dim text-sm mt-10 mb-4 font-mono">// in development</div>
 

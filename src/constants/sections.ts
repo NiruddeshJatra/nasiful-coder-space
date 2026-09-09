@@ -19,7 +19,23 @@ export const SECTION_ALIASES: Record<string, string> = (() => {
   map['writing/essays/'] = 'writing';
   map['writing/tech-articles/'] = 'writing/tech-articles';
   map['writing/tech-articles/series-01'] = 'writing/tech-articles/series-01';
-  map['series-01'] = 'writing/tech-articles/series-01';
+  // Bare last-segment aliases for every writing/* route, so the terminal can
+  // reach articles and series by their short name ('cd series-01',
+  // 'cd memory-hierarchy') instead of the full path. Derived, so new articles
+  // become reachable the moment they are added to FileExplorer.files.
+  for (const f of files) {
+    if (!f.section.startsWith('writing/')) continue;
+    const leaf = f.section.split('/').pop();
+    if (leaf && !(leaf in map)) map[leaf] = f.section;
+  }
+  // Friendlier spellings people actually type.
+  map['tech'] = 'writing/tech-articles';
+  map['articles'] = 'writing/tech-articles';
+  map['series1'] = 'writing/tech-articles/series-01';
+  map['series 1'] = 'writing/tech-articles/series-01';
+  // Note: bare 'the-machine-beneath-your-code' resolves to the intro *article*
+  // (its leaf segment); the folder form 'the-machine-beneath-your-code/' resolves
+  // to the series hub, matching how the sidebar names them.
   map['writing/the-machine-beneath-your-code'] = 'writing/the-machine-beneath-your-code';
   map['writing/whats-inside-a-bit'] = 'writing/whats-inside-a-bit';
   map['writing/how-does-anything-become-bits'] = 'writing/how-does-anything-become-bits';
