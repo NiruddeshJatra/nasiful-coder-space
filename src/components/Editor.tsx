@@ -29,6 +29,7 @@ const OnForgettingContent = lazy(() => import("./sections/OnForgettingContent"))
 const OnForgettingBnContent = lazy(() => import("./sections/OnForgettingBnContent"));
 const VaultEntryContent = lazy(() => import("./sections/VaultEntryContent"));
 const VaultContent = lazy(() => import("./sections/VaultContent"));
+const VaultCraftContent = lazy(() => import("./sections/VaultCraftContent"));
 const FieldNotesContent = lazy(() => import("./sections/FieldNotesContent"));
 
 const LineSkeleton = ({ rows = 4 }: { rows?: number }) => (
@@ -133,6 +134,7 @@ const getFileName = (section: string) => {
     case "lab": return "lab/";
     case "vault": return "vault/";
     case "vault-content": return "vault/the-real-story.md";
+    case "vault-craft": return "vault/series-craft.md";
     default: return "welcome.txt";
   }
 };
@@ -200,6 +202,7 @@ const Editor = ({ currentSection }: EditorProps) => {
       case "writing-essays-on-forgetting-bn": return <OnForgettingBnContent />;
       case "vault": return <VaultEntryContent />;
       case "vault-content": return <VaultContent />;
+      case "vault-craft": return <VaultCraftContent />;
       case "404": return <NotFoundContent />;
       default: return null;
     }

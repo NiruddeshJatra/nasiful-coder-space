@@ -96,9 +96,11 @@
     hyphens: auto;
   }
   
-  /* Better touch targets */
-  .editor-content a,
-  .editor-content button {
+  /* Better touch targets. Skips `.block` links (SectionCard and friends):
+     inline-flex would turn the card into a flex row, shrinking its heading
+     to the width of its longest word instead of the card's content box. */
+  .editor-content a:not(.block),
+  .editor-content button:not(.block) {
     min-height: 44px;
     min-width: 44px;
     display: inline-flex;

@@ -250,6 +250,23 @@ const VaultContent = () => {
         </div>
       </div>
 
+      <div className="mb-8">
+        <p className="text-phosphor-dim mb-3">// also in here</p>
+        <div className="pl-2">
+          <a
+            href="/vault/series-craft"
+            className="text-phosphor hover:text-phosphor/70 transition-colors"
+          >
+            series-craft.md →
+          </a>
+          <p className="mt-2 text-foreground/70">
+            teardown of series 001's writing and design system — the hook
+            formula, the bridge, the bilingual rules, the type and colour scales.
+            written so series 002 repeats it on purpose instead of by instinct.
+          </p>
+        </div>
+      </div>
+
       <div className="mt-12 pt-3 border-t border-border/40 text-[10px] text-phosphor-dim font-mono">
         — nj · vault · ongoing
       </div>
