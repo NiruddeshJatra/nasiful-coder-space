@@ -7,7 +7,7 @@ export async function hashPassphrase(input: string): Promise<string> {
 }
 
 export const STORED_HASH =
-  "51f048a4ab1a15ffdad4da563d2ef6a1d504a298ee3b4def3aed49cef81d49b7";
+  "f90c0f69179ced9c447b111dd5235f5279b28674463a0a607ef8dda5909a8747";
 
 export async function verifyPassphrase(input: string): Promise<boolean> {
   try {
