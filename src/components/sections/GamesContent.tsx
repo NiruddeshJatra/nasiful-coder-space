@@ -10,6 +10,7 @@ const ARCZERO_THEME: CardTheme = {
   border: 'rgba(68, 170, 255, 0.4)',
   background: 'rgba(10, 10, 15, 0.92)',
   fontFamily: '"Courier New", monospace',
+  titleTracking: '0.15em',
   body: 'rgba(255, 255, 255, 0.7)',
   dim: 'rgba(255, 255, 255, 0.5)',
 };

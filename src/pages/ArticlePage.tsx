@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import '../articles/article.css';
 import SEO from '../components/SEO';
 import { articleSchema } from '../lib/structuredData';
@@ -5,6 +6,7 @@ import { LanguageProvider } from '../articles/context/LanguageContext';
 import { TermProvider } from '../articles/context/TermContext';
 import { TermPopup } from '../articles/primitives/Term';
 import { PromptBar } from '../articles/primitives/PromptBar';
+import { markArticleRead, useReadProgress } from '../articles/hooks/useReadProgress';
 import { Kicker } from '../articles/primitives/Kicker';
 import { TraceRail } from '../articles/primitives/TraceRail';
 import { MachineBeneathYourCode } from '../articles/content/MachineBeneathYourCode';
@@ -157,6 +159,8 @@ function ArticleBody({ config }: { config: Config }) {
   const { bn } = useLang();
   const { Content } = config;
   const slug = config.slug as ArticleSlug;
+  // Opening an article counts as reading it — the series hub lights up from here.
+  useEffect(() => { markArticleRead(slug); }, [slug]);
   const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde' || slug === 'memory-hierarchy' || slug === 'os-grand-conductor' || slug === 'code-to-machine-code' || slug === 'from-keypress-to-screen';
   const meta = getArticleMeta(slug);
   const pageTitle = bn ? meta.bnTitle : meta.enTitle;
@@ -227,16 +231,16 @@ interface ArticlePageProps {
   article: ArticleSlug;
 }
 
-const READ_COUNT = ARTICLES.filter((a) => a.state === 'read').length;
 
 export default function ArticlePage({ article }: ArticlePageProps) {
   const config = CONFIGS[article];
+  const { readCount } = useReadProgress();
 
   return (
     <LanguageProvider>
       <TermProvider>
         <div className="article-root" style={{ minHeight: '100vh' }}>
-          <PromptBar slug={config.slug} seriesPos={config.seriesPos} readCount={READ_COUNT} />
+          <PromptBar slug={config.slug} seriesPos={config.seriesPos} readCount={readCount} />
           <ArticleBody config={config} />
         </div>
       </TermProvider>
