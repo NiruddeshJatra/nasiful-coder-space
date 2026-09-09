@@ -18,6 +18,8 @@ export const SECTION_ALIASES: Record<string, string> = (() => {
   map['writing/essays'] = 'writing';
   map['writing/essays/'] = 'writing';
   map['writing/tech-articles/'] = 'writing/tech-articles';
+  map['writing/tech-articles/series-01'] = 'writing/tech-articles/series-01';
+  map['series-01'] = 'writing/tech-articles/series-01';
   map['writing/the-machine-beneath-your-code'] = 'writing/the-machine-beneath-your-code';
   map['writing/whats-inside-a-bit'] = 'writing/whats-inside-a-bit';
   map['writing/how-does-anything-become-bits'] = 'writing/how-does-anything-become-bits';

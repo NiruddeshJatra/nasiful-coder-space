@@ -4,7 +4,7 @@ import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
 import { Deeper } from '../primitives/Deeper';
 import { Recap } from '../primitives/Recap';
-import { RelayNav } from '../primitives/RelayNav';
+import { RelayNav, SERIES_HUB_CARD } from '../primitives/RelayNav';
 import { Colophon } from '../primitives/Colophon';
 import { InstructionAnatomy } from '../widgets/InstructionAnatomy';
 import { ProgramCounterDemo } from '../widgets/ProgramCounterDemo';
@@ -335,7 +335,7 @@ export function HeartbeatFDE() {
       </Section>
 
       <RelayNav
-        hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
+        hub={SERIES_HUB_CARD}
         next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৫ — মেমোরি হায়ারার্কি' : '05 — The Memory Hierarchy', href: '/writing/memory-hierarchy', variant: 'next' }}
         bridge={{
           bn: 'এই যে কোটি কোটি instruction আর data নিয়ে প্রসেসর প্রতি ন্যানোসেকেন্ডে খেলা করছে, এগুলো আসলে থাকে কোথায়? CPU-র ভেতরের register-গুলো অত্যন্ত ফাস্ট হলেও সেখানে জায়গা খুবই সীমিত — মাত্র কয়েক হাজার bit। এত ছোট জায়গায় তো আমাদের গেম, ব্রাউজার কিংবা অপারেটিং সিস্টেম ধরবে না। তাহলে কি সব data র‍্যামে (RAM) থাকে? কিন্তু র‍্যাম তো প্রসেসরের তুলনায় অনেক দূরে এবং ধীরগতির। এই স্পিড আর সাইজের ব্যালেন্স বজায় রাখার জন্য মডার্ন কম্পিউটারে একটি চতুর ব্যবস্থা করা হয়েছে — প্রসেসরের এই মেমোরি ম্যানেজমেন্টের গল্পটাই হবে আমাদের পরের আর্টিকেলের বিষয়।',

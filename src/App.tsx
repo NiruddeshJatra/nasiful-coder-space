@@ -35,7 +35,7 @@ const App = () => (
           <Route path="/writing/essays/on-staying-small-bn" element={<Index forceSection="writing-essays-on-staying-small-bn" />} />
           <Route path="/writing/essays/on-forgetting" element={<Index forceSection="writing-essays-on-forgetting" />} />
           <Route path="/writing/essays/on-forgetting-bn" element={<Index forceSection="writing-essays-on-forgetting-bn" />} />
-          <Route path="/writing/tech-articles" element={<ArticleHub />} />
+          <Route path="/writing/tech-articles/series-01" element={<ArticleHub />} />
           <Route path="/writing/the-machine-beneath-your-code" element={<ArticlePage article="the-machine-beneath-your-code" />} />
           <Route path="/writing/whats-inside-a-bit" element={<ArticlePage article="whats-inside-a-bit" />} />
           <Route path="/writing/how-does-anything-become-bits" element={<ArticlePage article="how-does-anything-become-bits" />} />

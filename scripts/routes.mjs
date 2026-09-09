@@ -51,6 +51,7 @@ export const ROUTES = [
   { path: '/now', priority: 0.8, changefreq: 'weekly' },
   { path: '/contact', priority: 0.5, changefreq: 'yearly' },
   { path: '/writing/tech-articles', priority: 0.9, changefreq: 'monthly' },
+  { path: '/writing/tech-articles/series-01', priority: 0.9, changefreq: 'monthly' },
   { path: '/writing/the-machine-beneath-your-code', priority: 0.8, changefreq: 'monthly' },
   { path: '/writing/whats-inside-a-bit', priority: 0.8, changefreq: 'monthly' },
   { path: '/writing/how-does-anything-become-bits', priority: 0.8, changefreq: 'monthly' },

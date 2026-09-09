@@ -16,6 +16,7 @@ const ContactContent = lazy(() => import("./sections/ContactContent"));
 const NowContent = lazy(() => import("./sections/NowContent"));
 const LabContent = lazy(() => import("./sections/LabContent"));
 const GamesContent = lazy(() => import("./sections/GamesContent"));
+const TechArticlesContent = lazy(() => import("./sections/TechArticlesContent"));
 const NotFoundContent = lazy(() => import("./sections/NotFoundContent"));
 const ArchivedContent = lazy(() => import("./sections/ArchivedContent"));
 const SoonContent = lazy(() => import("./sections/SoonContent"));
@@ -110,6 +111,7 @@ const getFileName = (section: string) => {
   switch (section) {
     case "about": return "me/about.md";
     case "games": return "games/";
+    case "writing/tech-articles": return "writing/tech-articles/";
     case "writing": return "writing/";
     case "writing-essays-on-running-for-nothing": return "writing/essays/on-running-for-nothing.md";
     case "writing-essays-on-running-for-nothing-bn": return "writing/essays/on-running-for-nothing.bn.md";
@@ -176,6 +178,7 @@ const Editor = ({ currentSection }: EditorProps) => {
     switch (currentSection) {
       case "about": return <AboutContent />;
       case "games": return <GamesContent />;
+      case "writing/tech-articles": return <TechArticlesContent />;
       case "journey": return <JourneyContent />;
       case "journey-running": return <RunningContent />;
       case "journey-hiking": return <SoonContent />;
@@ -238,7 +241,7 @@ const Editor = ({ currentSection }: EditorProps) => {
               <p><span className="text-phosphor">&gt; </span>{todaysLine}</p>
               <p><span className="text-phosphor">&gt; </span>games i'm building, things i'm writing, trips i'm taking.</p>
               <p><span className="text-phosphor">&gt; </span>nothing is finished. that's fine.</p>
-              <p className="mt-2"><span className="text-phosphor-dim">// </span><span className="text-foreground/70">publishing now: "the machine beneath your code" — a series on how computers actually work.</span></p>
+              <p className="mt-2"><span className="text-phosphor-dim">// </span><span className="text-foreground/70">just finished: "the machine beneath your code" — an 8-part series on how computers actually work. all of it is up.</span></p>
             </div>
 
             <div className="text-phosphor-dim text-sm mt-10 mb-3 font-mono">// where to go</div>

@@ -4,7 +4,7 @@ import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
 import { Deeper } from '../primitives/Deeper';
 import { Recap } from '../primitives/Recap';
-import { RelayNav } from '../primitives/RelayNav';
+import { RelayNav, SERIES_HUB_CARD } from '../primitives/RelayNav';
 import { Colophon } from '../primitives/Colophon';
 import { ProcessAnatomy } from '../widgets/ProcessAnatomy';
 import { ContextSwitch } from '../widgets/ContextSwitch';
@@ -482,7 +482,7 @@ export function OSGrandConductor() {
       </Section>
 
       <RelayNav
-        hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
+        hub={SERIES_HUB_CARD}
         next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৭ — কোড থেকে মেশিন কোড' : '07 — Code to Machine Code', href: '/writing/code-to-machine-code', variant: 'next' }}
         bridge={{
           bn: 'Hardware দেখা হলো। OS দেখা হলো। কিন্তু আপনি যে code লেখেন — JavaScript, Python, Go — সেটা তো CPU-এর নিজস্ব ভাষা না। CPU শুধু machine code বোঝে, সেই hex numbers। মাঝখানে তাহলে কী ঘটে? আপনার লেখা text file কীভাবে CPU-র জন্য executable instruction হয়ে যায়? Compiler, interpreter, JIT — এদের গল্পটা পরের আর্টিকেলে।',

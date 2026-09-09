@@ -9,6 +9,42 @@ type FieldNote = {
 // newest-first
 const notes: FieldNote[] = [
   {
+    date: "2026-09-09",
+    title: "eight of eight",
+    body: (
+      <>
+        <p className="mb-3">
+          the last article went up today. keyboard to screen — one keystroke
+          followed all the way from a switch closing under a finger to photons
+          leaving the glass. the series is finished.
+        </p>
+        <p className="mb-3">
+          seven weeks ago i wrote in this same field-notes file that all eight
+          were done on paper and i was scared to publish them. that entry is
+          still below this one. i left it there on purpose.
+        </p>
+        <p className="mb-3">
+          what i got wrong back then: i thought the articles needed to be
+          finished before they could go up. they weren't finished. i corrected
+          a scheduler that linux replaced in 2023, a dram refresh interval,
+          an l1 latency figure, and — in this last one — a claim that a keyboard
+          reads all 104 keys on 104 wires. it doesn't. it scans a grid. that
+          correction came after publishing, not before, and the article is
+          better for it.
+        </p>
+        <p className="mb-3">
+          the thing i was afraid of — being wrong in public — happened, several
+          times, and the cost was an afternoon of edits each time. the cost of
+          waiting would have been the whole series sitting unread in a folder.
+        </p>
+        <p className="mb-3">
+          i don't think i know computer science now. i know where the map is.
+          that was the whole point.
+        </p>
+      </>
+    ),
+  },
+  {
     date: "2026-07-23",
     title: "the paper oscilloscope, half-published",
     body: (

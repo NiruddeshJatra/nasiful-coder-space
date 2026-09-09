@@ -1,4 +1,5 @@
 import { useLang } from '../context/LanguageContext';
+import { SERIES_HUB_PATH } from '../manifest';
 
 interface PromptBarProps {
   slug: string;
@@ -13,7 +14,7 @@ const DOT_COUNT = 8;
 
 export function PromptBar({
   slug,
-  hubHref = '/writing/tech-articles',
+  hubHref = SERIES_HUB_PATH,
   seriesPos,
   totalLegs = DOT_COUNT,
   readCount = 1,

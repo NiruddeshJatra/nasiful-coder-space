@@ -4,7 +4,7 @@ import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
 import { Deeper } from '../primitives/Deeper';
 import { Recap } from '../primitives/Recap';
-import { RelayNav } from '../primitives/RelayNav';
+import { RelayNav, SERIES_HUB_CARD } from '../primitives/RelayNav';
 import { Colophon } from '../primitives/Colophon';
 import { MemoryPyramid } from '../widgets/MemoryPyramid';
 import { LatencyScale } from '../widgets/LatencyScale';
@@ -343,7 +343,7 @@ for (int j = 0; j < SIZE; j++) {
       </Section>
 
       <RelayNav
-        hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
+        hub={SERIES_HUB_CARD}
         next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৬ — অপারেটিং সিস্টেম: মহাব্যবস্থাপক' : '06 — Operating System: The Grand Conductor', href: '/writing/os-grand-conductor', variant: 'next' }}
         bridge={{
           bn: 'এখন পর্যন্ত সব দেখা হয়েছে hardware level-এ। CPU, register, cache, RAM, disk — সব physical component। কিন্তু বাস্তবে laptop-এ একই সাথে ৫০টা program চলছে। Browser, Spotify, VS Code, video call, terminal — সব একই RAM, একই CPU share করছে। কে ঠিক করে কে কখন কতটুকু resource পাবে? কে ঠিক করে কোন program-এর ডেটা memory-র কোন address-এ থাকবে? এইখানে আসে Operating System — hardware-এর ওপরে সবচেয়ে গুরুত্বপূর্ণ software layer। পরের আর্টিকেলে সেই গল্প।',

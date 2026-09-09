@@ -3,7 +3,7 @@ import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
 import { Deeper } from '../primitives/Deeper';
 import { Recap } from '../primitives/Recap';
-import { RelayNav } from '../primitives/RelayNav';
+import { RelayNav, SERIES_HUB_CARD } from '../primitives/RelayNav';
 import { Colophon } from '../primitives/Colophon';
 import { NoiseVsBands } from '../widgets/NoiseVsBands';
 import { TransistorSwitch } from '../widgets/TransistorSwitch';
@@ -269,7 +269,7 @@ export function WhatsInsideABit() {
       </Section>
 
       <RelayNav
-        hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
+        hub={SERIES_HUB_CARD}
         next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০২ — যেকোনো তথ্য কীভাবে ০ আর ১ হয়?' : '02 — How does anything become 0s and 1s?', href: '/writing/how-does-anything-become-bits', variant: 'next' }}
         bridge={{ bn: 'এখন আমরা জানি একটা bit কীভাবে ধরে রাখা যায়। কিন্তু একটা bit দিয়ে তো কিছুই হয় না। তাহলে লক্ষ-কোটি bit একসাথে মিলে কীভাবে একটা বাংলা বাক্য তৈরি করে?', en: 'Now we know how a bit can be held. But one bit alone does nothing. How do trillions of bits together become a Bengali sentence, a JPEG photo, an MP3 song?' }}
       />
