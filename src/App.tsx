@@ -29,6 +29,7 @@ const App = () => (
           <Route path="/:section/:subsection" element={<Index />} />
           <Route path="/vault" element={<Index forceSection="vault" />} />
           <Route path="/vault/the-real-story" element={<Index forceSection="vault-content" />} />
+          <Route path="/vault/series-craft" element={<Index forceSection="vault-craft" />} />
           <Route path="/writing/essays/on-running-for-nothing" element={<Index forceSection="writing-essays-on-running-for-nothing" />} />
           <Route path="/writing/essays/on-running-for-nothing-bn" element={<Index forceSection="writing-essays-on-running-for-nothing-bn" />} />
           <Route path="/writing/essays/on-staying-small" element={<Index forceSection="writing-essays-on-staying-small" />} />

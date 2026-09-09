@@ -53,7 +53,7 @@ const VaultEntryContent = () => {
         />
         <button
           onClick={handleSubmit}
-          className="mt-4 block font-mono text-sm text-phosphor hover:text-phosphor/70 transition-colors"
+          className="mt-4 inline-flex items-center min-h-[44px] font-mono text-sm text-phosphor hover:text-phosphor/70 transition-colors"
         >
           enter →
         </button>
