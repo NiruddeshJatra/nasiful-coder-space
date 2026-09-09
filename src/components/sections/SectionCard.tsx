@@ -15,6 +15,8 @@ export interface CardTheme {
   /** Dim colour for eyebrow/meta/facets. */
   dim?: string;
   hoverBackground?: string;
+  /** Title letter-spacing. Short wordmarks take more; long titles need less. */
+  titleTracking?: string;
 }
 
 interface SectionCardProps {
@@ -88,8 +90,8 @@ export function SectionCard({
       <h3
         className={`leading-tight break-words mb-1 font-normal ${themed ? "" : "text-phosphor"}`}
         style={{
-          fontSize: themed ? "clamp(1.5rem, 7vw, 2.5rem)" : "clamp(1.05rem, 4.5vw, 1.35rem)",
-          letterSpacing: themed ? "0.15em" : "0.05em",
+          fontSize: "clamp(1.5rem, 7vw, 2.5rem)",
+          letterSpacing: theme?.titleTracking ?? "0.02em",
           ...(themed ? { color: theme!.accent } : {}),
         }}
       >

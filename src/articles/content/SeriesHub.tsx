@@ -1,19 +1,35 @@
 import { useLang } from '../context/LanguageContext';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useReadProgress } from '../hooks/useReadProgress';
 import { ARTICLES } from '../manifest';
 import { Colophon } from '../primitives/Colophon';
+
+/** Per-row state: published-and-read, the one to read next, published, or unwritten. */
+type RowState = 'read' | 'next' | 'unread' | 'soon';
 
 export function SeriesHub() {
   const { bn, bd } = useLang();
   const reduced = useReducedMotion();
+  const { isRead, readCount, clear } = useReadProgress();
+
+  const publishedCount = ARTICLES.filter((a) => a.state === 'read').length;
+
+  // "next" is the first published article this reader hasn't opened yet.
+  const nextSlug = ARTICLES.find((a) => a.state === 'read' && !isRead(a.slug))?.slug;
 
   // Derived from the manifest so hub rows can never drift out of sync with
   // what is actually published (they silently did, twice, for legs 06 and 07).
-  const data = ARTICLES.map((a) => ({
-    bn: a.bnTitle, en: a.enTitle, sub: a.sub, state: a.state, href: a.href,
-  }));
-  const readCount = ARTICLES.filter((a) => a.state === 'read').length;
-  const complete = readCount === ARTICLES.length;
+  const data = ARTICLES.map((a) => {
+    let rowState: RowState;
+    if (a.state !== 'read') rowState = 'soon';
+    else if (isRead(a.slug)) rowState = 'read';
+    else if (a.slug === nextSlug) rowState = 'next';
+    else rowState = 'unread';
+    return { bn: a.bnTitle, en: a.enTitle, sub: a.sub, state: rowState, href: a.href };
+  });
+
+  const complete = publishedCount === ARTICLES.length;
+  const allRead = readCount >= publishedCount && publishedCount > 0;
 
   const seg = (on: boolean): React.CSSProperties => ({
     background: on ? '#26241C' : 'none', color: on ? '#00d26a' : '#26241C',
@@ -27,7 +43,7 @@ export function SeriesHub() {
   const segPaths = data.map((d, i) => {
     const x = x0 + i * step;
     const lit = d.state === 'read', next = d.state === 'next';
-    const col = lit ? '#00975a' : next ? '#8aa876' : '#b8ab87';
+    const col = lit ? '#00975a' : next ? '#8aa876' : d.state === 'unread' ? '#a8b89a' : '#b8ab87';
     return { path: `M${x} 78 h14 v-36 h26 v36 h${step - 40}`, col, dash: lit ? '6 6' : '4 5', lit };
   });
 
@@ -38,7 +54,7 @@ export function SeriesHub() {
         <div style={{ display: 'flex', flexWrap: 'wrap', borderTop: '1px solid #26241C', borderBottom: '1px solid #c9bda0', fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#5c5442', letterSpacing: '0.06em', marginBottom: 26 }}>
           <span style={{ padding: '8px 14px 8px 0', borderRight: '1px solid #c9bda0' }}>SERIES 001</span>
           <span style={{ padding: '8px 14px', borderRight: '1px solid #c9bda0' }}>{bn ? '১টা ভূমিকা + ৮টা পর্ব' : '1 intro + 8 legs'}</span>
-          <span style={{ padding: '8px 0 8px 14px' }}>{complete ? (bn ? 'সম্পূর্ণ' : 'complete') : (bn ? 'চলমান' : 'ongoing')}</span>
+          <span style={{ padding: '8px 0 8px 14px' }}>{allRead ? (bn ? 'আপনার পড়া শেষ' : 'you finished it') : complete ? (bn ? 'সম্পূর্ণ' : 'complete') : (bn ? 'চলমান' : 'ongoing')}</span>
         </div>
         <h1 style={{ fontFamily: "'Bricolage Grotesque',sans-serif", fontWeight: 700, fontSize: 46, lineHeight: 1.12, margin: '0 0 12px' }}>The Machine Beneath Your Code</h1>
         {bn ? (
@@ -59,8 +75,17 @@ export function SeriesHub() {
           <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#7a7259', letterSpacing: '0.08em' }}>
             {bn ? "SIGNAL MAP — তথ্যের যাত্রাপথ" : "SIGNAL MAP — information's route"}
           </span>
-          <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#00753F' }}>
-            {bn ? `${bd(readCount)}/${bd(ARTICLES.length)} পড়া হয়েছে` : `${readCount}/${ARTICLES.length} read`}
+          <span style={{ display: 'flex', alignItems: 'baseline', gap: 10, fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#00753F' }}>
+            {bn ? `${bd(readCount)}/${bd(publishedCount)} পড়া হয়েছে` : `${readCount}/${publishedCount} read`}
+            {readCount > 0 && (
+              <button
+                onClick={clear}
+                title={bn ? 'এই ব্রাউজারে রাখা পড়ার হিসাব মুছুন' : 'clear the reading progress stored in this browser'}
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', fontSize: '10.5px', color: '#7a7259', textDecoration: 'underline' }}
+              >
+                {bn ? '↺ রিসেট' : '↺ reset'}
+              </button>
+            )}
           </span>
         </div>
         <div style={{ border: '1px solid #c9bda0', background: 'rgba(255,252,243,0.5)', padding: '8px 0 0' }}>
@@ -101,16 +126,23 @@ export function SeriesHub() {
 
         {data.map((d, i) => {
           const lit = d.state === 'read', next = d.state === 'next';
-          const numCol = lit ? '#00753F' : next ? '#5c5442' : '#a89a76';
-          const tagCol = lit ? '#00753F' : next ? '#5c5442' : '#a89a76';
-          const tag = lit ? (bn ? 'পড়া হয়েছে' : 'read') : next ? (bn ? 'পরের পর্ব' : 'up next') : (bn ? 'আসছে' : 'soon');
-          const pulse = lit ? '▰' : next ? '▱' : '·';
+          const unread = d.state === 'unread';
+          const numCol = lit ? '#00753F' : next ? '#26241C' : unread ? '#5c5442' : '#a89a76';
+          const tagCol = numCol;
+          const tag = lit
+            ? (bn ? 'পড়া হয়েছে' : 'read')
+            : next
+              ? (bn ? 'এখান থেকে পড়ুন' : 'read next')
+              : unread
+                ? (bn ? 'পড়া হয়নি' : 'unread')
+                : (bn ? 'আসছে' : 'soon');
+          const pulse = lit ? '▰' : next ? '▶' : unread ? '▱' : '·';
           const rowStyle: React.CSSProperties = {
             textDecoration: 'none', display: 'flex', gap: 18, alignItems: 'baseline',
             border: `1px solid ${next ? '#26241C' : '#c9bda0'}`,
             borderTop: i === 0 ? `1px solid ${next ? '#26241C' : '#c9bda0'}` : 'none',
             padding: '16px 20px',
-            background: lit ? 'rgba(0,151,90,0.05)' : 'transparent',
+            background: lit ? 'rgba(0,151,90,0.05)' : next ? 'rgba(255,252,243,0.75)' : 'transparent',
             opacity: d.state === 'soon' ? 0.75 : 1,
             pointerEvents: d.state === 'soon' ? 'none' : 'auto',
             color: 'inherit',

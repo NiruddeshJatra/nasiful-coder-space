@@ -5,7 +5,6 @@ import SectionCard from "./SectionCard";
 import {
   ARTICLES,
   SERIES_TITLE,
-  SERIES_DESCRIPTION_EN,
   SERIES_HUB_PATH,
 } from "@/articles/manifest";
 
@@ -41,11 +40,11 @@ const TechArticlesContent = () => {
 
         <SectionCard
           eyebrow="SERIES 001"
-          meta={complete ? `complete · ${ARTICLES.length} parts` : `${readCount}/${ARTICLES.length} published`}
+          meta={complete ? `${ARTICLES.length} parts · complete` : `${readCount}/${ARTICLES.length} published`}
           title={SERIES_TITLE}
-          tagline="from voltage in silicon to the letter on screen"
-          description={SERIES_DESCRIPTION_EN}
-          facets="transistors · encoding · the CPU · fetch-decode-execute · memory · the OS · compilers · one keystroke"
+          tagline="how computers actually work"
+          description="eight articles chasing one number. you write x = 5 — this follows that 5 from voltage in a transistor all the way to the letter drawn on your screen."
+          facets="bilingual · an instrument in every section"
           cta="open series →"
           href={SERIES_HUB_PATH}
           onClick={goSeries}
