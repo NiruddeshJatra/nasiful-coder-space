@@ -405,7 +405,7 @@ export function CodeToMachineCode() {
 
       <RelayNav
         hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
-        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৮ — কীপ্রেস থেকে স্ক্রিন' : '08 — From keypress to screen', href: '#', variant: 'next' }}
+        next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৮ — কীপ্রেস থেকে স্ক্রিন' : '08 — From keypress to screen', href: '/writing/from-keypress-to-screen', variant: 'next' }}
         bridge={{
           bn: "Article 1 থেকে এখান পর্যন্ত — voltage থেকে JIT compilation পর্যন্ত — সব দেখা হলো। কিন্তু এই সিরিজের একটা মূল প্রশ্ন এখনো ঝুলে আছে। প্রথম আর্টিকেলে জিজ্ঞেস করেছিলাম — x = 5 লিখলে কী হয়? এখন জানি। আজ শেষ প্রশ্ন — আপনি keyboard-এ 'A' চাপলেন, screen-এ 'A' এল। মাঝখানে কী কী ঘটল? এই সিরিজের প্রতিটা আর্টিকেলের সব concept ব্যবহার করে সেই journey-টা দেখব। এই সিরিজের payoff, final article।",
           en: "From Article 1 to here — from voltage to JIT compilation — we've covered everything. But one core question of this series is still hanging. In the first article I asked — what happens when you write x = 5? Now we know. Today, the last question — you press 'A' on your keyboard, 'A' appears on screen. What happened in between? We'll walk through that journey using every concept from this series. The payoff of this series, the final article.",

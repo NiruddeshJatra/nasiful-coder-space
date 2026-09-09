@@ -1,12 +1,19 @@
 import { useLang } from '../context/LanguageContext';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { ARTICLES } from '../manifest';
 import { Colophon } from '../primitives/Colophon';
 
-const useReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export function SeriesHub() {
-  const { bn } = useLang();
+  const { bn, bd } = useLang();
   const reduced = useReducedMotion();
+
+  // Derived from the manifest so hub rows can never drift out of sync with
+  // what is actually published (they silently did, twice, for legs 06 and 07).
+  const data = ARTICLES.map((a) => ({
+    bn: a.bnTitle, en: a.enTitle, sub: a.sub, state: a.state, href: a.href,
+  }));
+  const readCount = ARTICLES.filter((a) => a.state === 'read').length;
+  const complete = readCount === ARTICLES.length;
 
   const seg = (on: boolean): React.CSSProperties => ({
     background: on ? '#26241C' : 'none', color: on ? '#00d26a' : '#26241C',
@@ -14,16 +21,6 @@ export function SeriesHub() {
     fontFamily: "'Departure Mono',monospace", fontSize: 12,
   });
 
-  const data = [
-    { bn: 'বিটের ভেতরে কী থাকে?', en: "What's inside a bit?", sub: 'voltage · transistor · latch', state: 'read', href: '/writing/whats-inside-a-bit' },
-    { bn: 'যেকোনো তথ্য কীভাবে ০ আর ১ হয়?', en: 'How does anything become 0s and 1s?', sub: 'encoding · numbers · text', state: 'read', href: '/writing/how-does-anything-become-bits' },
-    { bn: 'CPU-র blueprint', en: "The CPU's blueprint", sub: 'ALU · register · clock', state: 'read', href: '/writing/cpu-blueprint' },
-    { bn: 'হার্টবিট: Fetch-Decode-Execute', en: 'Heartbeat: Fetch-Decode-Execute', sub: 'fetch · decode · execute', state: 'read', href: '/writing/heartbeat-fde' },
-    { bn: 'মেমোরি হায়ারার্কি', en: 'The Memory Hierarchy', sub: 'cache · locality · SRAM vs DRAM', state: 'read', href: '/writing/memory-hierarchy' },
-    { bn: 'অপারেটিং সিস্টেম: মহাব্যবস্থাপক', en: 'Operating System — The Grand Conductor', sub: 'processes · scheduling · virtual memory', state: 'read', href: '/writing/os-grand-conductor' },
-    { bn: 'কোড থেকে মেশিন কোড', en: 'From Code to Machine Code', sub: 'compiler · interpreter · bytecode · JIT', state: 'read', href: '/writing/code-to-machine-code' },
-    { bn: 'Keypress থেকে screen', en: 'From keypress to screen', sub: 'the relay race, end to end', state: 'next', href: '#' },
-  ];
 
   // Signal map SVG
   const step = 90, x0 = 80;
@@ -41,7 +38,7 @@ export function SeriesHub() {
         <div style={{ display: 'flex', flexWrap: 'wrap', borderTop: '1px solid #26241C', borderBottom: '1px solid #c9bda0', fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#5c5442', letterSpacing: '0.06em', marginBottom: 26 }}>
           <span style={{ padding: '8px 14px 8px 0', borderRight: '1px solid #c9bda0' }}>SERIES 001</span>
           <span style={{ padding: '8px 14px', borderRight: '1px solid #c9bda0' }}>{bn ? '১টা ভূমিকা + ৮টা পর্ব' : '1 intro + 8 legs'}</span>
-          <span style={{ padding: '8px 0 8px 14px' }}>{bn ? 'চলমান' : 'ongoing'}</span>
+          <span style={{ padding: '8px 0 8px 14px' }}>{complete ? (bn ? 'সম্পূর্ণ' : 'complete') : (bn ? 'চলমান' : 'ongoing')}</span>
         </div>
         <h1 style={{ fontFamily: "'Bricolage Grotesque',sans-serif", fontWeight: 700, fontSize: 46, lineHeight: 1.12, margin: '0 0 12px' }}>The Machine Beneath Your Code</h1>
         {bn ? (
@@ -63,7 +60,7 @@ export function SeriesHub() {
             {bn ? "SIGNAL MAP — তথ্যের যাত্রাপথ" : "SIGNAL MAP — information's route"}
           </span>
           <span style={{ fontFamily: "'Departure Mono',monospace", fontSize: '11.5px', color: '#00753F' }}>
-            {bn ? '৫/৮ পড়া হয়েছে' : '5/8 read'}
+            {bn ? `${bd(readCount)}/${bd(ARTICLES.length)} পড়া হয়েছে` : `${readCount}/${ARTICLES.length} read`}
           </span>
         </div>
         <div style={{ border: '1px solid #c9bda0', background: 'rgba(255,252,243,0.5)', padding: '8px 0 0' }}>

@@ -26,8 +26,8 @@ type UnpublishedArticleEntry = ArticleBase & { state: 'next' | 'soon' };
 export type ArticleEntry = PublishedArticleEntry | UnpublishedArticleEntry;
 
 export const SERIES_TITLE = 'The Machine Beneath Your Code';
-export const SERIES_DESCRIPTION_EN = 'A series on how computers actually work, from bits to OS. One protagonist — information.';
-export const SERIES_DESCRIPTION_BN = 'কম্পিউটার আসলে কীভাবে কাজ করে তার একটা series — bit থেকে OS পর্যন্ত। একটাই protagonist — তথ্য।';
+export const SERIES_DESCRIPTION_EN = 'A complete 8-part series on how computers actually work, from voltage in silicon to the letter on your screen. One protagonist — information.';
+export const SERIES_DESCRIPTION_BN = 'কম্পিউটার আসলে কীভাবে কাজ করে তার সম্পূর্ণ ৮ পর্বের series — silicon-এর voltage থেকে screen-এর অক্ষর পর্যন্ত। একটাই protagonist — তথ্য।';
 
 export type IntroArticleEntry = ArticleSEOFields & {
   slug: string;
@@ -152,14 +152,17 @@ export const ARTICLES: ArticleEntry[] = [
   },
   {
     slug: 'from-keypress-to-screen',
-    bnTitle: 'Keypress থেকে screen',
-    enTitle: 'From keypress to screen',
+    bnTitle: "Keyboard-এর 'A' থেকে Screen-এর 'A'",
+    enTitle: "From the Keyboard's 'A' to the Screen's 'A'",
     sub: 'the relay race, end to end',
     level: 'LEVEL 3 — THE BRIDGES',
     part: '08/08',
-    readTime: { bn: '', en: '' },
-    state: 'soon',
-    href: '#',
+    readTime: { bn: '~১৫ মিনিট', en: '~15 min' },
+    state: 'read',
+    href: '/writing/from-keypress-to-screen',
+    enDescription: "Follow one keystroke end to end — the keyboard's own CPU, an interrupt, the scheduler, JIT-compiled code, font rasterization, and the GPU — every layer of the series working at once.",
+    bnDescription: 'একটা keystroke-কে শুরু থেকে শেষ পর্যন্ত follow করা — keyboard-এর নিজের CPU, interrupt, scheduler, JIT, font rasterization আর GPU — সিরিজের সব layer একসাথে কাজ করছে।',
+    datePublished: '2026-09-09',
   },
 ];
 

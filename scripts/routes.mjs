@@ -59,6 +59,7 @@ export const ROUTES = [
   { path: '/writing/memory-hierarchy', priority: 0.8, changefreq: 'monthly' },
   { path: '/writing/os-grand-conductor', priority: 0.8, changefreq: 'monthly' },
   { path: '/writing/code-to-machine-code', priority: 0.8, changefreq: 'monthly' },
+  { path: '/writing/from-keypress-to-screen', priority: 0.8, changefreq: 'monthly' },
 ];
 
 // Flat path list for consumers that only need the URL (e.g. prerender.mjs).
