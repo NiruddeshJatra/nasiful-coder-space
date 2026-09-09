@@ -3,6 +3,7 @@ import { Term } from '../primitives/Term';
 import { Deeper } from '../primitives/Deeper';
 import { Recap } from '../primitives/Recap';
 import { RelayNav } from '../primitives/RelayNav';
+import { SERIES_HUB_PATH } from '../manifest';
 import { Colophon } from '../primitives/Colophon';
 import { useProse, LINK, mono as MONO } from '../primitives/useProse';
 import { KeyMatrixScan } from '../widgets/KeyMatrixScan';
@@ -386,7 +387,7 @@ export function KeyboardToScreen() {
       <Section num="09" bnH2="আরও গভীরে যেতে চাইলে" enH2="If you want to go deeper">
         {bn ? (
           <div lang="bn" style={body}>
-            {p('এই সিরিজ ছিল একটা পাখির চোখে দেখা। প্রতিটা topic-ই নিজে একটা পূর্ণ জগত। কোনো একটা layer যদি আপনার মন কেড়ে থাকে, নিচের resource-গুলো থেকে শুরু করতে পারেন। প্রায় সবগুলোই বিনামূল্যে পাওয়া যায়।')}
+            {p('এই সিরিজ ছিল একটা পাখির চোখে দেখা। প্রতিটা topic-ই নিজে একটা পূর্ণ জগত। কোনো একটা layer যদি আপনার ভালো লেগে থাকে, নিচের resource-গুলো থেকে শুরু করতে পারেন। প্রায় সবগুলোই বিনামূল্যে পাওয়া যায়।')}
           </div>
         ) : (
           <div style={body}>
@@ -421,10 +422,12 @@ export function KeyboardToScreen() {
 
         {bn ? (
           <div lang="bn" style={body}>
+            {p('আমি নিজেও আসলে এখানে দেওয়া প্রত্যেকটা রিসোর্স নিজে ঘেঁটে দেখার সুযোগ পাইনি। তবুও আপনাদের আর আমার নিজের সুবিধার্তে ইন্টারনেট ঘাঁটাঘাঁটি করে রিলেটেড সব রিসোর্স এখানে দিয়ে রাখলাম, যাতে পরে আরও এক্সপ্লোর করা যায়, আরও ভালোভাবে জানা যায়, নিজের জ্ঞানের কমতিগুলো শুধরানো যায়।')}
             {p('শেষ কথা — এই তালিকা দেখে অভিভূত হওয়ার কিছু নেই। সবগুলো পড়তে হবে না। যে একটা জিনিস আপনার কৌতূহল জাগিয়েছে, সেটা নিয়েই শুরু করুন। বাকিটা সময়মতো আসবে।')}
           </div>
         ) : (
           <div style={body}>
+            {p("A confession, too — I haven't worked through every resource on this list myself. I went digging around the internet and collected everything related in one place, as much for my own use as for yours, so that any of us can come back later and explore further, understand things better, and patch the gaps in what we know.")}
             {p("One last thing — don't be overwhelmed by this list. You don't need to read all of it. Start with the one thing that made you curious. The rest will come when it comes.")}
           </div>
         )}
@@ -440,7 +443,7 @@ export function KeyboardToScreen() {
         next={{
           label: { bn: 'সিরিজ শেষ', en: 'series complete' },
           title: bn ? '↩ সিরিজ hub — আটটা পর্ব একসাথে' : '↩ Series hub — all eight legs',
-          href: '/writing/tech-articles',
+          href: SERIES_HUB_PATH,
           variant: 'next',
         }}
         bridge={{

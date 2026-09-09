@@ -78,15 +78,16 @@ writing/             → writing (container, also navigable)
     on-staying-small.md       → writing-essays-on-staying-small
     on-running-for-nothing.md → writing-essays-on-running-for-nothing
   tech-articles/     → writing/tech-articles (container AND navigable; id: writing-tech-articles)
-    the-machine-beneath-your-code.md → writing/the-machine-beneath-your-code
-    whats-inside-a-bit.md            → writing/whats-inside-a-bit
-    how-does-anything-become-bits.md → writing/how-does-anything-become-bits
-    cpu-blueprint.md                 → writing/cpu-blueprint
-    heartbeat-fde.md                 → writing/heartbeat-fde
-    memory-hierarchy.md              → writing/memory-hierarchy
-    os-grand-conductor.md            → writing/os-grand-conductor
-    code-to-machine-code.md          → writing/code-to-machine-code
-    from-keypress-to-screen.md       → writing/from-keypress-to-screen
+    the-machine-beneath-your-code/   → writing/tech-articles/series-01 (container AND navigable; id: writing-tech-series-01)
+      intro.md                       → writing/the-machine-beneath-your-code
+      whats-inside-a-bit.md          → writing/whats-inside-a-bit
+      how-does-anything-become-bits.md → writing/how-does-anything-become-bits
+      cpu-blueprint.md               → writing/cpu-blueprint
+      heartbeat-fde.md               → writing/heartbeat-fde
+      memory-hierarchy.md            → writing/memory-hierarchy
+      os-grand-conductor.md          → writing/os-grand-conductor
+      code-to-machine-code.md        → writing/code-to-machine-code
+      from-keypress-to-screen.md     → writing/from-keypress-to-screen
 journey/             → container (id: journey)
   running.md         → journey-running
   hiking.md          → journey-hiking
@@ -156,8 +157,10 @@ Adding a new container folder: add a `FileItem` with `isContainer: true`, `id` s
 - **vercel.json rewrite order**: ArcZero proxy rewrites must come BEFORE the SPA fallback `/(.*) → /index.html`. First match wins. Never move the SPA fallback above the game rewrites.
 - **vercel.json www redirect**: `redirects` array contains a host-conditional 301 redirect: `www.niruddeshjatra.space/(.*)` → `https://niruddeshjatra.space/$1`. Redirects run before rewrites in Vercel. The redirect must stay in `redirects`, not `rewrites`. Canonical is always the apex domain (no www).
 - **Article system** (`src/articles/`): "The Paper Oscilloscope" — warm aged-paper design, outside `ResponsiveLayout`. Pages (`ArticlePage.tsx`, `ArticleHub.tsx`) are standalone with own `LanguageProvider` + `TermProvider`. Never import dc-runtime, DCLogic, sc-if/sc-for, {{holes}}, or support.js — all widgets are plain React.
-- **`firePortal()` singleton** — module-level function in `useLoader.ts`. Call from any component (including article pages) to imperatively trigger the portal animation before navigation. `ARTICLE_SECTIONS` set in `Index.tsx` routes sidebar clicks for `writing/tech-articles`, `writing/the-machine-beneath-your-code`, `writing/whats-inside-a-bit`, `writing/how-does-anything-become-bits`, `writing/cpu-blueprint`, `writing/heartbeat-fde`, `writing/memory-hierarchy`, `writing/os-grand-conductor`, `writing/code-to-machine-code`, `writing/from-keypress-to-screen` through `firePortal` instead of `startViewTransition`. A new published article must be added to this set (plus `FileExplorer.files`, `sections.ts` `SECTION_ALIASES`, and the `techArticles` list in `WritingContent.tsx`) or its sidebar/writing-index links silently 404 into the SPA shell instead of navigating.
+- **`firePortal()` singleton** — module-level function in `useLoader.ts`. Call from any component (including article pages) to imperatively trigger the portal animation before navigation. `ARTICLE_SECTIONS` set in `Index.tsx` routes sidebar clicks for `writing/tech-articles/series-01`, `writing/the-machine-beneath-your-code`, `writing/whats-inside-a-bit`, `writing/how-does-anything-become-bits`, `writing/cpu-blueprint`, `writing/heartbeat-fde`, `writing/memory-hierarchy`, `writing/os-grand-conductor`, `writing/code-to-machine-code`, `writing/from-keypress-to-screen` through `firePortal` instead of `startViewTransition`. A new published article must be added to this set (plus `FileExplorer.files`, `sections.ts` `SECTION_ALIASES`, and the `techArticles` list in `WritingContent.tsx`) or its sidebar/writing-index links silently 404 into the SPA shell instead of navigating.
 - **Manifest slugs/titles are placeholders until published** — the original 8-part roadmap slugs in `manifest.ts` (`the-city-of-memory`, etc.) are provisional. When an article is actually written, its slug/title/sub often diverge from the placeholder to match what got written (e.g. `the-city-of-memory` → `memory-hierarchy`, `how-do-gates-do-arithmetic` → `cpu-blueprint`). Renaming the slug on publish is expected — just update every cross-link (routes.mjs, App.tsx, ArticlePage.tsx, FileExplorer.tsx, sections.ts, SeriesHub.tsx, WritingContent.tsx, Index.tsx, and the previous article's `RelayNav` `next.href`) in the same change.
+- **Two-level tech-articles structure** — `/writing/tech-articles` is a *landing page* listing every series, rendered inside the terminal shell (`TechArticlesContent.tsx`, wired in `Editor.tsx` like `GamesContent`); it does **not** fire the portal. `/writing/tech-articles/series-01` is this series' paper-oscilloscope hub (`ArticleHub.tsx` -> `SeriesHub.tsx`), a standalone page outside `ResponsiveLayout`, and it **does** fire the portal. The "Entering the tech world" animation therefore only plays when crossing into a series or an article, never when opening the plain listing. Adding SERIES 002 means: a new card in `TechArticlesContent`, a `series-02` route, and a new sidebar subfolder under `tech-articles/`.
+- **Series paths are constants, not literals** — `TECH_ARTICLES_PATH` and `SERIES_HUB_PATH` live in `src/articles/manifest.ts`. `RelayNav.tsx` additionally exports `SERIES_HUB_CARD`, the identical back-to-hub card that all nine articles render; articles do `hub={SERIES_HUB_CARD}` instead of repeating the literal. Never hardcode `/writing/tech-articles...` in an article or page.
 - **`SeriesHub.tsx` derives its rows from `ARTICLES`** (manifest) rather than keeping a hand-written copy — titles, subs, hrefs, `state`, the `N/8 read` counter, and the ongoing/complete chip all come from the manifest. The old duplicated array silently went stale twice (legs 06 and 07 stayed `next`/`#` after publishing). Publishing an article now only requires flipping its manifest entry to `state: 'read'`.
 - **`PromptBar`'s `readCount`** (series progress dots) is derived in `ArticlePage.tsx` as `ARTICLES.filter(a => a.state === 'read').length` — never hardcode this number; it must track how many articles are actually published.
 - **Article design tokens**: paper bg `#e8dfc9`; ink `#26241C`; ink-green `#00753F` (on paper only); phosphor `#00d26a` (inside dark scope wells only — never on paper). Tokens in `tailwind.config.ts` under `paper`, `ink`, `rule`, `machine`, `well`.

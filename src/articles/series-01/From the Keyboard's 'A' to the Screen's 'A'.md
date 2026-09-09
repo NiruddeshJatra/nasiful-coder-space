@@ -150,7 +150,7 @@ Monitor-এর ভেতরের controller সেই signal receive করে�
 
 // আরও গভীরে যেতে চাইলে
 
-এই সিরিজ ছিল একটা পাখির চোখে দেখা। প্রতিটা topic-ই নিজে একটা পূর্ণ জগত। কোনো একটা layer যদি আপনার মন কেড়ে থাকে, নিচের resource-গুলো থেকে শুরু করতে পারেন। প্রায় সবগুলোই বিনামূল্যে পাওয়া যায়।
+এই সিরিজ ছিল একটা পাখির চোখে দেখা। প্রতিটা topic-ই নিজে একটা পূর্ণ জগত। কোনো একটা layer যদি আপনার ভালো লেগে থাকে, নিচের resource-গুলো থেকে শুরু করতে পারেন। প্রায় সবগুলোই বিনামূল্যে পাওয়া যায়।
 
 **একদম শুরু থেকে বুঝতে চাইলে**
 
@@ -193,6 +193,8 @@ Monitor-এর ভেতরের controller সেই signal receive করে�
 *CS50* (Harvard) — YouTube আর edX-এ বিনামূল্যে। C থেকে শুরু করে পুরো computer science-এর ভিত্তি। শিক্ষকতার মান অসাধারণ।
 
 ---
+
+আমি নিজেও আসলে এখানে দেওয়া প্রত্যেকটা রিসোর্স নিজে ঘেঁটে দেখার সুযোগ পাইনি। তবুও আপনাদের আর আমার নিজের সুবিধার্তে ইন্টারনেট ঘাঁটাঘাঁটি করে রিলেটেড সব রিসোর্স এখানে দিয়ে রাখলাম, যাতে পরে আরও এক্সপ্লোর করা যায়, আরও ভালোভাবে জানা যায়, নিজের জ্ঞানের কমতিগুলো শুধরানো যায়।
 
 শেষ কথা — এই তালিকা দেখে অভিভূত হওয়ার কিছু নেই। সবগুলো পড়তে হবে না। যে একটা জিনিস আপনার কৌতূহল জাগিয়েছে, সেটা নিয়েই শুরু করুন। বাকিটা সময়মতো আসবে।
 
@@ -391,5 +393,7 @@ This series was a bird's-eye view. Each topic is a world of its own. If one of t
 *CS50* (Harvard) — free on YouTube and edX. Starts with C and covers the foundations of computer science. The teaching is superb.
 
 ---
+
+A confession, too — I haven't worked through every resource on this list myself. I went digging around the internet and collected everything related in one place, as much for my own use as for yours, so that any of us can come back later and explore further, understand things better, and patch the gaps in what we know.
 
 One last thing — don't be overwhelmed by this list. You don't need to read all of it. Start with the one thing that made you curious. The rest will come when it comes.

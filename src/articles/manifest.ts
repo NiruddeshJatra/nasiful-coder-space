@@ -25,6 +25,11 @@ type UnpublishedArticleEntry = ArticleBase & { state: 'next' | 'soon' };
 // only surfacing as a runtime throw when the page renders.
 export type ArticleEntry = PublishedArticleEntry | UnpublishedArticleEntry;
 
+/** Landing page listing every tech series — rendered in the terminal shell. */
+export const TECH_ARTICLES_PATH = '/writing/tech-articles';
+/** This series' own hub (the paper-oscilloscope signal map). */
+export const SERIES_HUB_PATH = '/writing/tech-articles/series-01';
+
 export const SERIES_TITLE = 'The Machine Beneath Your Code';
 export const SERIES_DESCRIPTION_EN = 'A complete 8-part series on how computers actually work, from voltage in silicon to the letter on your screen. One protagonist — information.';
 export const SERIES_DESCRIPTION_BN = 'কম্পিউটার আসলে কীভাবে কাজ করে তার সম্পূর্ণ ৮ পর্বের series — silicon-এর voltage থেকে screen-এর অক্ষর পর্যন্ত। একটাই protagonist — তথ্য।';

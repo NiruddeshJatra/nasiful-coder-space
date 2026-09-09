@@ -4,7 +4,7 @@ import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
 import { Deeper } from '../primitives/Deeper';
 import { Recap } from '../primitives/Recap';
-import { RelayNav } from '../primitives/RelayNav';
+import { RelayNav, SERIES_HUB_CARD } from '../primitives/RelayNav';
 import { Colophon } from '../primitives/Colophon';
 import { PlaceValueBuilder } from '../widgets/PlaceValueBuilder';
 import { UnicodeEncodingDemo } from '../widgets/UnicodeEncodingDemo';
@@ -403,7 +403,7 @@ export function HowDoesAnythingBecomeBits() {
       </Section>
 
       <RelayNav
-        hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
+        hub={SERIES_HUB_CARD}
         next={{ label: { bn: 'baton পরের পর্বে', en: 'baton to the next leg' }, title: bn ? '০৩ — CPU-র blueprint' : "03 — The CPU's blueprint", href: '/writing/cpu-blueprint', variant: 'next' }}
         bridge={{ bn: 'তথ্যের সেই টুকরোটা এখন memory-তে voltage হিসেবে সুন্দর বসে আছে। কিন্তু সে নিজে থেকে কিছুই করতে পারে না। কেউ একজনকে এসে তাকে ব্যবহার করতে হবে — যোগ করতে হবে, সরাতে হবে, তুলনা করতে হবে। কে সেই কেউ? পরের আর্টিকেলে সেই হিসাবের যন্ত্রপাতির ভেতর একবার ঢুকে দেখা যাবে।', en: "Our piece of information sits comfortably in memory as voltage. But it can't do anything on its own. Someone has to come and use it — add it, move it, compare it. Who's that someone? Next article, we step inside the machinery that does the arithmetic." }}
       />

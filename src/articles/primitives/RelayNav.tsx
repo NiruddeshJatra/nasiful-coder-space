@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { useLang } from '../context/LanguageContext';
+import { SERIES_HUB_PATH, SERIES_TITLE } from '../manifest';
 
 interface NavCard {
   label: { bn: string; en: string };
@@ -13,6 +14,14 @@ interface RelayNavProps {
   hub: NavCard;
   next: NavCard;
 }
+
+/** Every article's back-to-hub card is identical — defined once, here. */
+export const SERIES_HUB_CARD: NavCard = {
+  label: { bn: 'সিরিজ hub', en: 'series hub' },
+  title: SERIES_TITLE,
+  href: SERIES_HUB_PATH,
+  variant: 'hub',
+};
 
 export function RelayNav({ bridge, hub, next }: RelayNavProps) {
   const { bn } = useLang();

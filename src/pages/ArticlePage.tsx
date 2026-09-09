@@ -17,7 +17,7 @@ import { OSGrandConductor } from '../articles/content/OSGrandConductor';
 import { CodeToMachineCode } from '../articles/content/CodeToMachineCode';
 import { KeyboardToScreen } from '../articles/content/KeyboardToScreen';
 import { useLang } from '../articles/context/LanguageContext';
-import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
+import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, SERIES_HUB_PATH, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
 type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde' | 'memory-hierarchy' | 'os-grand-conductor' | 'code-to-machine-code' | 'from-keypress-to-screen';
@@ -184,7 +184,7 @@ function ArticleBody({ config }: { config: Config }) {
           datePublished: meta.datePublished,
           lang: bn ? 'bn' : 'en',
           image: imageUrl,
-          isPartOf: { name: SERIES_TITLE, url: `${SITE_URL}/writing/tech-articles` },
+          isPartOf: { name: SERIES_TITLE, url: `${SITE_URL}${SERIES_HUB_PATH}` },
         })}
       />
       <TraceRail />

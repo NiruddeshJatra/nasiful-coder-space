@@ -1,7 +1,7 @@
 import { useLang } from '../context/LanguageContext';
 import { Section } from '../primitives/Section';
 import { Term } from '../primitives/Term';
-import { RelayNav } from '../primitives/RelayNav';
+import { RelayNav, SERIES_HUB_CARD } from '../primitives/RelayNav';
 import { Colophon } from '../primitives/Colophon';
 import { AbstractionStack } from '../widgets/AbstractionStack';
 import { ProtagonistDisguises } from '../widgets/ProtagonistDisguises';
@@ -241,7 +241,7 @@ export function MachineBeneathYourCode() {
       </Section>
 
       <RelayNav
-        hub={{ label: { bn: 'সিরিজ hub', en: 'series hub' }, title: 'The Machine Beneath Your Code', href: '/writing/tech-articles', variant: 'hub' }}
+        hub={SERIES_HUB_CARD}
         next={{ label: { bn: 'baton প্রথম পর্বে', en: 'baton to the first leg' }, title: bn ? '০১ — Bit-এর ভেতরে কী থাকে?' : "01 — What's inside a bit?", href: '/writing/whats-inside-a-bit', variant: 'next' }}
         bridge={{ bn: 'প্রথম পর্বে আমরা একেবারে voltage স্তর থেকে শুরু করব।', en: 'The first leg starts at the very voltage level.' }}
       />

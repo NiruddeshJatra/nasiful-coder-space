@@ -5,10 +5,10 @@ import { TermProvider } from '../articles/context/TermContext';
 import { TermPopup } from '../articles/primitives/Term';
 import { PromptBar } from '../articles/primitives/PromptBar';
 import { SeriesHub } from '../articles/content/SeriesHub';
-import { ARTICLES, INTRO_ARTICLE, SERIES_TITLE, SERIES_DESCRIPTION_EN, SERIES_DESCRIPTION_BN } from '../articles/manifest';
+import { ARTICLES, INTRO_ARTICLE, SERIES_TITLE, SERIES_DESCRIPTION_EN, SERIES_DESCRIPTION_BN, SERIES_HUB_PATH } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
-const HUB_PATH = '/writing/tech-articles';
+const HUB_PATH = SERIES_HUB_PATH;
 
 function hubItemListSchema() {
   const published = [INTRO_ARTICLE, ...ARTICLES.filter((a) => a.state === 'read')];
