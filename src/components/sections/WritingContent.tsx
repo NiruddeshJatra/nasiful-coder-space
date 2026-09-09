@@ -65,6 +65,11 @@ const techArticles = [
     path: "/writing/code-to-machine-code",
     description: "part 07 · compiler, interpreter, bytecode, JIT",
   },
+  {
+    title: "from the keyboard's 'a' to the screen's 'a'",
+    path: "/writing/from-keypress-to-screen",
+    description: "part 08 · the whole relay, end to end",
+  },
 ];
 
 const WritingContent = () => {
@@ -115,7 +120,7 @@ const WritingContent = () => {
                 the paper oscilloscope
               </button>
             }
-            description={<>a series on how computers actually work, from bits to OS</>}
+            description={<>a complete 8-part series on how computers actually work, from voltage to pixels</>}
           />
           <div className="pl-4 space-y-2 sm:space-y-1">
             {techArticles.map((a) => (

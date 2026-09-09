@@ -200,4 +200,24 @@ export const glossary: Record<string, GlossaryEntry> = {
     bn: 'AST হলো parse করার পর তৈরি হওয়া source code-এর গঠনের একটা গাছ-আকৃতির রূপ। Engine এই গাছ ধরে হেঁটে bytecode তৈরি করে। এটা code-এর মানে ধরে রাখে — কোন expression কার ভেতরে — কাঁচা text-এর যতিচিহ্ন বা whitespace ছাড়াই।',
     en: "An AST (Abstract Syntax Tree) is a tree-shaped representation of your source code's structure, built after parsing. The engine walks this tree to generate bytecode. It captures what the code means — which expression nests inside which — without the raw text's punctuation or whitespace.",
   },
+  scancode: {
+    term: 'scancode',
+    bn: 'Keyboard-এর নিজের chip প্রতিটা key-কে একটা নম্বর দেয় — সেটাই scancode। ‘A’ key চাপলে chip একটা নির্দিষ্ট byte (যেমন 0x04) পাঠায়; সেটা কোন অক্ষর তা পরে OS-এর keyboard driver ঠিক করে। মানে key-এর পরিচয় প্রথমে শুধু একটা নম্বর, অক্ষর নয় — layout বদলালে একই scancode অন্য অক্ষরও হতে পারে।',
+    en: 'The keyboard’s own chip assigns each key a number — that’s the scancode. Pressing ‘A’ sends a specific byte (say 0x04); which character it means is decided later by the OS’s keyboard driver. So a key’s identity starts as just a number, not a letter — change the layout and the same scancode can become a different character.',
+  },
+  rasterization: {
+    term: 'rasterization',
+    bn: 'একটা অক্ষরের আকৃতি font-এ থাকে vector (গাণিতিক curve) হিসেবে। কিন্তু screen শুধু pixel বোঝে। Vector shape-কে current font size অনুযায়ী pixel-এর grid-এ পরিণত করার প্রক্রিয়াই rasterization — মসৃণ curve থেকে নির্দিষ্ট R,G,B-ওয়ালা কয়েকশো pixel। বড় size মানে বেশি pixel, তাই কিনারা আরও মসৃণ।',
+    en: 'A letter’s shape lives in the font as a vector (mathematical curves). But a screen only understands pixels. Turning that vector shape into a grid of pixels at the current font size is rasterization — from smooth curves to a few hundred pixels, each with a definite R,G,B. A bigger size means more pixels, so smoother edges.',
+  },
+  framebuffer: {
+    term: 'framebuffer',
+    bn: 'GPU-র নিজস্ব memory (VRAM)-এর একটা বিশেষ এলাকা, যেখানে screen-এ এই মুহূর্তে যা দেখাচ্ছে তার পুরো ছবিটা bit আকারে জমা থাকে। GPU প্রতি refresh-এ (60Hz হলে প্রতি ১৬.৬৭ms) এই framebuffer পড়ে monitor-এ পাঠায়। এক অর্থে এটাই screen-এর "current state"।',
+    en: 'A special area in the GPU’s own memory (VRAM) holding, in bits, the complete current picture of what the screen is showing. On every refresh (every 16.67ms at 60Hz) the GPU reads this framebuffer and sends it to the monitor. In a sense it is the screen’s "current state".',
+  },
+  compositor: {
+    term: 'window compositor',
+    bn: 'OS-এর যে অংশ সব খোলা window-এর content মিলিয়ে screen-এর চূড়ান্ত চেহারা তৈরি করে। সে জানে কোন window কোথায় বসানো, তাই প্রতিটা pixel-এর সঠিক coordinate হিসাব করে framebuffer-এ লেখে। Overlap, transparency, shadow — সব সে সামলায়।',
+    en: 'The part of the OS that combines the content of all open windows into the screen’s final image. It knows where each window sits, so it computes the right coordinates for every pixel and writes them into the framebuffer. Overlap, transparency, shadows — it handles all of it.',
+  },
 };

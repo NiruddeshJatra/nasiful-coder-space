@@ -36,6 +36,7 @@ export const files: FileItem[] = [
   { name: 'memory-hierarchy.md', section: 'writing/memory-hierarchy', icon: File, parent: 'writing-tech-articles' },
   { name: 'os-grand-conductor.md', section: 'writing/os-grand-conductor', icon: File, parent: 'writing-tech-articles' },
   { name: 'code-to-machine-code.md', section: 'writing/code-to-machine-code', icon: File, parent: 'writing-tech-articles' },
+  { name: 'from-keypress-to-screen.md', section: 'writing/from-keypress-to-screen', icon: File, parent: 'writing-tech-articles' },
   { id: 'journey', name: 'journey/', section: 'journey', icon: Folder, isContainer: true },
   { name: 'running.md', section: 'journey-running', icon: File, parent: 'journey' },
   { name: 'hiking.md', section: 'journey-hiking', icon: File, parent: 'journey' },

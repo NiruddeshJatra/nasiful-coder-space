@@ -18,9 +18,11 @@ Keyboard-এ 'A' চাপলেন। এক মুহূর্ত পর scree
 
 শুনতে অদ্ভুত লাগতে পারে। Keyboard তো একটা input device মাত্র, তার আবার নিজের computer কেন থাকবে? কিন্তু আছে। এমনকি সবচেয়ে সস্তা keyboard-এও একটা tiny chip বসানো থাকে, যার ভেতরে থাকে একটা mini CPU, সামান্য memory, আর কিছু আগে থেকে লেখা instruction।
 
-এই chip-এর কাজটা খুব নির্দিষ্ট। সে প্রতি কয়েক millisecond অন্তর keyboard-এর ১০৪টা key-এর প্রতিটার voltage পরীক্ষা করে যায়। যতক্ষণ কোনো key চাপা না হচ্ছে, সব wire-এ voltage একরকম থাকে। কিন্তু যেই কোনো key চাপা হয়, সেই key-এর নিচের switch-এর দুইটা metal contact একসাথে লেগে যায়, circuit complete হয়, আর সেই wire-এ voltage বদলে যায়।
+এই chip-এর কাজটা খুব নির্দিষ্ট। সে প্রতি কয়েক millisecond অন্তর পুরো keyboard scan করে যায়। প্রতিটা key-এর জন্য আলাদা তার নেই — সেটা করতে গেলে ১০৪টা তার লাগত। বদলে key-গুলো একটা grid-এ সাজানো, সারি আর কলাম মিলে। Chip একটা করে সারিতে current পাঠায় আর সব কলাম একসাথে পড়ে। কোন সারি আর কোন কলাম — এই দুইয়ের সংযোগ থেকেই বোঝা যায় কোন key চাপা হয়েছে।
 
-Chip সেই পরিবর্তনটা ধরে ফেলে। তারপর নিজের ভেতরের একটা lookup table থেকে খুঁজে বের করে — এই wire-এ change মানে কোন key? 'A' key-এর জন্য সে একটা নির্দিষ্ট byte তৈরি করে, ধরা যাক `0x04`। সেই byte-টাই USB cable দিয়ে laptop-এ পাঠিয়ে দেয়।
+যতক্ষণ কোনো key চাপা না হচ্ছে, কোনো কলামেই কিছু ধরা পড়ে না। কিন্তু যেই কোনো key চাপা হয়, সেই key-এর নিচের switch-এর দুইটা metal contact একসাথে লেগে যায়, সেই সারি আর সেই কলামের মাঝে circuit complete হয়ে যায়, আর chip ঐ কলামে voltage দেখতে পায়।
+
+Chip সেই পরিবর্তনটা ধরে ফেলে। তারপর নিজের ভেতরের একটা lookup table থেকে খুঁজে বের করে — এই সারি আর এই কলামের সংযোগে কোন key বসে আছে? 'A' key-এর জন্য সে একটা নির্দিষ্ট byte তৈরি করে, ধরা যাক `0x04`। সেই byte-টাই USB cable দিয়ে laptop-এ পাঠিয়ে দেয়।
 
 মানে laptop-এর main CPU কিছু জানার আগেই keyboard-এর ভেতরে একটা পুরো computing cycle শেষ হয়ে গেছে। Voltage পড়া হয়েছে, সিদ্ধান্ত নেওয়া হয়েছে, ডেটা তৈরি হয়েছে।
 
@@ -144,6 +146,56 @@ Monitor-এর ভেতরের controller সেই signal receive করে�
 
 **পড়ার জন্য ধন্যবাদ। ভালো থাকবেন।**
 
+---
+
+// আরও গভীরে যেতে চাইলে
+
+এই সিরিজ ছিল একটা পাখির চোখে দেখা। প্রতিটা topic-ই নিজে একটা পূর্ণ জগত। কোনো একটা layer যদি আপনার মন কেড়ে থাকে, নিচের resource-গুলো থেকে শুরু করতে পারেন। প্রায় সবগুলোই বিনামূল্যে পাওয়া যায়।
+
+**একদম শুরু থেকে বুঝতে চাইলে**
+
+*Crash Course Computer Science* — YouTube-এ ৪০ পর্বের একটা সিরিজ, প্রতিটা ১০-১৫ মিনিট। Transistor থেকে AI পর্যন্ত পুরো computing-এর মানচিত্র। ভাষা সহজ, উপস্থাপনা চমৎকার। শুরু করার জন্য এর চেয়ে ভালো কিছু নেই।
+
+*Ben Eater* — YouTube channel। এই ভদ্রলোক breadboard-এ তার দিয়ে একটা সম্পূর্ণ 8-bit computer বানিয়েছেন, আর প্রতিটা ধাপ ক্যামেরার সামনে ব্যাখ্যা করেছেন। Article 1 আর 3-এ যা পড়েছেন, সেটা চোখের সামনে তৈরি হতে দেখতে পারবেন। ধৈর্য ধরে দেখার মতো জিনিস।
+
+*Nand2Tetris* (nand2tetris.org) — শুধু একটা NAND gate থেকে শুরু করে ধাপে ধাপে একটা পুরো কম্পিউটার বানানোর কোর্স। CPU, assembler, VM, compiler, OS — সব নিজে হাতে। Coursera-তে বিনামূল্যে করা যায়। এই সিরিজের প্রায় সবকিছু এখানে হাতে-কলমে করে দেখা যাবে।
+
+**Hardware আর CPU নিয়ে**
+
+*Computer Systems: A Programmer's Perspective* — Bryant ও O'Hallaron-এর লেখা। Carnegie Mellon-এর বিখ্যাত বই। Programmer-এর দৃষ্টিকোণ থেকে লেখা, তাই আপনার কোডের সাথে hardware-এর সম্পর্ক কোথায় সেটা স্পষ্ট হয়। Article 3, 4, 5-এর গভীর version।
+
+*Computer Organization and Design* — Patterson ও Hennessy-র লেখা। Computer architecture-এর classic textbook। একটু ভারী, কিন্তু কর্তৃত্বপূর্ণ।
+
+*Inside the Machine* — Jon Stokes। আধুনিক processor-এর ভেতরটা ছবির সাহায্যে ব্যাখ্যা করা। Textbook-এর চেয়ে সহজ পাঠ।
+
+**Memory আর Performance নিয়ে**
+
+*What Every Programmer Should Know About Memory* — Ulrich Drepper-এর লেখা একটা দীর্ঘ প্রবন্ধ, বিনামূল্যে পাওয়া যায়। Article 5-এ যা ছুঁয়ে গেছি, তার সম্পূর্ণ রূপ। Cache, DRAM, NUMA — সব এখানে। খুঁজলেই PDF পাবেন।
+
+*Latency Numbers Every Programmer Should Know* — Jeff Dean-এর তৈরি একটা ছোট তালিকা, ইন্টারনেটে সহজেই পাওয়া যায়। বিভিন্ন operation-এ কত সময় লাগে তার একটা mental model তৈরি করে দেয়।
+
+**Operating System নিয়ে**
+
+*Operating Systems: Three Easy Pieces* (ostep.org) — Arpaci-Dusseau দম্পতির লেখা। সম্পূর্ণ বিনামূল্যে, PDF আকারে ওয়েবসাইটেই আছে। OS শেখার জন্য সম্ভবত সবচেয়ে ভালো বই — লেখার ধরন সহজ, উদাহরণ প্রচুর। Article 6-এর প্রতিটা বিষয় এখানে বিস্তারিত।
+
+*Linux Kernel Development* — Robert Love। Linux kernel-এর ভেতরটা কীভাবে কাজ করে জানতে চাইলে।
+
+**Compiler আর Language নিয়ে**
+
+*Crafting Interpreters* (craftinginterpreters.com) — Robert Nystrom-এর লেখা, ওয়েবসাইটে সম্পূর্ণ বিনামূল্যে পড়া যায়। নিজে হাতে দুইটা interpreter বানানোর মধ্য দিয়ে পুরো বিষয়টা শেখানো হয়। লেখার মান অসাধারণ — technical বই এত সুন্দরভাবে কম লেখা হয়।
+
+*V8 blog* (v8.dev/blog) — JavaScript engine-এর ভেতরে কী ঘটে, engineer-রা নিজেরাই লেখেন। JIT, garbage collection, optimization নিয়ে গভীর লেখা।
+
+**হাতে-কলমে শিখতে চাইলে**
+
+*nandgame.com* — ব্রাউজারেই NAND gate থেকে শুরু করে ধাপে ধাপে কম্পিউটার বানানোর একটা খেলা। বিনামূল্যে, মজার, আর শেখার জন্য চমৎকার।
+
+*CS50* (Harvard) — YouTube আর edX-এ বিনামূল্যে। C থেকে শুরু করে পুরো computer science-এর ভিত্তি। শিক্ষকতার মান অসাধারণ।
+
+---
+
+শেষ কথা — এই তালিকা দেখে অভিভূত হওয়ার কিছু নেই। সবগুলো পড়তে হবে না। যে একটা জিনিস আপনার কৌতূহল জাগিয়েছে, সেটা নিয়েই শুরু করুন। বাকিটা সময়মতো আসবে।
+
 # From the Keyboard's 'A' to the Screen's 'A'
 
 ## Everything that happens inside one keystroke
@@ -164,9 +216,11 @@ When you press 'A', nothing goes directly to the laptop's CPU. Before that, the 
 
 It sounds strange. A keyboard is just an input device — why would it have its own computer? But it does. Even the cheapest keyboard has a tiny chip inside, holding a mini CPU, a small amount of memory, and some pre-written instructions.
 
-That chip's job is very specific. Every few milliseconds it checks the voltage on each of the keyboard's 104 keys. As long as no key is pressed, all the wires hold the same voltage. But the moment a key goes down, two metal contacts under that key touch, the circuit completes, and the voltage on that wire changes.
+That chip's job is very specific. Every few milliseconds it scans the whole keyboard. There isn't a separate wire for every key — that would take 104 wires. Instead the keys sit in a grid, at the intersections of rows and columns. The chip sends current down one row at a time and reads all the columns at once. Which row, and which column — the meeting point of those two is what tells it which key went down.
 
-The chip catches that change. Then it looks up its own internal table to figure out — a change on this wire means which key? For the 'A' key it produces a specific byte, say `0x04`. That byte gets sent to the laptop over the USB cable.
+As long as no key is pressed, nothing shows up on any column. But the moment a key goes down, two metal contacts under that key touch, completing the circuit between that row and that column, and the chip sees voltage on that column.
+
+The chip catches that change. Then it looks up its own internal table to figure out — which key sits at this row-and-column intersection? For the 'A' key it produces a specific byte, say `0x04`. That byte gets sent to the laptop over the USB cable.
 
 So before the laptop's main CPU knows anything at all, a complete computing cycle has already finished inside the keyboard. Voltage was read, a decision was made, data was produced.
 
@@ -289,3 +343,53 @@ Most of all, the machine won't feel as mysterious anymore. The hood has been ope
 Knowing that much is enough.
 
 **Thank you for reading. Take care.**
+
+---
+
+## If you want to go deeper
+
+This series was a bird's-eye view. Each topic is a world of its own. If one of the layers caught your interest, here's where to start. Nearly all of these are free.
+
+**Starting from the beginning**
+
+*Crash Course Computer Science* — a 40-episode YouTube series, 10-15 minutes each. Maps the whole of computing from transistors to AI. Clear language, excellent production. There's nothing better to start with.
+
+*Ben Eater* — a YouTube channel. This man built a complete 8-bit computer on breadboards with wires, and explained every step on camera. Everything you read in Articles 1 and 3, you can watch being built. Worth the patience.
+
+*Nand2Tetris* (nand2tetris.org) — a course that starts with a single NAND gate and walks you up to a complete computer. CPU, assembler, VM, compiler, OS — you build all of it yourself. Free on Coursera. Almost everything in this series, done hands-on.
+
+**Hardware and CPUs**
+
+*Computer Systems: A Programmer's Perspective* — Bryant and O'Hallaron. The famous Carnegie Mellon book. Written from a programmer's perspective, so the connection between your code and the hardware stays visible throughout. The deep version of Articles 3, 4, and 5.
+
+*Computer Organization and Design* — Patterson and Hennessy. The classic computer architecture textbook. Heavier going, but authoritative.
+
+*Inside the Machine* — Jon Stokes. Explains modern processors with illustrations. An easier read than a textbook.
+
+**Memory and performance**
+
+*What Every Programmer Should Know About Memory* — a long paper by Ulrich Drepper, freely available. The complete version of what Article 5 touched on. Cache, DRAM, NUMA — all of it. Search for the PDF.
+
+*Latency Numbers Every Programmer Should Know* — a short table originally by Jeff Dean, easy to find online. Builds a mental model for how long different operations actually take.
+
+**Operating systems**
+
+*Operating Systems: Three Easy Pieces* (ostep.org) — by the Arpaci-Dusseaus. Completely free, full PDF on the website. Probably the best book for learning operating systems — readable style, plenty of examples. Every topic from Article 6 in full detail.
+
+*Linux Kernel Development* — Robert Love. For getting inside the Linux kernel specifically.
+
+**Compilers and languages**
+
+*Crafting Interpreters* (craftinginterpreters.com) — by Robert Nystrom, fully readable free on the site. Teaches the whole subject by having you build two interpreters by hand. The writing quality is exceptional — technical books are rarely this well made.
+
+*V8 blog* (v8.dev/blog) — what happens inside a JavaScript engine, written by the engineers themselves. Deep posts on JIT, garbage collection, and optimization.
+
+**Learning by doing**
+
+*nandgame.com* — a browser game that walks you from a NAND gate up to a computer. Free, fun, and genuinely educational.
+
+*CS50* (Harvard) — free on YouTube and edX. Starts with C and covers the foundations of computer science. The teaching is superb.
+
+---
+
+One last thing — don't be overwhelmed by this list. You don't need to read all of it. Start with the one thing that made you curious. The rest will come when it comes.

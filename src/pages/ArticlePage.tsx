@@ -15,11 +15,12 @@ import { HeartbeatFDE } from '../articles/content/HeartbeatFDE';
 import { MemoryHierarchy } from '../articles/content/MemoryHierarchy';
 import { OSGrandConductor } from '../articles/content/OSGrandConductor';
 import { CodeToMachineCode } from '../articles/content/CodeToMachineCode';
+import { KeyboardToScreen } from '../articles/content/KeyboardToScreen';
 import { useLang } from '../articles/context/LanguageContext';
 import { ARTICLES, INTRO_ARTICLE, getArticle, SERIES_TITLE, PublishedArticleEntry, IntroArticleEntry } from '../articles/manifest';
 import { SITE_URL } from '../lib/site';
 
-type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde' | 'memory-hierarchy' | 'os-grand-conductor' | 'code-to-machine-code';
+type ArticleSlug = 'the-machine-beneath-your-code' | 'whats-inside-a-bit' | 'how-does-anything-become-bits' | 'cpu-blueprint' | 'heartbeat-fde' | 'memory-hierarchy' | 'os-grand-conductor' | 'code-to-machine-code' | 'from-keypress-to-screen';
 
 // manifest.ts enforces enDescription/bnDescription/datePublished at compile time
 // for any ARTICLES entry with state: 'read' (see PublishedArticleEntry). This
@@ -138,13 +139,25 @@ const CONFIGS: Record<ArticleSlug, Config> = {
     seriesPos: 7,
     Content: CodeToMachineCode,
   },
+  'from-keypress-to-screen': {
+    slug: 'from-keypress-to-screen',
+    bnSubtitle: 'এক keystroke-এর ভেতরে যা কিছু ঘটে — সিরিজের সব layer একসাথে',
+    enSubtitle: 'Everything that happens inside one keystroke — every layer of the series at once',
+    kickerCells: [
+      { bn: 'LEVEL 3 — THE BRIDGES', en: 'LEVEL 3 — THE BRIDGES' },
+      { bn: 'পর্ব ০৮/০৮', en: 'part 08/08' },
+      { bn: '~১৫ মিনিট', en: '~15 min' },
+    ],
+    seriesPos: 8,
+    Content: KeyboardToScreen,
+  },
 };
 
 function ArticleBody({ config }: { config: Config }) {
   const { bn } = useLang();
   const { Content } = config;
   const slug = config.slug as ArticleSlug;
-  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde' || slug === 'memory-hierarchy' || slug === 'os-grand-conductor' || slug === 'code-to-machine-code';
+  const isBnTitle = slug === 'whats-inside-a-bit' || slug === 'how-does-anything-become-bits' || slug === 'cpu-blueprint' || slug === 'heartbeat-fde' || slug === 'memory-hierarchy' || slug === 'os-grand-conductor' || slug === 'code-to-machine-code' || slug === 'from-keypress-to-screen';
   const meta = getArticleMeta(slug);
   const pageTitle = bn ? meta.bnTitle : meta.enTitle;
   const pageDesc = bn ? meta.bnDescription : meta.enDescription;
