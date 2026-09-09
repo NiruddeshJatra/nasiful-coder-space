@@ -29,7 +29,7 @@ export function SeriesHub() {
   });
 
   const complete = publishedCount === ARTICLES.length;
-  const allRead = readCount >= publishedCount && publishedCount > 0;
+  const allRead = publishedCount > 0 && ARTICLES.every(a => a.state !== 'read' || isRead(a.slug));
 
   const seg = (on: boolean): React.CSSProperties => ({
     background: on ? '#26241C' : 'none', color: on ? '#00d26a' : '#26241C',
